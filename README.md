@@ -24,8 +24,8 @@
 ## 示例用户
 | 用户名  | 密码    | dify_token         |
 | ------- | ------- | ----------------- |
-| user1   | 123456  | mlaiRboDgFgdc3Vh  |
-| user2   | abcdef  | mlaiRboDgFgdc3Vx  |
+| user1   | 123456  | jsmnfhktmsikwmsX  |
+| user2   | abcdef  | LdjsdbnjFDujskmy  |
 
 ## 适配说明
 - 安卓端登录时 POST 请求本服务，获取 token 后跳转聊天界面。
