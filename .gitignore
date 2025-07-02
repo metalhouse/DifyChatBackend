@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+venv/
+ENV/
+
+# 配置文件
+users.json
+
+# VSCode
+.vscode/
+
+# 日志文件
+login.log
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 其他
+*.bak
+*.swp
