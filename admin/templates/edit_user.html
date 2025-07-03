@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑用户 - Dify 管理后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f6f8fb; }
+        .container { max-width: 420px; margin: 60px auto; }
+        .card { border-radius: 8px; box-shadow: 0 2px 8px 0 rgba(44,62,80,.06); border: 1px solid #e3e8ee; background: #fff; }
+        .card-header { background: #f7fafd; border-bottom: 1px solid #e3e8ee; padding: 16px 22px; border-radius: 8px 8px 0 0; }
+        .card-title { font-size: 1.13rem; font-weight: 600; color: #23344a; }
+        .form-label { font-weight: 600; color: #23344a; }
+        .form-control, .form-select { height: 42px; border-radius: 6px; font-size: 1rem; border: 1px solid #dbe3ec; }
+        .form-control:focus, .form-select:focus { border-color: #206bc4; box-shadow: 0 0 0 2px #e3eefd; }
+        .btn { border-radius: 6px; font-size: 1rem; font-weight: 500; }
+        .btn-primary { background: #206bc4; border-color: #206bc4; min-width: 80px; }
+        .btn-primary:hover { background: #155a9c; border-color: #155a9c; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header"><h5 class="card-title mb-0">编辑用户：{{ username }}</h5></div>
+        <div class="card-body">
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">新密码（留空则不修改）</label>
+                    <input name="password" type="password" class="form-control" placeholder="如需重置请输入新密码">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">管理员</label>
+                    <select name="admin" class="form-select">
+                        <option value="false" {% if not user.admin %}selected{% endif %}>否</option>
+                        <option value="true" {% if user.admin %}selected{% endif %}>是</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">禁用账号</label>
+                    <select name="disabled" class="form-select">
+                        <option value="false" {% if not user.disabled %}selected{% endif %}>否</option>
+                        <option value="true" {% if user.disabled %}selected{% endif %}>是</option>
+                    </select>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

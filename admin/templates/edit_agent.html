@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑智能体</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        form { margin-top: 30px; }
+        label { display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>编辑智能体</h2>
+    <form method="post">
+        <label>Agent ID: <b>{{ agent_id }}</b></label>
+        <label>名称：<input name="name" value="{{ agent.name }}" required></label>
+        <label>API Key：<input name="dify_api_key" value="{{ agent.dify_api_key }}" required></label>
+        <button type="submit">保存</button>
+        <a href="/">返回</a>
+    </form>
+</body>
+</html>

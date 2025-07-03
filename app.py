@@ -5,11 +5,21 @@ import os
 import threading
 from utils import hash_password, decode_token
 import logging
+import logging.handlers
+from dify_api import api_conversations, api_chat, api_agents
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+load_dotenv()
 
-# 配置日志
+# 配置本地日志
 logging.basicConfig(filename='login.log', level=logging.INFO, format='%(asctime)s %(message)s', encoding='utf-8')
+
+# 配置远程 syslog 日志（请将 192.168.1.100 替换为你的远程日志服务器IP）
+remote_syslog = logging.handlers.SysLogHandler(address=('192.168.1.10', 514))
+remote_syslog.setLevel(logging.INFO)
+remote_syslog.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
+logging.getLogger().addHandler(remote_syslog)
 
 # 从 JSON 文件加载用户数据
 def load_users():
@@ -64,5 +74,18 @@ def login():
             msg = f"账户或IP已被临时锁定，请{LOCK_TIME.seconds//60}分钟后再试"
         return jsonify({"success": False, "message": msg})
 
+@app.route('/api/conversations', methods=['GET'])
+def conversations():
+    return api_conversations()
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    return api_chat()
+
+@app.route('/api/agents', methods=['GET'])
+def agents():
+    return api_agents()
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    debug_mode = os.environ.get('FLASK_DEBUG', '0') == '1'
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode)
