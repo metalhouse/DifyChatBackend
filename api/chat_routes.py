@@ -1,12 +1,16 @@
 """
 API路由模块 - 智能体相关接口
 """
-from flask import request, jsonify
+from flask import request, jsonify, g
 from functools import wraps
 import logging
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# 导入认证装饰器
+from auth.decorators import require_auth, require_permissions, check_agent_access, auto_refresh_token
+
 from services.dify_service import dify_service
 
 def api_response(func):
@@ -20,31 +24,35 @@ def api_response(func):
             return jsonify({'success': False, 'message': str(e)}), 500
     return wrapper
 
+@require_auth()
+@require_permissions(['access_agents'])
+@auto_refresh_token()
 @api_response
 def api_agents():
     """获取用户可用智能体列表"""
-    username = request.args.get('user')
-    if not username:
-        return jsonify({'success': False, 'message': '缺少 user 参数'}), 400
+    # 从认证信息中获取用户名
+    user = getattr(g, 'current_user', None)
+    if not user:
+        return jsonify({'success': False, 'message': '用户认证信息缺失'}), 401
     
+    username = user['username']
     agents = dify_service.get_user_agents(username)
     return jsonify({'success': True, 'data': agents})
 
+@require_auth()
+@require_permissions(['view_conversations'])
+@check_agent_access('agent_id')
+@auto_refresh_token()
 @api_response
 def api_conversations():
     """获取会话列表"""
-    username = request.args.get('user')
-    agent_id = request.args.get('agent_id')
+    # 从认证信息中获取用户名
+    user = getattr(g, 'current_user', None)
+    if not user:
+        return jsonify({'success': False, 'message': '用户认证信息缺失'}), 401
     
-    if not username:
-        return jsonify({'success': False, 'message': '缺少 user 参数'}), 400
-        
-    # 验证用户是否有权访问该智能体
-    if agent_id:
-        user_agents = dify_service.get_user_agents(username)
-        agent_ids = [a['agent_id'] for a in user_agents]
-        if agent_id not in agent_ids:
-            return jsonify({'success': False, 'message': '无权访问该智能体'}), 403
+    username = user['username']
+    agent_id = request.args.get('agent_id')
     
     params = {
         'user': username,
@@ -57,26 +65,26 @@ def api_conversations():
     resp, status = dify_service.make_request('GET', '/conversations', params=params, agent_id=agent_id)
     return jsonify(resp), status
 
+@require_auth()
+@require_permissions(['send_messages'])
+@check_agent_access('agent_id')
+@auto_refresh_token()
 @api_response
 def api_chat():
     """发送对话消息"""
     from flask import Response
     
+    # 从认证信息中获取用户名
+    user = getattr(g, 'current_user', None)
+    if not user:
+        return jsonify({'success': False, 'message': '用户认证信息缺失'}), 401
+    
+    username = user['username']
     data = request.get_json(force=True)
-    username = data.get('user')
     agent_id = data.get('agent_id')
     
-    if not username:
-        return jsonify({'success': False, 'message': '缺少 user 参数'}), 400
     if not data.get('query'):
         return jsonify({'success': False, 'message': '缺少 query 参数'}), 400
-        
-    # 验证用户是否有权访问该智能体
-    if agent_id:
-        user_agents = dify_service.get_user_agents(username)
-        agent_ids = [a['agent_id'] for a in user_agents]
-        if agent_id not in agent_ids:
-            return jsonify({'success': False, 'message': '无权访问该智能体'}), 403
     
     payload = {
         'query': data.get('query'),

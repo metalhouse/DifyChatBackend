@@ -108,15 +108,15 @@ def setup_logging(log_config):
 
 def register_routes(app):
     """注册路由"""
-    # 认证路由
-    app.route('/login', methods=['POST'])(login)
-    app.route('/refresh', methods=['POST'])(refresh_token)
-    app.route('/logout', methods=['POST'])(logout)
+    # 认证路由（注意：login和refresh_token不需要认证）
+    app.add_url_rule('/login', 'login', login, methods=['POST'])
+    app.add_url_rule('/refresh', 'refresh_token', refresh_token, methods=['POST'])
+    app.add_url_rule('/logout', 'logout', logout, methods=['POST'])
     
-    # 聊天相关路由
-    app.route('/api/conversations', methods=['GET'])(api_conversations)
-    app.route('/api/chat', methods=['POST'])(api_chat)
-    app.route('/api/agents', methods=['GET'])(api_agents)
+    # 聊天相关路由（这些已经有装饰器保护）
+    app.add_url_rule('/api/conversations', 'api_conversations', api_conversations, methods=['GET'])
+    app.add_url_rule('/api/chat', 'api_chat', api_chat, methods=['POST'])
+    app.add_url_rule('/api/agents', 'api_agents', api_agents, methods=['GET'])
     
     # 健康检查路由
     @app.route('/health')

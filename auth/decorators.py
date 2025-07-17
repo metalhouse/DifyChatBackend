@@ -92,34 +92,246 @@ def require_permissions(permissions: List[str]):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             # 首先进行认证
-            auth_result = require_auth()(f)
-            if hasattr(auth_result, 'status_code') and auth_result.status_code != 200:
-                return auth_result
+            auth_header = request.headers.get('Authorization')
             
-            # 检查权限（这里简化实现，实际项目中应该从数据库查询用户权限）
-            user = getattr(g, 'current_user', None)
-            if not user:
+            if not auth_header or not auth_header.startswith('Bearer '):
                 return jsonify({
                     'success': False,
-                    'message': '用户信息获取失败',
-                    'error_code': 'USER_INFO_ERROR'
+                    'message': '缺少认证令牌',
+                    'error_code': 'MISSING_TOKEN'
                 }), 401
             
-            # TODO: 实现实际的权限检查逻辑
-            # user_permissions = get_user_permissions(user['user_id'])
-            # if not all(perm in user_permissions for perm in permissions):
-            #     return jsonify({
-            #         'success': False,
-            #         'message': '权限不足',
-            #         'error_code': 'INSUFFICIENT_PERMISSIONS'
-            #     }), 403
+            token = auth_header.split(' ')[1]
+            token_info = auth_manager.verify_token(token, TokenType.ACCESS)
+            
+            if not token_info:
+                return jsonify({
+                    'success': False,
+                    'message': '无效或过期的令牌',
+                    'error_code': 'INVALID_TOKEN'
+                }), 401
+            
+            # 将用户信息存储到Flask上下文
+            g.current_user = {
+                'user_id': token_info.user_id,
+                'username': token_info.username,
+                'device_id': token_info.device_id,
+                'ip_address': token_info.ip_address,
+                'token_info': token_info
+            }
+            
+            # 检查权限（从数据库或配置中获取用户权限）
+            user_permissions = get_user_permissions(token_info.username)
+            missing_permissions = [perm for perm in permissions if perm not in user_permissions]
+            
+            if missing_permissions:
+                logging.warning(f"User {token_info.username} lacks permissions: {missing_permissions}")
+                return jsonify({
+                    'success': False,
+                    'message': f'权限不足，缺少权限：{", ".join(missing_permissions)}',
+                    'error_code': 'INSUFFICIENT_PERMISSIONS',
+                    'missing_permissions': missing_permissions
+                }), 403
             
             return f(*args, **kwargs)
         
         return decorated_function
     return decorator
 
+def get_user_permissions(username: str) -> List[str]:
+    """
+    获取用户权限列表
+    
+    Args:
+        username: 用户名
+        
+    Returns:
+        权限列表
+    """
+    try:
+        # 从用户服务获取用户信息
+        from services.user_service import UserService
+        user_service = UserService()
+        user = user_service.get_user(username)
+        
+        if not user:
+            return []
+        
+        # 基础权限
+        permissions = ['read_profile', 'update_profile']
+        
+        # 管理员权限
+        if user.get('admin', False):
+            permissions.extend([
+                'admin_access',
+                'manage_users',
+                'view_all_agents',
+                'manage_agents',
+                'view_system_logs'
+            ])
+        
+        # 普通用户权限
+        permissions.extend([
+            'use_chat',
+            'view_conversations',
+            'manage_conversations',
+            'access_agents'
+        ])
+        
+        return permissions
+        
+    except Exception as e:
+        logging.error(f"Error getting user permissions for {username}: {e}")
+        return []
+
+def check_agent_access(agent_id_param: str = 'agent_id'):
+    """
+    智能体访问权限检查装饰器
+    
+    Args:
+        agent_id_param: 包含智能体ID的参数名
+    """
+    def decorator(f: Callable) -> Callable:
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            # 确保用户已认证
+            user = getattr(g, 'current_user', None)
+            if not user:
+                return jsonify({
+                    'success': False,
+                    'message': '用户未认证',
+                    'error_code': 'AUTHENTICATION_REQUIRED'
+                }), 401
+            
+            # 获取智能体ID
+            agent_id = None
+            
+            # 从请求参数获取
+            if request.method == 'GET':
+                agent_id = request.args.get(agent_id_param)
+            elif request.method in ['POST', 'PUT', 'PATCH']:
+                if request.is_json:
+                    data = request.get_json(silent=True) or {}
+                    agent_id = data.get(agent_id_param)
+                else:
+                    agent_id = request.form.get(agent_id_param)
+            
+            # 如果没有提供智能体ID，允许访问（可能是获取列表）
+            if not agent_id:
+                return f(*args, **kwargs)
+            
+            # 检查用户是否有权访问该智能体
+            if not has_agent_access(user['username'], agent_id):
+                return jsonify({
+                    'success': False,
+                    'message': '无权访问该智能体',
+                    'error_code': 'AGENT_ACCESS_DENIED',
+                    'agent_id': agent_id
+                }), 403
+            
+            return f(*args, **kwargs)
+        
+        return decorated_function
+    return decorator
+
+def has_agent_access(username: str, agent_id: str) -> bool:
+    """
+    检查用户是否有权访问指定智能体
+    
+    Args:
+        username: 用户名
+        agent_id: 智能体ID
+        
+    Returns:
+        是否有访问权限
+    """
+    try:
+        from services.dify_service import dify_service
+        
+        # 获取用户可访问的智能体列表
+        user_agents = dify_service.get_user_agents(username)
+        agent_ids = [agent['agent_id'] for agent in user_agents]
+        
+        return agent_id in agent_ids
+        
+    except Exception as e:
+        logging.error(f"Error checking agent access for user {username}, agent {agent_id}: {e}")
 def check_device_access(user_id: str, device_id: Optional[str] = None) -> bool:
+    """
+    检查设备访问权限
+    
+    Args:
+        user_id: 用户ID
+        device_id: 设备ID
+        
+    Returns:
+        是否允许访问
+    """
+    try:
+        # 基本的设备访问控制
+        # 在生产环境中，这里应该实现：
+        # 1. 检查设备是否在用户的信任设备列表中
+        # 2. 检查设备是否被锁定或禁用
+        # 3. 检查地理位置等安全因素
+        
+        if not device_id:
+            return True  # 允许无设备ID的访问
+        
+        # 简化实现：所有设备都允许访问
+        # 在实际项目中应该查询数据库
+        return True
+        
+    except Exception as e:
+        logging.error(f"Error checking device access: {e}")
+        return False
+
+def auto_refresh_token():
+    """
+    自动刷新令牌装饰器
+    当access token即将过期时自动刷新
+    """
+    def decorator(f: Callable) -> Callable:
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            auth_header = request.headers.get('Authorization')
+            
+            if not auth_header or not auth_header.startswith('Bearer '):
+                return f(*args, **kwargs)
+            
+            token = auth_header.split(' ')[1]
+            
+            # 检查令牌是否即将过期（剩余时间少于5分钟）
+            from datetime import datetime, timedelta
+            import jwt
+            
+            try:
+                # 解码但不验证过期时间
+                payload = jwt.decode(token, options={"verify_exp": False}, algorithms=["HS256"])
+                exp_time = datetime.fromtimestamp(payload.get('exp', 0))
+                current_time = datetime.now()
+                
+                # 如果令牌在5分钟内过期，尝试刷新
+                if exp_time - current_time < timedelta(minutes=5):
+                    refresh_token_header = request.headers.get('X-Refresh-Token')
+                    if refresh_token_header:
+                        try:
+                            # 尝试刷新令牌
+                            new_tokens = auth_manager.refresh_access_token(refresh_token_header)
+                            if new_tokens:
+                                # 在响应头中返回新令牌
+                                from flask import g
+                                g.new_access_token = new_tokens['access_token']
+                                g.new_refresh_token = new_tokens.get('refresh_token')
+                        except Exception as refresh_error:
+                            logging.warning(f"Token refresh failed: {refresh_error}")
+                
+            except Exception as e:
+                logging.debug(f"Token auto-refresh check failed: {e}")
+            
+            return f(*args, **kwargs)
+        
+        return decorated_function
+    return decorator
     """
     检查设备访问权限
     
