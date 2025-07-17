@@ -14,9 +14,17 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 # 导入配置
 from config import get_config, get_logging_config
 
+# 导入缓存管理器
+from utils.cache_manager import init_cache_manager, get_cache_manager
+from services.dify_service import dify_service
+
 # 导入API路由
 from api.auth_routes import login, refresh_token, logout
-from api.chat_routes import api_conversations, api_chat, api_agents
+from api.chat_routes import (
+    api_conversations, api_chat, api_agents,
+    api_user_permissions, api_agent_config, api_preload_cache,
+    api_refresh_agent_cache, api_invalidate_agent_cache, api_agent_cache_stats
+)
 
 # 可选导入CORS
 try:
@@ -46,6 +54,13 @@ def create_app(config_env: str = None) -> Flask:
     
     # 配置日志
     setup_logging(config.logging)
+    
+    # 初始化缓存管理器
+    cache_manager = init_cache_manager(config)
+    
+    # 记录缓存状态
+    cache_status = "启用" if cache_manager.enabled else "禁用"
+    logging.info(f"缓存管理器初始化完成: {cache_status}")
     
     # 注册路由
     register_routes(app)
@@ -118,6 +133,14 @@ def register_routes(app):
     app.add_url_rule('/api/chat', 'api_chat', api_chat, methods=['POST'])
     app.add_url_rule('/api/agents', 'api_agents', api_agents, methods=['GET'])
     
+    # 智能体缓存管理路由
+    app.add_url_rule('/api/user/permissions', 'api_user_permissions', api_user_permissions, methods=['GET'])
+    app.add_url_rule('/api/agent/config', 'api_agent_config', api_agent_config, methods=['GET'])
+    app.add_url_rule('/api/cache/preload', 'api_preload_cache', api_preload_cache, methods=['POST'])
+    app.add_url_rule('/api/cache/refresh', 'api_refresh_agent_cache', api_refresh_agent_cache, methods=['POST'])
+    app.add_url_rule('/api/cache/invalidate', 'api_invalidate_agent_cache', api_invalidate_agent_cache, methods=['DELETE'])
+    app.add_url_rule('/api/cache/stats', 'api_agent_cache_stats', api_agent_cache_stats, methods=['GET'])
+    
     # 健康检查路由
     @app.route('/health')
     def health_check():
@@ -129,6 +152,29 @@ def register_routes(app):
             'version': '2.0.0-alpha',
             'timestamp': int(__import__('time').time())
         })
+    
+    # 缓存健康检查路由
+    @app.route('/health/cache')
+    def cache_health_check():
+        """缓存健康检查端点"""
+        cache_manager = get_cache_manager()
+        if cache_manager:
+            health_status = cache_manager.health_check()
+            cache_stats = dify_service.get_cache_stats()
+            
+            return jsonify({
+                **health_status,
+                "dify_cache_config": {
+                    "conversations_ttl": cache_stats.get("conversations_cache_ttl"),
+                    "agents_ttl": cache_stats.get("agents_cache_ttl")
+                }
+            })
+        else:
+            return jsonify({
+                "status": "not_initialized",
+                "enabled": False,
+                "message": "缓存管理器未初始化"
+            }), 503
     
     # 错误处理器
     @app.errorhandler(404)
