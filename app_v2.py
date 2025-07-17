@@ -1,99 +1,167 @@
 """
 DifyChatBackend主应用文件 - 重构版本
 """
-from flask import Flask
+from flask import Flask, jsonify
 import logging
 import logging.handlers
-import os
-from dotenv import load_dotenv
-
-# 导入API路由
 import sys
 import os
+from pathlib import Path
+
+# 添加项目根目录到Python路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from api.auth_routes import login
+
+# 导入配置
+from config import get_config, get_logging_config
+
+# 导入API路由
+from api.auth_routes import login, refresh_token, logout
 from api.chat_routes import api_conversations, api_chat, api_agents
 
-# 创建Flask应用
-app = Flask(__name__)
-load_dotenv()
+# 可选导入CORS
+try:
+    from flask_cors import CORS
+    CORS_AVAILABLE = True
+except ImportError:
+    CORS_AVAILABLE = False
+    print("Warning: Flask-CORS not available, CORS will be disabled")
 
-# 配置日志
-def setup_logging():
+def create_app(config_env: str = None) -> Flask:
+    """应用工厂函数"""
+    # 加载配置
+    if config_env:
+        os.environ['FLASK_ENV'] = config_env
+    
+    config = get_config()
+    
+    # 创建Flask应用
+    app = Flask(__name__)
+    
+    # 应用配置
+    app.config.update(config.get_flask_config())
+    
+    # 设置CORS
+    if config.server.cors_enabled and CORS_AVAILABLE:
+        CORS(app, origins=config.server.cors_origins)
+    
+    # 配置日志
+    setup_logging(config.logging)
+    
+    # 注册路由
+    register_routes(app)
+    
+    return app
+
+def setup_logging(log_config):
     """配置日志系统"""
-    # 本地文件日志
-    logging.basicConfig(
-        filename='login.log', 
-        level=logging.INFO, 
-        format='%(asctime)s %(levelname)s %(message)s', 
-        encoding='utf-8'
-    )
+    # 清除现有处理器
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
     
-    # 远程syslog日志（如果配置了的话）
-    syslog_host = os.environ.get('SYSLOG_HOST')
-    syslog_port = int(os.environ.get('SYSLOG_PORT', '514'))
+    # 创建日志目录
+    log_file_path = Path(log_config.file_path)
+    log_file_path.parent.mkdir(parents=True, exist_ok=True)
     
-    if syslog_host:
+    # 配置根日志记录器
+    logging.root.setLevel(getattr(logging, log_config.level))
+    
+    handlers = []
+    
+    # 控制台处理器
+    if log_config.enable_console:
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(getattr(logging, log_config.level))
+        console_handler.setFormatter(logging.Formatter(log_config.format))
+        handlers.append(console_handler)
+    
+    # 文件处理器（带轮转）
+    if log_config.enable_file:
+        file_handler = logging.handlers.RotatingFileHandler(
+            filename=log_config.file_path,
+            maxBytes=log_config.max_file_size,
+            backupCount=log_config.backup_count,
+            encoding='utf-8'
+        )
+        file_handler.setLevel(getattr(logging, log_config.level))
+        file_handler.setFormatter(logging.Formatter(log_config.format))
+        handlers.append(file_handler)
+    
+    # Syslog处理器
+    if log_config.enable_syslog:
         try:
-            remote_syslog = logging.handlers.SysLogHandler(
-                address=(syslog_host, syslog_port)
+            syslog_handler = logging.handlers.SysLogHandler(
+                address=(log_config.syslog_host, log_config.syslog_port)
             )
-            remote_syslog.setLevel(logging.INFO)
-            remote_syslog.setFormatter(
-                logging.Formatter('DifyChatBackend: %(asctime)s %(levelname)s %(message)s')
+            syslog_handler.setLevel(getattr(logging, log_config.level))
+            syslog_handler.setFormatter(
+                logging.Formatter('DifyChatBackend: %(name)s - %(levelname)s - %(message)s')
             )
-            logging.getLogger().addHandler(remote_syslog)
+            handlers.append(syslog_handler)
         except Exception as e:
             logging.warning(f"Failed to setup remote syslog: {e}")
-
-# 注册路由
-def register_routes():
-    """注册API路由"""
-    # 认证相关路由
-    app.route('/api/login', methods=['POST'])(login)
     
-    # 对话相关路由
+    # 添加所有处理器
+    for handler in handlers:
+        logging.root.addHandler(handler)
+    
+    logging.info("日志系统初始化完成")
+
+def register_routes(app):
+    """注册路由"""
+    # 认证路由
+    app.route('/login', methods=['POST'])(login)
+    app.route('/refresh', methods=['POST'])(refresh_token)
+    app.route('/logout', methods=['POST'])(logout)
+    
+    # 聊天相关路由
     app.route('/api/conversations', methods=['GET'])(api_conversations)
     app.route('/api/chat', methods=['POST'])(api_chat)
     app.route('/api/agents', methods=['GET'])(api_agents)
-
-# 错误处理
-@app.errorhandler(404)
-def not_found(error):
-    return {'success': False, 'message': 'API接口不存在'}, 404
-
-@app.errorhandler(500)
-def internal_error(error):
-    return {'success': False, 'message': '服务器内部错误'}, 500
-
-@app.errorhandler(Exception)
-def handle_exception(e):
-    logging.error(f"Unhandled exception: {e}", exc_info=True)
-    return {'success': False, 'message': '服务器错误'}, 500
-
-# 健康检查接口
-@app.route('/health')
-def health_check():
-    """健康检查接口"""
-    return {
-        'status': 'healthy',
-        'version': '2.0.0-alpha',
-        'timestamp': int(__import__('time').time())
-    }
-
-# 初始化应用
-def create_app():
-    """创建并配置Flask应用"""
-    setup_logging()
-    register_routes()
     
-    logging.info("DifyChatBackend started successfully")
-    return app
+    # 健康检查路由
+    @app.route('/health')
+    def health_check():
+        """健康检查端点"""
+        config = get_config()
+        return jsonify({
+            'status': 'healthy',
+            'environment': config.env,
+            'version': '2.0.0-alpha',
+            'timestamp': int(__import__('time').time())
+        })
+    
+    # 错误处理器
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({'error': 'Not Found', 'message': '请求的资源不存在'}), 404
+    
+    @app.errorhandler(500)
+    def internal_error(error):
+        return jsonify({'error': 'Internal Server Error', 'message': '服务器内部错误'}), 500
+    
+    @app.errorhandler(Exception)
+    def handle_exception(e):
+        logging.error(f"Unhandled exception: {e}", exc_info=True)
+        return jsonify({'error': 'Unexpected Error', 'message': '服务器发生意外错误'}), 500
+
+# 创建应用实例
+app = create_app()
 
 if __name__ == '__main__':
-    app = create_app()
-    debug_mode = os.environ.get('FLASK_DEBUG', '0') == '1'
-    host = os.environ.get('FLASK_HOST', '0.0.0.0')
-    port = int(os.environ.get('FLASK_PORT', '5000'))
+    config = get_config()
     
-    app.run(host=host, port=port, debug=debug_mode)
+    logging.info(f"启动DifyChatBackend服务 - 环境: {config.env}")
+    logging.info(f"服务器配置: {config.server.host}:{config.server.port}")
+    
+    try:
+        app.run(
+            host=config.server.host,
+            port=config.server.port,
+            debug=config.server.debug,
+            threaded=config.server.threaded
+        )
+    except KeyboardInterrupt:
+        logging.info("服务器关闭")
+    except Exception as e:
+        logging.error(f"服务器启动失败: {e}")
+        raise

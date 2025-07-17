@@ -3,19 +3,24 @@ Dify API服务模块
 提供与Dify平台的API交互功能
 """
 import requests
-import os
 import logging
 from functools import wraps
 import json
 from typing import Optional, List, Dict, Any
+from config import get_dify_config, get_database_config
 
 class DifyService:
     """Dify API服务类"""
     
     def __init__(self, base_url: str = None, api_key: str = None):
-        self.base_url = base_url or os.environ.get('DIFY_BASE_URL', 'http://192.168.1.68/v1')
-        self.default_api_key = api_key or os.environ.get('DIFY_API_KEY')
-        self.agents_file = os.path.join(os.path.dirname(__file__), '..', 'agents.json')
+        dify_config = get_dify_config()
+        db_config = get_database_config()
+        
+        self.base_url = base_url or dify_config.base_url
+        self.default_api_key = api_key or dify_config.default_api_key
+        self.timeout = dify_config.timeout
+        self.max_retries = dify_config.max_retries
+        self.agents_file = db_config.agents_file
         
     def get_user_agents(self, username: str) -> List[Dict[str, str]]:
         """获取用户可用的智能体列表"""
@@ -48,6 +53,36 @@ class DifyService:
         """向Dify API发送请求"""
         url = f"{self.base_url}{path}"
         api_key = self.get_agent_api_key(agent_id) if agent_id else self.default_api_key
+        
+        if not api_key:
+            logging.error(f"[DIFY] No API key available for agent_id: {agent_id}")
+            return False, "API密钥未配置"
+        
+        headers = {
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json'
+        }
+        
+        try:
+            response = requests.request(
+                method=method.upper(),
+                url=url,
+                headers=headers,
+                params=params,
+                json=json_data,
+                stream=stream,
+                timeout=self.timeout
+            )
+            
+            if response.status_code == 200:
+                return True, response
+            else:
+                logging.error(f"[DIFY] API request failed: {response.status_code} - {response.text}")
+                return False, f"API请求失败: {response.status_code}"
+                
+        except requests.RequestException as e:
+            logging.error(f"[DIFY] Request exception: {e}")
+            return False, f"请求异常: {str(e)}"
         headers = {
             'Authorization': f'Bearer {api_key}',
             'Content-Type': 'application/json'

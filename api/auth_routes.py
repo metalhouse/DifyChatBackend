@@ -2,67 +2,116 @@
 认证相关的API路由
 """
 from flask import request, jsonify
-from datetime import datetime, timedelta
-import threading
 import logging
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from services.user_service import user_service
 
-# 登录失败尝试次数和锁定时间（内存实现，适合单机）
-login_attempts = {}
-LOCK_THRESHOLD = 5  # 允许失败次数
-LOCK_TIME = timedelta(minutes=5)  # 锁定时长
-attempts_lock = threading.Lock()
+# 添加项目根目录到Python路径
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from services.user_service import UserService
+
+# 创建用户服务实例
+user_service = UserService()
 
 def login():
     """用户登录接口"""
-    username = request.form.get('username')
-    password = request.form.get('password')
-    client_ip = request.remote_addr
-    key = username or client_ip
-    now = datetime.now()
-    
-    # 检查登录锁定
-    with attempts_lock:
-        attempt = login_attempts.get(key, {"count": 0, "lock_until": None})
-        if attempt["lock_until"] and now < attempt["lock_until"]:
+    try:
+        # 获取请求数据
+        data = request.get_json() if request.is_json else request.form
+        username = data.get('username')
+        password = data.get('password')
+        
+        if not username or not password:
             return jsonify({
-                "success": False, 
-                "message": "账户或IP已被临时锁定，请稍后再试"
-            }), 429
-    
-    logging.info(f"[LOGIN] username={username}, ip={client_ip}")
-    
-    # 验证用户
-    user_info = user_service.authenticate_user(username, password)
-    
-    if user_info:
-        logging.info(f"[LOGIN SUCCESS] user={username}")
-        # 清除登录失败记录
-        with attempts_lock:
-            if key in login_attempts:
-                del login_attempts[key]
+                "success": False,
+                "message": "用户名和密码不能为空",
+                "error_code": "MISSING_CREDENTIALS"
+            }), 400
+        
+        client_ip = request.remote_addr
+        logging.info(f"[LOGIN] username={username}, ip={client_ip}")
+        
+        # 使用带安全检查的认证方法
+        auth_result = user_service.authenticate_with_security(username, password)
+        
+        if auth_result['success']:
+            logging.info(f"[LOGIN SUCCESS] user={username}")
+            return jsonify({
+                "success": True,
+                "message": auth_result['message'],
+                "user": auth_result['user'],
+                "tokens": auth_result['tokens']
+            }), 200
+        else:
+            status_code = 429 if auth_result.get('error_code') == 'ACCOUNT_LOCKED' else 401
+            logging.warning(f"[LOGIN FAILED] user={username}, reason={auth_result['message']}")
+            return jsonify({
+                "success": False,
+                "message": auth_result['message'],
+                "error_code": auth_result.get('error_code'),
+                "attempts_left": auth_result.get('attempts_left')
+            }), status_code
+            
+    except Exception as e:
+        logging.error(f"[LOGIN ERROR] {e}", exc_info=True)
+        return jsonify({
+            "success": False,
+            "message": "登录处理异常",
+            "error_code": "INTERNAL_ERROR"
+        }), 500
+
+def refresh_token():
+    """刷新访问令牌"""
+    try:
+        data = request.get_json()
+        refresh_token = data.get('refresh_token')
+        
+        if not refresh_token:
+            return jsonify({
+                "success": False,
+                "message": "刷新令牌不能为空"
+            }), 400
+        
+        new_tokens = user_service.refresh_access_token(refresh_token)
+        
+        if new_tokens:
+            return jsonify({
+                "success": True,
+                "message": "令牌刷新成功",
+                "tokens": new_tokens
+            }), 200
+        else:
+            return jsonify({
+                "success": False,
+                "message": "刷新令牌无效或已过期"
+            }), 401
+            
+    except Exception as e:
+        logging.error(f"[REFRESH TOKEN ERROR] {e}", exc_info=True)
+        return jsonify({
+            "success": False,
+            "message": "令牌刷新异常"
+        }), 500
+
+def logout():
+    """用户退出登录"""
+    try:
+        auth_header = request.headers.get('Authorization')
+        
+        if auth_header and auth_header.startswith('Bearer '):
+            token = auth_header.split(' ')[1]
+            # 撤销令牌（加入黑名单）
+            user_service.revoke_token(token)
         
         return jsonify({
             "success": True,
-            "user_id": user_info['user_id'],
-            "user_name": user_info['user_name'],
-            "avatar_url": user_info['avatar_url']
-        })
-    else:
-        logging.info(f"[LOGIN FAIL] user={username}")
-        # 记录登录失败
-        with attempts_lock:
-            count = attempt["count"] + 1
-            lock_until = None
-            if count >= LOCK_THRESHOLD:
-                lock_until = now + LOCK_TIME
-            login_attempts[key] = {"count": count, "lock_until": lock_until}
+            "message": "退出登录成功"
+        }), 200
         
-        msg = "用户名或密码错误"
-        if count >= LOCK_THRESHOLD:
-            msg = f"账户或IP已被临时锁定，请{LOCK_TIME.seconds//60}分钟后再试"
-        
-        return jsonify({"success": False, "message": msg}), 401
+    except Exception as e:
+        logging.error(f"[LOGOUT ERROR] {e}", exc_info=True)
+        return jsonify({
+            "success": False,
+            "message": "退出登录异常"
+        }), 500
+
