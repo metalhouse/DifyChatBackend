@@ -21,6 +21,23 @@ login.log
 .DS_Store
 Thumbs.db
 
+# 测试文件 (临时调试和演示用，但保留tests/目录)
+test_*.py
+*_test.py
+debug_*.py
+demo_*.py
+verify_*.py
+check_*.py
+quick_*.py
+simple_*.py
+run_*.py
+!tests/
+
+# 临时文档和报告
+task_*_completion_report.md
+TASK_*.md
+*_COMPLETED.md
+
 # 其他
 *.bak
 *.swp
