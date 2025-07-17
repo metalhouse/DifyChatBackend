@@ -56,7 +56,6 @@ def login():
                 del login_attempts[key]
         return jsonify({
             "success": True,
-            "dify_token": decode_token(user["dify_token"]),
             "user_id": username,
             "user_name": f"{username}的昵称",
             "avatar_url": f"https://api.dicebear.com/7.x/miniavs/svg?seed={username}"
