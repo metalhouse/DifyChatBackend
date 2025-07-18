@@ -30,6 +30,9 @@ env/
 users.json
 agents.json
 agent_features.json
+data/users.json
+data/agents.json
+data/agent_features.json
 *.key
 *.pem
 *.crt

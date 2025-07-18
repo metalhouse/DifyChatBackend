@@ -11,6 +11,7 @@ from enum import Enum
 import json
 import os
 from datetime import datetime
+from pathlib import Path
 
 
 class AgentFeatureType(str, Enum):
@@ -83,8 +84,24 @@ class AgentFeatureConfig(BaseModel):
 class AgentFeatureManager:
     """智能体功能配置管理器"""
     
-    def __init__(self, config_file: str = "agent_features.json"):
-        self.config_file = config_file
+    def __init__(self, config_file: str = None):
+        # 如果没有指定文件，尝试从config加载，否则使用默认值
+        if config_file is None:
+            try:
+                # 尝试导入配置
+                import sys
+                sys.path.append(str(Path(__file__).parent.parent))
+                from config import Config
+                config = Config()
+                # 假设agent_features.json在同一目录下
+                data_dir = Path(config.database.data_dir)
+                self.config_file = str(data_dir / "agent_features.json")
+            except:
+                # 如果导入失败，使用默认路径
+                self.config_file = "agent_features.json"
+        else:
+            self.config_file = config_file
+            
         self._configs: Dict[str, AgentFeatureConfig] = {}
         self._load_configs()
 

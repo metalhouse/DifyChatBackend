@@ -4,11 +4,14 @@ import os
 import logging
 from functools import wraps
 import json
+from config import Config
 
 DIFY_BASE_URL = os.environ.get('DIFY_BASE_URL', 'http://192.168.1.68/v1')
 DIFY_API_KEY = os.environ.get('DIFY_API_KEY')
 
-AGENTS_FILE = os.path.join(os.path.dirname(__file__), 'agents.json')
+# 使用统一配置
+config = Config()
+AGENTS_FILE = config.database.agents_file
 
 
 def get_user_agents(username):

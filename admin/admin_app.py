@@ -6,11 +6,19 @@ import time
 import random
 import hashlib
 from functools import wraps
+import sys
+
+# 添加父目录到路径以导入config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import Config
 
 app = Flask(__name__)
 app.secret_key = 'difyadminsecret'
-AGENTS_FILE = os.path.join(os.path.dirname(__file__), '../agents.json')
-USERS_FILE = os.path.join(os.path.dirname(__file__), '../users.json')
+
+# 使用统一配置
+config = Config()
+AGENTS_FILE = config.database.agents_file
+USERS_FILE = config.database.users_file
 
 # 加载配置
 def load_agents():
