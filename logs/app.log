@@ -3995,3 +3995,870 @@ TypeError: ResponseBuilder.error() got an unexpected keyword argument 'status_co
 2025-07-18 16:10:43,082 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:5000
 2025-07-18 16:10:45,156 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:10:45] "GET /api/v1/info HTTP/1.1" 200 -
 2025-07-18 16:10:45,157 - urllib3.connectionpool - DEBUG - http://localhost:5000 "GET /api/v1/info HTTP/1.1" 200 1027
+2025-07-18 16:25:38,582 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\models\\agent_features.py', reloading
+2025-07-18 16:25:38,636 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:25:40,031 - root - INFO - 日志系统初始化完成
+2025-07-18 16:25:40,032 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:25:40,032 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:25:40,039 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:25:40,039 - root - INFO - 环境: development
+2025-07-18 16:25:40,040 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:25:40,040 - root - INFO - API版本: v1
+2025-07-18 16:25:40,040 - root - INFO - 响应格式: 标准化
+2025-07-18 16:25:40,063 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:25:40,070 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:26:41,953 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:26:42,012 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:26:43,219 - root - INFO - 日志系统初始化完成
+2025-07-18 16:26:43,220 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:26:43,220 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:26:43,230 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:26:43,231 - root - INFO - 环境: development
+2025-07-18 16:26:43,231 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:26:43,231 - root - INFO - API版本: v1
+2025-07-18 16:26:43,232 - root - INFO - 响应格式: 标准化
+2025-07-18 16:26:43,254 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:26:43,261 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:27:55,256 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\agent_config_routes.py', reloading
+2025-07-18 16:27:55,333 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:27:56,548 - root - INFO - 日志系统初始化完成
+2025-07-18 16:27:56,549 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:27:56,549 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:27:56,555 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:27:56,555 - root - INFO - 环境: development
+2025-07-18 16:27:56,555 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:27:56,556 - root - INFO - API版本: v1
+2025-07-18 16:27:56,556 - root - INFO - 响应格式: 标准化
+2025-07-18 16:27:56,575 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:27:56,588 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:28:23,996 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\app.py', reloading
+2025-07-18 16:28:24,056 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:40:00,803 - root - INFO - 日志系统初始化完成
+2025-07-18 16:40:00,804 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:40:00,804 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:40:00,813 - root - INFO - 日志系统初始化完成
+2025-07-18 16:40:00,814 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:40:00,814 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:40:25,609 - root - INFO - 日志系统初始化完成
+2025-07-18 16:40:25,610 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:40:25,610 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:40:25,619 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:40:25,619 - root - INFO - 环境: development
+2025-07-18 16:40:25,619 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:40:25,619 - root - INFO - API版本: v1
+2025-07-18 16:40:25,620 - root - INFO - 响应格式: 标准化
+2025-07-18 16:40:25,675 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.68:5000
+2025-07-18 16:40:25,676 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 16:40:25,677 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:40:26,921 - root - INFO - 日志系统初始化完成
+2025-07-18 16:40:26,922 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:40:26,922 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:40:26,933 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:40:26,934 - root - INFO - 环境: development
+2025-07-18 16:40:26,937 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:40:26,937 - root - INFO - API版本: v1
+2025-07-18 16:40:26,937 - root - INFO - 响应格式: 标准化
+2025-07-18 16:40:26,989 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:40:26,996 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:41:48,179 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_agent_feature_apis.py', reloading
+2025-07-18 16:41:48,229 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:41:49,458 - root - INFO - 日志系统初始化完成
+2025-07-18 16:41:49,458 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:41:49,459 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:41:49,472 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:41:49,473 - root - INFO - 环境: development
+2025-07-18 16:41:49,473 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:41:49,473 - root - INFO - API版本: v1
+2025-07-18 16:41:49,474 - root - INFO - 响应格式: 标准化
+2025-07-18 16:41:49,495 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:41:49,504 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:42:03,764 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_agent_feature_apis.py', reloading
+2025-07-18 16:42:03,820 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:42:05,512 - root - INFO - 日志系统初始化完成
+2025-07-18 16:42:05,513 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:42:05,513 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:42:05,524 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:42:05,524 - root - INFO - 环境: development
+2025-07-18 16:42:05,525 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:42:05,525 - root - INFO - API版本: v1
+2025-07-18 16:42:05,525 - root - INFO - 响应格式: 标准化
+2025-07-18 16:42:05,549 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:42:05,558 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:42:09,768 - root - INFO - [LOGIN ATTEMPT] username=admin, ip=127.0.0.1, device_id=6193ab9185454b07...
+2025-07-18 16:42:09,768 - root - INFO - Login attempt started: username=admin, ip=127.0.0.1, device_id=6193ab9185454b07..., user_agent=python-requests/2.32.4...
+2025-07-18 16:42:09,774 - root - INFO - Login attempt for admin: success=False, ip=127.0.0.1, total_attempts=1
+2025-07-18 16:42:09,775 - root - WARNING - Login failed: username=admin, ip=127.0.0.1, attempts_left=4
+2025-07-18 16:42:09,775 - root - WARNING - [LOGIN FAILED] user=admin, reason=INVALID_CREDENTIALS
+2025-07-18 16:42:09,776 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:42:09] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 401 -
+2025-07-18 16:43:25,760 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_agent_feature_apis.py', reloading
+2025-07-18 16:43:25,809 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:43:27,017 - root - INFO - 日志系统初始化完成
+2025-07-18 16:43:27,017 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:43:27,018 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:43:27,027 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:43:27,027 - root - INFO - 环境: development
+2025-07-18 16:43:27,027 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:43:27,028 - root - INFO - API版本: v1
+2025-07-18 16:43:27,028 - root - INFO - 响应格式: 标准化
+2025-07-18 16:43:27,047 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:43:27,055 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:43:44,325 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_agent_feature_apis.py', reloading
+2025-07-18 16:43:44,370 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:43:46,150 - root - INFO - 日志系统初始化完成
+2025-07-18 16:43:46,151 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:43:46,151 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:43:46,159 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:43:46,159 - root - INFO - 环境: development
+2025-07-18 16:43:46,160 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:43:46,160 - root - INFO - API版本: v1
+2025-07-18 16:43:46,160 - root - INFO - 响应格式: 标准化
+2025-07-18 16:43:46,179 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:43:46,186 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:43:48,022 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=3413c95a939dd942...
+2025-07-18 16:43:48,023 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=3413c95a939dd942..., user_agent=python-requests/2.32.4...
+2025-07-18 16:43:48,024 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:43:48,024 - root - INFO - Login successful: username=metalhouse, device_id=3413c95a939dd942..., active_sessions=1
+2025-07-18 16:43:48,024 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:43:48,026 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:43:48] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:43:50,075 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:43:50] "GET /api/v1/feature-types HTTP/1.1" 200 -
+2025-07-18 16:43:52,132 - api.agent_config_routes - ERROR - Failed to list agent features: ResponseBuilder.success() got an unexpected keyword argument 'meta'
+2025-07-18 16:43:52,133 - root - ERROR - Unexpected error: ResponseBuilder.error() got an unexpected keyword argument 'status_code'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\agent_config_routes.py", line 88, in list_agent_features
+    return ResponseBuilder.success(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        data=response_data.dict(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<8 lines>...
+        }
+        ^
+    )
+    ^
+TypeError: ResponseBuilder.success() got an unexpected keyword argument 'meta'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 71, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 136, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\api\agent_config_routes.py", line 103, in list_agent_features
+    return ResponseBuilder.error(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        message="获取智能体功能配置列表失败",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        error_code="LIST_AGENT_FEATURES_FAILED",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        status_code=500
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+TypeError: ResponseBuilder.error() got an unexpected keyword argument 'status_code'
+2025-07-18 16:43:52,136 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:43:52] "[35m[1mGET /api/v1/agent-features HTTP/1.1[0m" 500 -
+2025-07-18 16:43:54,190 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:43:54] "GET /api/v1/agent-features/statistics HTTP/1.1" 200 -
+2025-07-18 16:43:56,255 - api.agent_config_routes - INFO - Updated agent features for agent_test_1752828234: [<AgentFeatureType.SUGGESTED_QUESTIONS: 'suggested_questions'>, <AgentFeatureType.MESSAGE_FEEDBACK: 'message_feedback'>, <AgentFeatureType.CONVERSATION_RENAME: 'conversation_rename'>]
+2025-07-18 16:43:56,256 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:43:56] "PUT /api/v1/agent-features/agent_test_1752828234 HTTP/1.1" 200 -
+2025-07-18 16:43:58,308 - api.agent_config_routes - INFO - Deleted agent features config for agent_test_1752828234
+2025-07-18 16:43:58,309 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:43:58] "DELETE /api/v1/agent-features/agent_test_1752828234 HTTP/1.1" 200 -
+2025-07-18 16:44:47,125 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\agent_config_routes.py', reloading
+2025-07-18 16:44:47,181 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:44:48,579 - root - INFO - 日志系统初始化完成
+2025-07-18 16:44:48,580 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:44:48,580 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:44:48,592 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:44:48,593 - root - INFO - 环境: development
+2025-07-18 16:44:48,593 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:44:48,593 - root - INFO - API版本: v1
+2025-07-18 16:44:48,594 - root - INFO - 响应格式: 标准化
+2025-07-18 16:44:48,617 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:44:48,626 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:44:53,740 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\agent_config_routes.py', reloading
+2025-07-18 16:44:53,804 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:44:55,166 - root - INFO - 日志系统初始化完成
+2025-07-18 16:44:55,166 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:44:55,167 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:44:55,177 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:44:55,178 - root - INFO - 环境: development
+2025-07-18 16:44:55,178 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:44:55,179 - root - INFO - API版本: v1
+2025-07-18 16:44:55,179 - root - INFO - 响应格式: 标准化
+2025-07-18 16:44:55,202 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:44:55,210 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:46:19,433 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\fix_response_builder.py', reloading
+2025-07-18 16:46:19,486 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:46:20,693 - root - INFO - 日志系统初始化完成
+2025-07-18 16:46:20,694 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:46:20,694 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:46:20,704 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:46:20,705 - root - INFO - 环境: development
+2025-07-18 16:46:20,705 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:46:20,706 - root - INFO - API版本: v1
+2025-07-18 16:46:20,706 - root - INFO - 响应格式: 标准化
+2025-07-18 16:46:20,726 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:46:20,735 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:46:24,841 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\agent_config_routes.py', reloading
+2025-07-18 16:46:24,889 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:46:26,101 - root - INFO - 日志系统初始化完成
+2025-07-18 16:46:26,102 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:46:26,102 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:46:26,117 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:46:26,117 - root - INFO - 环境: development
+2025-07-18 16:46:26,118 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:46:26,118 - root - INFO - API版本: v1
+2025-07-18 16:46:26,119 - root - INFO - 响应格式: 标准化
+2025-07-18 16:46:26,140 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:46:26,147 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:46:33,536 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=d839e60e0bf162db...
+2025-07-18 16:46:33,537 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=d839e60e0bf162db..., user_agent=python-requests/2.32.4...
+2025-07-18 16:46:33,538 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:46:33,539 - root - INFO - Login successful: username=metalhouse, device_id=d839e60e0bf162db..., active_sessions=1
+2025-07-18 16:46:33,539 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:46:33,540 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:46:33] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:46:35,573 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:46:35] "GET /api/v1/feature-types HTTP/1.1" 200 -
+2025-07-18 16:46:37,626 - api.agent_config_routes - ERROR - Failed to list agent features: ResponseBuilder.success() got an unexpected keyword argument 'meta'
+2025-07-18 16:46:37,626 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:46:37] "[35m[1mGET /api/v1/agent-features HTTP/1.1[0m" 500 -
+2025-07-18 16:46:39,666 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:46:39] "GET /api/v1/agent-features/statistics HTTP/1.1" 200 -
+2025-07-18 16:46:41,716 - api.agent_config_routes - INFO - Updated agent features for agent_test_1752828399: [<AgentFeatureType.SUGGESTED_QUESTIONS: 'suggested_questions'>, <AgentFeatureType.MESSAGE_FEEDBACK: 'message_feedback'>, <AgentFeatureType.CONVERSATION_RENAME: 'conversation_rename'>]
+2025-07-18 16:46:41,717 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:46:41] "PUT /api/v1/agent-features/agent_test_1752828399 HTTP/1.1" 200 -
+2025-07-18 16:46:43,765 - api.agent_config_routes - INFO - Deleted agent features config for agent_test_1752828399
+2025-07-18 16:46:43,766 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:46:43] "DELETE /api/v1/agent-features/agent_test_1752828399 HTTP/1.1" 200 -
+2025-07-18 16:47:19,978 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\agent_config_routes.py', reloading
+2025-07-18 16:47:20,034 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:47:21,253 - root - INFO - 日志系统初始化完成
+2025-07-18 16:47:21,254 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:47:21,254 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:47:21,262 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:47:21,262 - root - INFO - 环境: development
+2025-07-18 16:47:21,262 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:47:21,263 - root - INFO - API版本: v1
+2025-07-18 16:47:21,263 - root - INFO - 响应格式: 标准化
+2025-07-18 16:47:21,285 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:47:21,293 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:47:35,545 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\agent_config_routes.py', reloading
+2025-07-18 16:47:35,614 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:47:37,425 - root - INFO - 日志系统初始化完成
+2025-07-18 16:47:37,426 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:47:37,426 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:47:37,436 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:47:37,437 - root - INFO - 环境: development
+2025-07-18 16:47:37,437 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:47:37,437 - root - INFO - API版本: v1
+2025-07-18 16:47:37,438 - root - INFO - 响应格式: 标准化
+2025-07-18 16:47:37,462 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:47:37,469 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:47:39,684 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=59f6c56fa494e23f...
+2025-07-18 16:47:39,684 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=59f6c56fa494e23f..., user_agent=python-requests/2.32.4...
+2025-07-18 16:47:39,686 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:47:39,686 - root - INFO - Login successful: username=metalhouse, device_id=59f6c56fa494e23f..., active_sessions=1
+2025-07-18 16:47:39,686 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:47:39,688 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:39] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:47:41,734 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:41] "GET /api/v1/feature-types HTTP/1.1" 200 -
+2025-07-18 16:47:43,785 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:43] "GET /api/v1/agent-features HTTP/1.1" 200 -
+2025-07-18 16:47:45,842 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:45] "GET /api/v1/agent-features/agent_1751526225_7744 HTTP/1.1" 200 -
+2025-07-18 16:47:47,899 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:47] "GET /api/v1/agent-features/agent_1751526225_7744 HTTP/1.1" 200 -
+2025-07-18 16:47:49,950 - api.agent_config_routes - INFO - Updated agent features for agent_1751526225_7744: [<AgentFeatureType.CITATION: 'citation'>, <AgentFeatureType.CONVERSATION_RENAME: 'conversation_rename'>, <AgentFeatureType.MESSAGE_FEEDBACK: 'message_feedback'>, <AgentFeatureType.SUGGESTED_QUESTIONS: 'suggested_questions'>, <AgentFeatureType.RETRIEVAL: 'retrieval'>, <AgentFeatureType.FILE_UPLOAD: 'file_upload'>]
+2025-07-18 16:47:49,951 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:49] "PUT /api/v1/agent-features/agent_1751526225_7744 HTTP/1.1" 200 -
+2025-07-18 16:47:51,998 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:51] "GET /api/v1/agent-features/agent_1751526225_7744/status HTTP/1.1" 200 -
+2025-07-18 16:47:54,054 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:54] "POST /api/v1/agent-features/agent_1751526225_7744/check HTTP/1.1" 200 -
+2025-07-18 16:47:56,109 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:56] "GET /api/v1/agent-features/statistics HTTP/1.1" 200 -
+2025-07-18 16:47:58,173 - api.agent_config_routes - INFO - Updated agent features for agent_test_1752828476: [<AgentFeatureType.SUGGESTED_QUESTIONS: 'suggested_questions'>, <AgentFeatureType.MESSAGE_FEEDBACK: 'message_feedback'>, <AgentFeatureType.CONVERSATION_RENAME: 'conversation_rename'>]
+2025-07-18 16:47:58,173 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:47:58] "PUT /api/v1/agent-features/agent_test_1752828476 HTTP/1.1" 200 -
+2025-07-18 16:48:00,219 - api.agent_config_routes - INFO - Deleted agent features config for agent_test_1752828476
+2025-07-18 16:48:00,219 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:48:00] "DELETE /api/v1/agent-features/agent_test_1752828476 HTTP/1.1" 200 -
+2025-07-18 16:49:10,968 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_feature_middleware.py', reloading
+2025-07-18 16:49:11,035 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:49:12,294 - root - INFO - 日志系统初始化完成
+2025-07-18 16:49:12,295 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:49:12,295 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:49:12,307 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:49:12,307 - root - INFO - 环境: development
+2025-07-18 16:49:12,307 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:49:12,308 - root - INFO - API版本: v1
+2025-07-18 16:49:12,308 - root - INFO - 响应格式: 标准化
+2025-07-18 16:49:12,333 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:49:12,341 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:49:25,649 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=ea0ea28f9ed14a25...
+2025-07-18 16:49:25,649 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=ea0ea28f9ed14a25..., user_agent=python-requests/2.32.4...
+2025-07-18 16:49:25,651 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:49:25,651 - root - INFO - Login successful: username=metalhouse, device_id=ea0ea28f9ed14a25..., active_sessions=1
+2025-07-18 16:49:25,652 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:49:25,653 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:49:25] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:49:27,709 - middleware.feature_check - DEBUG - Feature check passed: Agent agent_1751526225_7744 supports message_feedback
+2025-07-18 16:49:27,710 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 16:49:27,710 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:49:27] "[31m[1mPOST /api/v1/messages/test_message_123/feedbacks HTTP/1.1[0m" 422 -
+2025-07-18 16:49:29,762 - middleware.feature_check - INFO - Feature check blocked: Agent agent_1751526225_7744 does not support audio_to_text
+2025-07-18 16:49:29,762 - root - ERROR - Unexpected error: ResponseBuilder.error() got an unexpected keyword argument 'status_code'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 71, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 136, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\middleware\feature_check.py", line 106, in wrapper
+    return ResponseBuilder.error(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        message=message,
+        ^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        }
+        ^
+    )
+    ^
+TypeError: ResponseBuilder.error() got an unexpected keyword argument 'status_code'
+2025-07-18 16:49:29,765 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:49:29] "[35m[1mPOST /api/v1/audio-to-text HTTP/1.1[0m" 500 -
+2025-07-18 16:51:57,802 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_feature_middleware.py', reloading
+2025-07-18 16:51:57,856 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:51:59,096 - root - INFO - 日志系统初始化完成
+2025-07-18 16:51:59,096 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:51:59,096 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:51:59,105 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:51:59,105 - root - INFO - 环境: development
+2025-07-18 16:51:59,105 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:51:59,105 - root - INFO - API版本: v1
+2025-07-18 16:51:59,106 - root - INFO - 响应格式: 标准化
+2025-07-18 16:51:59,125 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:51:59,133 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:52:01,678 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=f5ed3fbc98875fd3...
+2025-07-18 16:52:01,679 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=f5ed3fbc98875fd3..., user_agent=python-requests/2.32.4...
+2025-07-18 16:52:01,680 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:52:01,680 - root - INFO - Login successful: username=metalhouse, device_id=f5ed3fbc98875fd3..., active_sessions=1
+2025-07-18 16:52:01,680 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:52:01,681 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:52:01] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:52:11,335 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_feature_middleware_fixed.py', reloading
+2025-07-18 16:52:11,414 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:52:12,554 - root - INFO - 日志系统初始化完成
+2025-07-18 16:52:12,555 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:52:12,556 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:52:12,564 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:52:12,564 - root - INFO - 环境: development
+2025-07-18 16:52:12,564 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:52:12,565 - root - INFO - API版本: v1
+2025-07-18 16:52:12,565 - root - INFO - 响应格式: 标准化
+2025-07-18 16:52:12,586 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:52:12,594 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:52:24,811 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_feature_middleware_fixed.py', reloading
+2025-07-18 16:52:24,898 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:52:26,853 - root - INFO - 日志系统初始化完成
+2025-07-18 16:52:26,853 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:52:26,854 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:52:26,862 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:52:26,862 - root - INFO - 环境: development
+2025-07-18 16:52:26,863 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:52:26,863 - root - INFO - API版本: v1
+2025-07-18 16:52:26,863 - root - INFO - 响应格式: 标准化
+2025-07-18 16:52:26,882 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:52:26,889 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:52:28,511 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=1e00d6217333ef59...
+2025-07-18 16:52:28,512 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=1e00d6217333ef59..., user_agent=python-requests/2.32.4...
+2025-07-18 16:52:28,513 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:52:28,513 - root - INFO - Login successful: username=metalhouse, device_id=1e00d6217333ef59..., active_sessions=1
+2025-07-18 16:52:28,514 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:52:28,515 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:52:28] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:52:41,123 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_feature_middleware_fixed.py', reloading
+2025-07-18 16:52:41,172 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:52:42,327 - root - INFO - 日志系统初始化完成
+2025-07-18 16:52:42,328 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:52:42,328 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:52:42,336 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:52:42,336 - root - INFO - 环境: development
+2025-07-18 16:52:42,336 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:52:42,337 - root - INFO - API版本: v1
+2025-07-18 16:52:42,337 - root - INFO - 响应格式: 标准化
+2025-07-18 16:52:42,356 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:52:42,362 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:52:48,492 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_feature_middleware_fixed.py', reloading
+2025-07-18 16:52:48,650 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:52:50,450 - root - INFO - 日志系统初始化完成
+2025-07-18 16:52:50,450 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:52:50,451 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:52:50,460 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:52:50,460 - root - INFO - 环境: development
+2025-07-18 16:52:50,460 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:52:50,461 - root - INFO - API版本: v1
+2025-07-18 16:52:50,461 - root - INFO - 响应格式: 标准化
+2025-07-18 16:52:50,482 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:52:50,491 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:52:51,920 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=4989effce34801d6...
+2025-07-18 16:52:51,920 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=4989effce34801d6..., user_agent=python-requests/2.32.4...
+2025-07-18 16:52:51,922 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:52:51,922 - root - INFO - Login successful: username=metalhouse, device_id=4989effce34801d6..., active_sessions=1
+2025-07-18 16:52:51,922 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:52:51,924 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:52:51] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:52:53,973 - middleware.feature_check - DEBUG - Feature check passed: Agent agent_1751526225_7744 supports message_feedback
+2025-07-18 16:52:53,973 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 16:52:53,974 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:52:53] "[31m[1mPOST /api/v1/messages/test_message_123/feedbacks HTTP/1.1[0m" 422 -
+2025-07-18 16:52:56,033 - middleware.feature_check - INFO - Feature check blocked: Agent agent_1751526225_7744 does not support audio_to_text
+2025-07-18 16:52:56,033 - root - ERROR - Unexpected error: ResponseBuilder.error() got an unexpected keyword argument 'status_code'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 71, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 136, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\middleware\feature_check.py", line 106, in wrapper
+    return ResponseBuilder.error(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        message=message,
+        ^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        }
+        ^
+    )
+    ^
+TypeError: ResponseBuilder.error() got an unexpected keyword argument 'status_code'
+2025-07-18 16:52:56,036 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:52:56] "[35m[1mPOST /api/v1/audio-to-text HTTP/1.1[0m" 500 -
+2025-07-18 16:53:45,334 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\chat_routes.py', reloading
+2025-07-18 16:53:45,385 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:53:46,576 - root - INFO - 日志系统初始化完成
+2025-07-18 16:53:46,576 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:53:46,576 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:53:46,585 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:53:46,585 - root - INFO - 环境: development
+2025-07-18 16:53:46,586 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:53:46,586 - root - INFO - API版本: v1
+2025-07-18 16:53:46,587 - root - INFO - 响应格式: 标准化
+2025-07-18 16:53:46,607 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:53:46,614 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:54:07,349 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\chat_routes.py', reloading
+2025-07-18 16:54:07,396 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:54:08,584 - root - INFO - 日志系统初始化完成
+2025-07-18 16:54:08,584 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:54:08,584 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:54:08,592 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:54:08,594 - root - INFO - 环境: development
+2025-07-18 16:54:08,594 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:54:08,594 - root - INFO - API版本: v1
+2025-07-18 16:54:08,595 - root - INFO - 响应格式: 标准化
+2025-07-18 16:54:08,613 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:54:08,620 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:54:23,869 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_feature_middleware_fixed.py', reloading
+2025-07-18 16:54:23,915 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:54:25,072 - root - INFO - 日志系统初始化完成
+2025-07-18 16:54:25,073 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:54:25,073 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:54:25,081 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:54:25,082 - root - INFO - 环境: development
+2025-07-18 16:54:25,082 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:54:25,082 - root - INFO - API版本: v1
+2025-07-18 16:54:25,083 - root - INFO - 响应格式: 标准化
+2025-07-18 16:54:25,102 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:54:25,110 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:54:53,557 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\chat_routes.py', reloading
+2025-07-18 16:54:53,705 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:54:55,461 - root - INFO - 日志系统初始化完成
+2025-07-18 16:54:55,461 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:54:55,462 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:54:55,472 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:54:55,472 - root - INFO - 环境: development
+2025-07-18 16:54:55,472 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:54:55,473 - root - INFO - API版本: v1
+2025-07-18 16:54:55,473 - root - INFO - 响应格式: 标准化
+2025-07-18 16:54:55,492 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:54:55,499 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:54:57,029 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=fe75d310a69ed775...
+2025-07-18 16:54:57,029 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=fe75d310a69ed775..., user_agent=python-requests/2.32.4...
+2025-07-18 16:54:57,030 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:54:57,031 - root - INFO - Login successful: username=metalhouse, device_id=fe75d310a69ed775..., active_sessions=1
+2025-07-18 16:54:57,031 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:54:57,032 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:54:57] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:54:59,071 - middleware.feature_check - DEBUG - Feature check passed: Agent agent_1751526225_7744 supports message_feedback
+2025-07-18 16:54:59,071 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 16:54:59,072 - root - INFO - [DIFY] Using first available agent key: agent_1751526225_7744
+2025-07-18 16:54:59,074 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.68:80
+2025-07-18 16:54:59,124 - urllib3.connectionpool - DEBUG - http://192.168.1.68:80 "POST /v1/messages/test_message_123/feedbacks HTTP/1.1" 404 207
+2025-07-18 16:54:59,125 - root - ERROR - [DIFY] API request failed: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+2025-07-18 16:54:59,125 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:54:59] "[35m[1mPOST /api/v1/messages/test_message_123/feedbacks?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 16:55:01,181 - middleware.feature_check - INFO - Feature check blocked: Agent agent_1751526225_7744 does not support audio_to_text
+2025-07-18 16:55:01,181 - root - ERROR - Unexpected error: ResponseBuilder.error() got an unexpected keyword argument 'status_code'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 71, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 136, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\middleware\feature_check.py", line 106, in wrapper
+    return ResponseBuilder.error(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        message=message,
+        ^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        }
+        ^
+    )
+    ^
+TypeError: ResponseBuilder.error() got an unexpected keyword argument 'status_code'
+2025-07-18 16:55:01,184 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:55:01] "[35m[1mPOST /api/v1/audio-to-text HTTP/1.1[0m" 500 -
+2025-07-18 16:55:58,072 - root - INFO - 日志系统初始化完成
+2025-07-18 16:55:58,073 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:55:58,074 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:55:58,084 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:55:58,084 - root - INFO - 环境: development
+2025-07-18 16:55:58,085 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:55:58,085 - root - INFO - API版本: v1
+2025-07-18 16:55:58,085 - root - INFO - 响应格式: 标准化
+2025-07-18 16:55:58,144 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.68:5000
+2025-07-18 16:55:58,145 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 16:55:58,147 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:55:59,503 - root - INFO - 日志系统初始化完成
+2025-07-18 16:55:59,504 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:55:59,504 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:55:59,512 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:55:59,512 - root - INFO - 环境: development
+2025-07-18 16:55:59,513 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:55:59,513 - root - INFO - API版本: v1
+2025-07-18 16:55:59,514 - root - INFO - 响应格式: 标准化
+2025-07-18 16:55:59,534 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:55:59,546 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:56:17,906 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:56:17,962 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:56:19,135 - root - INFO - 日志系统初始化完成
+2025-07-18 16:56:19,135 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:56:19,136 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:56:19,144 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:56:19,144 - root - INFO - 环境: development
+2025-07-18 16:56:19,144 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:56:19,145 - root - INFO - API版本: v1
+2025-07-18 16:56:19,145 - root - INFO - 响应格式: 标准化
+2025-07-18 16:56:19,164 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:56:19,171 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:56:29,354 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:56:29,403 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:56:30,569 - root - INFO - 日志系统初始化完成
+2025-07-18 16:56:30,570 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:56:30,570 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:56:30,580 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:56:30,581 - root - INFO - 环境: development
+2025-07-18 16:56:30,581 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:56:30,581 - root - INFO - API版本: v1
+2025-07-18 16:56:30,582 - root - INFO - 响应格式: 标准化
+2025-07-18 16:56:30,602 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:56:30,609 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:56:38,757 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:56:38,821 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:56:40,019 - root - INFO - 日志系统初始化完成
+2025-07-18 16:56:40,019 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:56:40,019 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:56:40,029 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:56:40,030 - root - INFO - 环境: development
+2025-07-18 16:56:40,030 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:56:40,030 - root - INFO - API版本: v1
+2025-07-18 16:56:40,031 - root - INFO - 响应格式: 标准化
+2025-07-18 16:56:40,074 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:56:40,092 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:56:57,411 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:56:57,458 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:56:58,641 - root - INFO - 日志系统初始化完成
+2025-07-18 16:56:58,642 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:56:58,642 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:56:58,650 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:56:58,650 - root - INFO - 环境: development
+2025-07-18 16:56:58,651 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:56:58,651 - root - INFO - API版本: v1
+2025-07-18 16:56:58,652 - root - INFO - 响应格式: 标准化
+2025-07-18 16:56:58,672 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:56:58,678 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:57:06,821 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:57:06,872 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:57:08,108 - root - INFO - 日志系统初始化完成
+2025-07-18 16:57:08,109 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:57:08,109 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:57:08,117 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:57:08,127 - root - INFO - 环境: development
+2025-07-18 16:57:08,141 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:57:08,141 - root - INFO - API版本: v1
+2025-07-18 16:57:08,142 - root - INFO - 响应格式: 标准化
+2025-07-18 16:57:08,168 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:57:08,180 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:57:17,366 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:57:17,418 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:57:18,634 - root - INFO - 日志系统初始化完成
+2025-07-18 16:57:18,635 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:57:18,635 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:57:18,644 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:57:18,645 - root - INFO - 环境: development
+2025-07-18 16:57:18,645 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:57:18,645 - root - INFO - API版本: v1
+2025-07-18 16:57:18,646 - root - INFO - 响应格式: 标准化
+2025-07-18 16:57:18,670 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:57:18,678 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:57:25,832 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:57:25,923 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:57:27,664 - root - INFO - 日志系统初始化完成
+2025-07-18 16:57:27,665 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:57:27,665 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:57:27,674 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:57:27,676 - root - INFO - 环境: development
+2025-07-18 16:57:27,677 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:57:27,677 - root - INFO - API版本: v1
+2025-07-18 16:57:27,677 - root - INFO - 响应格式: 标准化
+2025-07-18 16:57:27,697 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:57:27,705 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:57:28,999 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=ed8823c21894f37d...
+2025-07-18 16:57:28,999 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=ed8823c21894f37d..., user_agent=python-requests/2.32.4...
+2025-07-18 16:57:29,001 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 16:57:29,001 - root - INFO - Login successful: username=metalhouse, device_id=ed8823c21894f37d..., active_sessions=1
+2025-07-18 16:57:29,001 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 16:57:29,002 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:57:29] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 16:57:31,061 - middleware.feature_check - DEBUG - Feature check passed: Agent agent_1751526225_7744 supports message_feedback
+2025-07-18 16:57:31,061 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 16:57:31,062 - root - INFO - [DIFY] Using first available agent key: agent_1751526225_7744
+2025-07-18 16:57:31,065 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.68:80
+2025-07-18 16:57:31,103 - urllib3.connectionpool - DEBUG - http://192.168.1.68:80 "POST /v1/messages/test_message_123/feedbacks HTTP/1.1" 404 207
+2025-07-18 16:57:31,104 - root - ERROR - [DIFY] API request failed: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+2025-07-18 16:57:31,105 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:57:31] "[35m[1mPOST /api/v1/messages/test_message_123/feedbacks?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 16:57:33,159 - middleware.feature_check - INFO - Feature check blocked: Agent agent_1751526225_7744 does not support audio_to_text
+2025-07-18 16:57:33,159 - root - ERROR - Unexpected error: 'str' object has no attribute 'name'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 71, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 136, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\middleware\feature_check.py", line 118, in wrapper
+    error_response = ResponseBuilder.error(
+        message=message,
+        error_code="FEATURE_NOT_SUPPORTED"
+    )
+  File "D:\ChatDify_Codes\DifyChatBackend\utils\response_builder.py", line 179, in error
+    error_code=error_code.name,
+               ^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'name'
+2025-07-18 16:57:33,162 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 16:57:33] "[35m[1mPOST /api/v1/audio-to-text HTTP/1.1[0m" 500 -
+2025-07-18 16:58:35,488 - root - INFO - 日志系统初始化完成
+2025-07-18 16:58:35,488 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:58:35,489 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:58:35,497 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:58:35,498 - root - INFO - 环境: development
+2025-07-18 16:58:35,498 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:58:35,498 - root - INFO - API版本: v1
+2025-07-18 16:58:35,499 - root - INFO - 响应格式: 标准化
+2025-07-18 16:58:35,558 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.68:5000
+2025-07-18 16:58:35,566 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 16:58:35,574 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:58:37,209 - root - INFO - 日志系统初始化完成
+2025-07-18 16:58:37,210 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:58:37,210 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:58:37,220 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:58:37,220 - root - INFO - 环境: development
+2025-07-18 16:58:37,221 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:58:37,221 - root - INFO - API版本: v1
+2025-07-18 16:58:37,221 - root - INFO - 响应格式: 标准化
+2025-07-18 16:58:37,243 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:58:37,250 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:59:00,632 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\response_builder.py', reloading
+2025-07-18 16:59:00,688 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:59:01,920 - root - INFO - 日志系统初始化完成
+2025-07-18 16:59:01,920 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:59:01,921 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:59:01,933 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:59:01,933 - root - INFO - 环境: development
+2025-07-18 16:59:01,934 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:59:01,934 - root - INFO - API版本: v1
+2025-07-18 16:59:01,934 - root - INFO - 响应格式: 标准化
+2025-07-18 16:59:01,955 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:59:01,963 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:59:08,092 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:59:08,149 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:59:09,534 - root - INFO - 日志系统初始化完成
+2025-07-18 16:59:09,534 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:59:09,534 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:59:09,547 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:59:09,547 - root - INFO - 环境: development
+2025-07-18 16:59:09,548 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:59:09,548 - root - INFO - API版本: v1
+2025-07-18 16:59:09,548 - root - INFO - 响应格式: 标准化
+2025-07-18 16:59:09,568 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:59:09,577 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 16:59:41,053 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 16:59:41,098 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 16:59:42,344 - root - INFO - 日志系统初始化完成
+2025-07-18 16:59:42,344 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 16:59:42,345 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 16:59:42,353 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 16:59:42,353 - root - INFO - 环境: development
+2025-07-18 16:59:42,353 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 16:59:42,354 - root - INFO - API版本: v1
+2025-07-18 16:59:42,354 - root - INFO - 响应格式: 标准化
+2025-07-18 16:59:42,377 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 16:59:42,384 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 17:00:04,729 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 17:00:04,804 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 17:00:06,071 - root - INFO - 日志系统初始化完成
+2025-07-18 17:00:06,072 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 17:00:06,072 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 17:00:06,082 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 17:00:06,083 - root - INFO - 环境: development
+2025-07-18 17:00:06,083 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 17:00:06,084 - root - INFO - API版本: v1
+2025-07-18 17:00:06,084 - root - INFO - 响应格式: 标准化
+2025-07-18 17:00:06,105 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 17:00:06,112 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 17:00:21,360 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=522066b1898bb248...
+2025-07-18 17:00:21,360 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=522066b1898bb248..., user_agent=python-requests/2.32.4...
+2025-07-18 17:00:21,361 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 17:00:21,362 - root - INFO - Login successful: username=metalhouse, device_id=522066b1898bb248..., active_sessions=1
+2025-07-18 17:00:21,362 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 17:00:21,363 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:00:21] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 17:00:23,412 - middleware.feature_check - DEBUG - Feature check passed: Agent agent_1751526225_7744 supports message_feedback
+2025-07-18 17:00:23,412 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 17:00:23,413 - root - INFO - [DIFY] Using first available agent key: agent_1751526225_7744
+2025-07-18 17:00:23,415 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.68:80
+2025-07-18 17:00:23,460 - urllib3.connectionpool - DEBUG - http://192.168.1.68:80 "POST /v1/messages/test_message_123/feedbacks HTTP/1.1" 404 207
+2025-07-18 17:00:23,461 - root - ERROR - [DIFY] API request failed: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+2025-07-18 17:00:23,462 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:00:23] "[35m[1mPOST /api/v1/messages/test_message_123/feedbacks?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 17:00:25,514 - middleware.feature_check - INFO - Feature check blocked: Agent agent_1751526225_7744 does not support audio_to_text
+2025-07-18 17:00:25,514 - root - ERROR - Unexpected error: The view function did not return a valid response. The return type must be a string, dict, list, tuple with headers or status, Response instance, or WSGI callable, but it was a tuple.
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 71, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\auth\decorators.py", line 136, in decorated_function
+    return f(*args, **kwargs)
+  File "D:\ChatDify_Codes\DifyChatBackend\middleware\feature_check.py", line 124, in wrapper
+    response = make_response(error_response, 403)
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\helpers.py", line 185, in make_response
+    return current_app.make_response(args)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\ChatDify_Codes\.venv\Lib\site-packages\flask\app.py", line 1249, in make_response
+    raise TypeError(
+    ...<5 lines>...
+    )
+TypeError: The view function did not return a valid response. The return type must be a string, dict, list, tuple with headers or status, Response instance, or WSGI callable, but it was a tuple.
+2025-07-18 17:00:25,517 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:00:25] "[35m[1mPOST /api/v1/audio-to-text HTTP/1.1[0m" 500 -
+2025-07-18 17:00:53,259 - root - INFO - 日志系统初始化完成
+2025-07-18 17:00:53,259 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 17:00:53,260 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 17:00:53,267 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 17:00:53,268 - root - INFO - 环境: development
+2025-07-18 17:00:53,268 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 17:00:53,268 - root - INFO - API版本: v1
+2025-07-18 17:00:53,269 - root - INFO - 响应格式: 标准化
+2025-07-18 17:00:53,302 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.68:5000
+2025-07-18 17:00:53,303 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 17:00:53,304 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 17:00:54,526 - root - INFO - 日志系统初始化完成
+2025-07-18 17:00:54,527 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 17:00:54,527 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 17:00:54,537 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 17:00:54,537 - root - INFO - 环境: development
+2025-07-18 17:00:54,538 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 17:00:54,538 - root - INFO - API版本: v1
+2025-07-18 17:00:54,538 - root - INFO - 响应格式: 标准化
+2025-07-18 17:00:54,559 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 17:00:54,566 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 17:01:44,429 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\middleware\\feature_check.py', reloading
+2025-07-18 17:01:44,484 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 17:01:45,687 - root - INFO - 日志系统初始化完成
+2025-07-18 17:01:45,688 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 17:01:45,689 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 17:01:45,698 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 17:01:45,698 - root - INFO - 环境: development
+2025-07-18 17:01:45,698 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 17:01:45,698 - root - INFO - API版本: v1
+2025-07-18 17:01:45,699 - root - INFO - 响应格式: 标准化
+2025-07-18 17:01:45,720 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 17:01:45,729 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 17:02:37,499 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\fix_make_response.py', reloading
+2025-07-18 17:02:37,552 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 17:02:38,923 - root - INFO - 日志系统初始化完成
+2025-07-18 17:02:38,924 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 17:02:38,924 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 17:02:38,933 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 17:02:38,934 - root - INFO - 环境: development
+2025-07-18 17:02:38,935 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 17:02:38,935 - root - INFO - API版本: v1
+2025-07-18 17:02:38,935 - root - INFO - 响应格式: 标准化
+2025-07-18 17:02:38,957 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 17:02:38,964 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 17:02:54,268 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=a9532c7b2e8cc483...
+2025-07-18 17:02:54,269 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=a9532c7b2e8cc483..., user_agent=python-requests/2.32.4...
+2025-07-18 17:02:54,270 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 17:02:54,270 - root - INFO - Login successful: username=metalhouse, device_id=a9532c7b2e8cc483..., active_sessions=1
+2025-07-18 17:02:54,270 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 17:02:54,272 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:02:54] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 17:02:56,312 - middleware.feature_check - DEBUG - Feature check passed: Agent agent_1751526225_7744 supports message_feedback
+2025-07-18 17:02:56,313 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 17:02:56,313 - root - INFO - [DIFY] Using first available agent key: agent_1751526225_7744
+2025-07-18 17:02:56,316 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 192.168.1.68:80
+2025-07-18 17:02:56,351 - urllib3.connectionpool - DEBUG - http://192.168.1.68:80 "POST /v1/messages/test_message_123/feedbacks HTTP/1.1" 404 207
+2025-07-18 17:02:56,352 - root - ERROR - [DIFY] API request failed: 404 - <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+2025-07-18 17:02:56,353 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:02:56] "[35m[1mPOST /api/v1/messages/test_message_123/feedbacks?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 17:02:58,409 - middleware.feature_check - INFO - Feature check blocked: Agent agent_1751526225_7744 does not support audio_to_text
+2025-07-18 17:02:58,410 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:02:58] "[31m[1mPOST /api/v1/audio-to-text HTTP/1.1[0m" 403 -
+2025-07-18 17:03:25,280 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=3a7b8d6b860c5727...
+2025-07-18 17:03:25,280 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=3a7b8d6b860c5727..., user_agent=python-requests/2.32.4...
+2025-07-18 17:03:25,281 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 17:03:25,281 - root - INFO - Login successful: username=metalhouse, device_id=3a7b8d6b860c5727..., active_sessions=1
+2025-07-18 17:03:25,281 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 17:03:25,282 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:25] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 17:03:27,331 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:27] "GET /api/v1/feature-types HTTP/1.1" 200 -
+2025-07-18 17:03:29,357 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:29] "GET /api/v1/agent-features HTTP/1.1" 200 -
+2025-07-18 17:03:31,414 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:31] "GET /api/v1/agent-features/agent_1751526225_7744 HTTP/1.1" 200 -
+2025-07-18 17:03:33,466 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:33] "GET /api/v1/agent-features/agent_1751526225_7744 HTTP/1.1" 200 -
+2025-07-18 17:03:35,522 - api.agent_config_routes - INFO - Updated agent features for agent_1751526225_7744: [<AgentFeatureType.RETRIEVAL: 'retrieval'>, <AgentFeatureType.SUGGESTED_QUESTIONS: 'suggested_questions'>, <AgentFeatureType.CONVERSATION_RENAME: 'conversation_rename'>, <AgentFeatureType.CITATION: 'citation'>, <AgentFeatureType.MESSAGE_FEEDBACK: 'message_feedback'>]
+2025-07-18 17:03:35,523 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:35] "PUT /api/v1/agent-features/agent_1751526225_7744 HTTP/1.1" 200 -
+2025-07-18 17:03:37,557 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:37] "GET /api/v1/agent-features/agent_1751526225_7744/status HTTP/1.1" 200 -
+2025-07-18 17:03:39,593 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:39] "POST /api/v1/agent-features/agent_1751526225_7744/check HTTP/1.1" 200 -
+2025-07-18 17:03:41,633 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:41] "GET /api/v1/agent-features/statistics HTTP/1.1" 200 -
+2025-07-18 17:03:43,692 - api.agent_config_routes - INFO - Updated agent features for agent_test_1752829421: [<AgentFeatureType.SUGGESTED_QUESTIONS: 'suggested_questions'>, <AgentFeatureType.MESSAGE_FEEDBACK: 'message_feedback'>, <AgentFeatureType.CONVERSATION_RENAME: 'conversation_rename'>]
+2025-07-18 17:03:43,693 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:43] "PUT /api/v1/agent-features/agent_test_1752829421 HTTP/1.1" 200 -
+2025-07-18 17:03:45,726 - api.agent_config_routes - INFO - Deleted agent features config for agent_test_1752829421
+2025-07-18 17:03:45,727 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 17:03:45] "DELETE /api/v1/agent-features/agent_test_1752829421 HTTP/1.1" 200 -

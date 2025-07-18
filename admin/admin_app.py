@@ -251,5 +251,11 @@ def edit_user(username):
         user['disabled'] = False
     return render_template('edit_user.html', username=username, user=user)
 
+@app.route('/agent-features')
+@admin_required
+def agent_features_page():
+    """智能体功能配置管理页面"""
+    return render_template('agent_features.html')
+
 if __name__ == '__main__':
     app.run(port=5001, debug=True)

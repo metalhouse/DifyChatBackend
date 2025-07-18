@@ -11,6 +11,16 @@ from utils.request_validator import (
 )
 from auth.decorators import require_auth, require_permissions, check_agent_access, auto_refresh_token
 from services.dify_service import dify_service
+# 导入功能检查装饰器
+from middleware.feature_check import (
+    require_agent_feature,
+    require_message_feedback,
+    require_suggested_questions,
+    require_audio_to_text,
+    require_text_to_audio,
+    require_conversation_rename
+)
+from models.agent_features import AgentFeatureType
 
 def _get_current_user():
     """获取当前用户信息的辅助函数"""
@@ -373,6 +383,7 @@ def api_create_conversation():
 
 @require_auth()
 @require_permissions(['send_messages'])
+@require_agent_feature(AgentFeatureType.MESSAGE_FEEDBACK, "此智能体不支持消息反馈功能")
 @auto_refresh_token()
 def api_message_feedback(message_id):
     """发送消息反馈（点赞/点踩）"""
@@ -384,12 +395,20 @@ def api_message_feedback(message_id):
         
         username = current_user['username']
         
-        # 2. 获取消息ID
+        # 2. 获取消息ID和智能体ID
         
         if not message_id:
             return ResponseBuilder.error(
                 error_code=ErrorCode.MISSING_PARAMETER,
                 message="消息ID是必需的"
+            )
+        
+        # 从查询参数获取智能体ID（用于功能检查）
+        agent_id = request.args.get('agent_id')
+        if not agent_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="智能体ID是必需的"
             )
         
         # 3. 请求验证
@@ -431,6 +450,7 @@ def api_message_feedback(message_id):
 
 @require_auth()
 @require_permissions(['view_conversations'])
+@require_agent_feature(AgentFeatureType.SUGGESTED_QUESTIONS, "此智能体不支持问题建议功能")
 @auto_refresh_token()
 def api_suggested_questions(message_id):
     """获取下一轮建议问题列表"""
@@ -533,6 +553,7 @@ def api_delete_conversation(conversation_id):
 
 @require_auth()
 @require_permissions(['edit_conversations'])
+@require_agent_feature(AgentFeatureType.CONVERSATION_RENAME, "此智能体不支持对话重命名功能")
 @auto_refresh_token()
 def api_rename_conversation(conversation_id):
     """重命名对话"""
@@ -595,6 +616,7 @@ def api_rename_conversation(conversation_id):
 
 @require_auth()
 @require_permissions(['send_messages'])
+@require_agent_feature(AgentFeatureType.AUDIO_TO_TEXT, "此智能体不支持语音转文字功能")
 @auto_refresh_token()
 def api_audio_to_text():
     """语音转文字"""
@@ -606,7 +628,15 @@ def api_audio_to_text():
         
         username = current_user['username']
         
-        # 2. 检查文件上传
+        # 2. 获取智能体ID（用于功能检查）
+        agent_id = request.form.get('agent_id') or request.args.get('agent_id')
+        if not agent_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="智能体ID是必需的"
+            )
+        
+        # 3. 检查文件上传
         if 'file' not in request.files:
             return ResponseBuilder.error(
                 error_code=ErrorCode.MISSING_PARAMETER,
@@ -661,6 +691,7 @@ def api_audio_to_text():
 
 @require_auth()
 @require_permissions(['send_messages'])
+@require_agent_feature(AgentFeatureType.TEXT_TO_AUDIO, "此智能体不支持文字转语音功能")
 @auto_refresh_token()
 def api_text_to_audio():
     """文字转语音"""

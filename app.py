@@ -33,6 +33,8 @@ from api.cache_routes import (
     api_user_permissions, api_agent_config, api_preload_cache,
     api_refresh_agent_cache, api_invalidate_cache, api_cache_stats, api_cache_health
 )
+# 导入智能体功能配置路由
+from api.agent_config_routes import agent_config_bp
 
 # 可选导入CORS
 try:
@@ -169,6 +171,9 @@ def register_routes(app):
     app.add_url_rule('/api/v1/cache/invalidate', 'api_invalidate_cache', api_invalidate_cache, methods=['DELETE'])
     app.add_url_rule('/api/v1/cache/stats', 'api_cache_stats', api_cache_stats, methods=['GET'])
     app.add_url_rule('/api/v1/cache/health', 'api_cache_health', api_cache_health, methods=['GET'])
+    
+    # ========== 智能体功能配置路由 ==========
+    app.register_blueprint(agent_config_bp)
     
     # ========== 系统健康检查路由 ==========
     @app.route('/health')

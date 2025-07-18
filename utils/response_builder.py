@@ -37,12 +37,16 @@ class ErrorCode(Enum):
     ACCESS_DENIED = (4030, "访问被拒绝")
     PERMISSION_REQUIRED = (4031, "需要特定权限")
     AGENT_ACCESS_DENIED = (4032, "智能体访问被拒绝")
+    FEATURE_NOT_SUPPORTED = (4033, "功能不支持")
+    FEATURES_NOT_SUPPORTED = (4034, "多个功能不支持")
     
     # 资源错误 (404x)
     RESOURCE_NOT_FOUND = (4040, "资源不存在")
     USER_NOT_FOUND = (4041, "用户不存在")
     AGENT_NOT_FOUND = (4042, "智能体不存在")
     CONVERSATION_NOT_FOUND = (4043, "对话不存在")
+    AGENT_CONFIG_NOT_FOUND = (4044, "智能体配置不存在")
+    MISSING_AGENT_ID = (4045, "缺少智能体ID")
     
     # 请求冲突 (409x)
     CONFLICT = (4090, "请求冲突")
