@@ -224,38 +224,75 @@ class ChatMessageRequest(BaseRequestModel):
     inputs: Optional[Dict[str, Any]] = Field(default=None, description="输入参数")
     files: Optional[List[str]] = Field(default=None, description="文件列表")
     auto_generate_name: Optional[bool] = Field(default=None, description="是否自动生成对话名称")
+
+
+class MessageFeedbackRequest(BaseRequestModel):
+    """消息反馈请求"""
     
-    @field_validator('message')
+    rating: str = Field(..., description="反馈评分: like, dislike, null")
+    content: Optional[str] = Field(None, max_length=500, description="反馈内容")
+    
+    @field_validator('rating')
     @classmethod
-    def validate_message(cls, v):
-        # 去除首尾空白字符
-        v = v.strip()
-        if not v:
-            raise ValueError('消息内容不能为空')
-        # 检查消息长度
-        if len(v) > 4000:
-            raise ValueError('消息长度不能超过4000字符')
+    def validate_rating(cls, v):
+        allowed_ratings = ['like', 'dislike', 'null']
+        if v not in allowed_ratings:
+            raise ValueError(f'评分必须是: {", ".join(allowed_ratings)}')
         return v
+
+
+class ConversationDeleteRequest(BaseRequestModel):
+    """删除对话请求"""
+    pass  # 只需要用户认证，无需额外参数
+
+
+class ConversationRenameRequest(BaseRequestModel):
+    """对话重命名请求"""
     
-    @field_validator('agent_id')
+    name: Optional[str] = Field(None, max_length=200, description="对话名称")
+    auto_generate: bool = Field(default=False, description="是否自动生成名称")
+    
+    @model_validator(mode='after')
+    def validate_name_or_auto_generate(self):
+        if not self.auto_generate and (not self.name or not self.name.strip()):
+            raise ValueError('必须提供名称或启用自动生成')
+        return self
+
+
+class AudioToTextRequest(BaseRequestModel):
+    """语音转文字请求"""
+    
+    file: str = Field(..., description="音频文件路径或ID")
+    
+    @field_validator('file')
     @classmethod
-    def validate_agent_id(cls, v):
+    def validate_file(cls, v):
         if not v.strip():
-            raise ValueError('智能体ID不能为空')
+            raise ValueError('音频文件不能为空')
         return v.strip()
+
+
+class TextToAudioRequest(BaseRequestModel):
+    """文字转语音请求"""
     
-    @field_validator('conversation_id')
+    message_id: Optional[str] = Field(None, description="消息ID")
+    text: Optional[str] = Field(None, max_length=1000, description="要转换的文字")
+    
+    @model_validator(mode='after')
+    def validate_text_or_message_id(self):
+        if not self.message_id and not self.text:
+            raise ValueError('必须提供消息ID或文字内容')
+        return self
+    
+    @field_validator('text')
     @classmethod
-    def validate_conversation_id(cls, v):
+    def validate_text(cls, v):
         if v is not None:
             v = v.strip()
             if not v:
-                return None
-            # 简单的UUID格式验证
-            try:
-                uuid.UUID(v)
-            except ValueError:
-                raise ValueError('对话ID格式不正确')
+                raise ValueError('文字内容不能为空')
+            if len(v) > 1000:
+                raise ValueError('文字长度不能超过1000字符')
         return v
 
 

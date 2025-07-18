@@ -1990,3 +1990,8 @@ AttributeError: 'bool' object has no attribute 'get'
 2025-07-18 11:56:46,206 - root - INFO - 响应格式: 标准化
 2025-07-18 11:56:46,225 - werkzeug - WARNING -  * Debugger is active!
 2025-07-18 11:56:46,232 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 12:03:37,567 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\request_validator.py', reloading
+2025-07-18 12:03:37,635 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 12:11:07,990 - root - INFO - 日志系统初始化完成
+2025-07-18 12:11:07,991 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 12:11:07,991 - root - INFO - 缓存管理器初始化完成: 禁用

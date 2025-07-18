@@ -367,3 +367,900 @@ def api_create_conversation():
             error_code=ErrorCode.INTERNAL_ERROR,
             message="对话创建异常"
         )
+
+
+# ========== 新增API端点 ==========
+
+@require_auth()
+@require_permissions(['send_messages'])
+@auto_refresh_token()
+def api_message_feedback():
+    """发送消息反馈（点赞/点踩）"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取消息ID
+        message_id = request.view_args.get('message_id')
+        if not message_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="消息ID是必需的"
+            )
+        
+        # 3. 请求验证
+        try:
+            from utils.request_validator import MessageFeedbackRequest
+            feedback_request = validate_and_convert(request.get_json(), MessageFeedbackRequest)
+        except ValidationError as e:
+            return ResponseBuilder.validation_error(e.errors)
+        
+        # 4. 发送反馈
+        resp, status = dify_service.send_message_feedback(
+            message_id=message_id,
+            rating=feedback_request.rating,
+            content=feedback_request.content,
+            username=username
+        )
+        
+        # 5. 处理响应
+        if status == 200:
+            logging.info(f"[MESSAGE FEEDBACK] user={username}, message={message_id}, rating={feedback_request.rating}")
+            
+            return ResponseBuilder.success(
+                data=resp,
+                message="反馈提交成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '反馈提交失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[MESSAGE FEEDBACK ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="反馈提交异常"
+        )
+
+
+@require_auth()
+@require_permissions(['view_conversations'])
+@auto_refresh_token()
+def api_suggested_questions():
+    """获取下一轮建议问题列表"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取消息ID
+        message_id = request.view_args.get('message_id')
+        if not message_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="消息ID是必需的"
+            )
+        
+        # 3. 获取建议问题
+        resp, status = dify_service.get_suggested_questions(
+            message_id=message_id,
+            username=username
+        )
+        
+        # 4. 处理响应
+        if status == 200:
+            suggestions = resp.get('data', [])
+            
+            logging.info(f"[SUGGESTED QUESTIONS] user={username}, message={message_id}, count={len(suggestions)}")
+            
+            return ResponseBuilder.success(
+                data=suggestions,
+                message="获取建议问题成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '获取建议问题失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[SUGGESTED QUESTIONS ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取建议问题异常"
+        )
+
+
+@require_auth()
+@require_permissions(['delete_conversations'])
+@auto_refresh_token()
+def api_delete_conversation():
+    """删除对话"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取对话ID
+        conversation_id = request.view_args.get('conversation_id')
+        if not conversation_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="对话ID是必需的"
+            )
+        
+        # 3. 删除对话
+        resp, status = dify_service.delete_conversation(
+            conversation_id=conversation_id,
+            username=username
+        )
+        
+        # 4. 处理响应
+        if status == 204 or status == 200:  # Dify返回204 No Content
+            # 清除相关缓存
+            dify_service.invalidate_user_cache(username)
+            
+            logging.info(f"[DELETE CONVERSATION] user={username}, conversation={conversation_id}")
+            
+            return ResponseBuilder.success(
+                message="对话删除成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '对话删除失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[DELETE CONVERSATION ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="对话删除异常"
+        )
+
+
+@require_auth()
+@require_permissions(['edit_conversations'])
+@auto_refresh_token()
+def api_rename_conversation():
+    """重命名对话"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取对话ID
+        conversation_id = request.view_args.get('conversation_id')
+        if not conversation_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="对话ID是必需的"
+            )
+        
+        # 3. 请求验证
+        try:
+            from utils.request_validator import ConversationRenameRequest
+            rename_request = validate_and_convert(request.get_json(), ConversationRenameRequest)
+        except ValidationError as e:
+            return ResponseBuilder.validation_error(e.errors)
+        
+        # 4. 重命名对话
+        resp, status = dify_service.rename_conversation(
+            conversation_id=conversation_id,
+            name=rename_request.name,
+            auto_generate=rename_request.auto_generate,
+            username=username
+        )
+        
+        # 5. 处理响应
+        if status == 200:
+            # 清除相关缓存
+            dify_service.invalidate_user_cache(username)
+            
+            logging.info(f"[RENAME CONVERSATION] user={username}, conversation={conversation_id}, "
+                        f"name={rename_request.name}, auto={rename_request.auto_generate}")
+            
+            return ResponseBuilder.success(
+                data=resp,
+                message="对话重命名成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '对话重命名失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[RENAME CONVERSATION ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="对话重命名异常"
+        )
+
+
+@require_auth()
+@require_permissions(['send_messages'])
+@auto_refresh_token()
+def api_audio_to_text():
+    """语音转文字"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 检查文件上传
+        if 'file' not in request.files:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="音频文件是必需的"
+            )
+        
+        file = request.files['file']
+        if file.filename == '':
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="请选择音频文件"
+            )
+        
+        # 3. 验证文件类型
+        allowed_extensions = ['mp3', 'mp4', 'mpeg', 'mpga', 'm4a', 'wav', 'webm']
+        file_ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else ''
+        if file_ext not in allowed_extensions:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.INVALID_FIELD_VALUE,
+                message=f"不支持的音频格式，支持的格式: {', '.join(allowed_extensions)}"
+            )
+        
+        # 4. 转换语音
+        resp, status = dify_service.audio_to_text(
+            file_data=file,
+            username=username
+        )
+        
+        # 5. 处理响应
+        if status == 200:
+            text = resp.get('text', '')
+            
+            logging.info(f"[AUDIO TO TEXT] user={username}, file={file.filename}, text_length={len(text)}")
+            
+            return ResponseBuilder.success(
+                data={"text": text},
+                message="语音转文字成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '语音转文字失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[AUDIO TO TEXT ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="语音转文字异常"
+        )
+
+
+@require_auth()
+@require_permissions(['send_messages'])
+@auto_refresh_token()
+def api_text_to_audio():
+    """文字转语音"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 请求验证
+        try:
+            from utils.request_validator import TextToAudioRequest
+            audio_request = validate_and_convert(request.get_json(), TextToAudioRequest)
+        except ValidationError as e:
+            return ResponseBuilder.validation_error(e.errors)
+        
+        # 3. 转换语音
+        resp, status = dify_service.text_to_audio(
+            message_id=audio_request.message_id,
+            text=audio_request.text,
+            username=username
+        )
+        
+        # 4. 处理响应
+        if status == 200:
+            logging.info(f"[TEXT TO AUDIO] user={username}, message_id={audio_request.message_id}, "
+                        f"text_length={len(audio_request.text or '')}")
+            
+            # 对于音频响应，我们需要特殊处理
+            from flask import Response
+            return Response(
+                resp,
+                mimetype='audio/wav',
+                headers={
+                    'Content-Disposition': 'attachment; filename=audio.wav'
+                }
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '文字转语音失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[TEXT TO AUDIO ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="文字转语音异常"
+        )
+
+
+@require_auth()
+@require_permissions(['view_conversations'])
+@auto_refresh_token()
+def api_messages_history():
+    """获取会话历史消息"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取查询参数
+        conversation_id = request.args.get('conversation_id')
+        if not conversation_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="对话ID是必需的"
+            )
+        
+        first_id = request.args.get('first_id')
+        limit = min(int(request.args.get('limit', 20)), 100)  # 限制最大100
+        
+        # 3. 获取历史消息
+        resp, status = dify_service.get_messages_history(
+            conversation_id=conversation_id,
+            username=username,
+            first_id=first_id,
+            limit=limit
+        )
+        
+        # 4. 处理响应
+        if status == 200:
+            messages = resp.get('data', [])
+            has_more = resp.get('has_more', False)
+            
+            logging.info(f"[MESSAGES HISTORY] user={username}, conversation={conversation_id}, "
+                        f"count={len(messages)}, has_more={has_more}")
+            
+            # 构建分页信息
+            pagination = PaginationInfo(
+                page=1,  # 历史消息使用滚动加载，不是传统分页
+                page_size=limit,
+                total=len(messages),
+                total_pages=1
+            )
+            pagination.has_next = has_more
+            
+            return ResponseBuilder.success(
+                data=messages,
+                message="获取历史消息成功",
+                pagination=pagination
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '获取历史消息失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[MESSAGES HISTORY ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取历史消息异常"
+        )
+
+
+@require_auth()
+@require_permissions(['view_app_info'])
+@auto_refresh_token()
+def api_app_info():
+    """获取应用基本信息"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        # 2. 获取应用信息
+        resp, status = dify_service.get_app_info()
+        
+        # 3. 处理响应
+        if status == 200:
+            logging.info(f"[APP INFO] user={current_user['username']}")
+            
+            return ResponseBuilder.success(
+                data=resp,
+                message="获取应用信息成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '获取应用信息失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[APP INFO ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取应用信息异常"
+        )
+
+# ========== 新增API端点 ==========
+
+@require_auth()
+@require_permissions(['send_messages'])
+@auto_refresh_token()
+def api_message_feedback():
+    """发送消息反馈（点赞/点踩）"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取消息ID
+        message_id = request.view_args.get('message_id')
+        if not message_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="消息ID是必需的"
+            )
+        
+        # 3. 请求验证
+        try:
+            from utils.request_validator import MessageFeedbackRequest
+            feedback_request = validate_and_convert(request.get_json(), MessageFeedbackRequest)
+        except ValidationError as e:
+            return ResponseBuilder.validation_error(e.errors)
+        
+        # 4. 发送反馈
+        resp, status = dify_service.send_message_feedback(
+            message_id=message_id,
+            rating=feedback_request.rating,
+            content=feedback_request.content,
+            username=username
+        )
+        
+        # 5. 处理响应
+        if status == 200:
+            logging.info(f"[MESSAGE FEEDBACK] user={username}, message={message_id}, rating={feedback_request.rating}")
+            
+            return ResponseBuilder.success(
+                data=resp,
+                message="反馈提交成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '反馈提交失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[MESSAGE FEEDBACK ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="反馈提交异常"
+        )
+
+
+@require_auth()
+@require_permissions(['view_conversations'])
+@auto_refresh_token()
+def api_suggested_questions():
+    """获取下一轮建议问题列表"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取消息ID
+        message_id = request.view_args.get('message_id')
+        if not message_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="消息ID是必需的"
+            )
+        
+        # 3. 获取建议问题
+        resp, status = dify_service.get_suggested_questions(
+            message_id=message_id,
+            username=username
+        )
+        
+        # 4. 处理响应
+        if status == 200:
+            suggestions = resp.get('data', [])
+            
+            logging.info(f"[SUGGESTED QUESTIONS] user={username}, message={message_id}, count={len(suggestions)}")
+            
+            return ResponseBuilder.success(
+                data=suggestions,
+                message="获取建议问题成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '获取建议问题失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[SUGGESTED QUESTIONS ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取建议问题异常"
+        )
+
+
+@require_auth()
+@require_permissions(['delete_conversations'])
+@auto_refresh_token()
+def api_delete_conversation():
+    """删除对话"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取对话ID
+        conversation_id = request.view_args.get('conversation_id')
+        if not conversation_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="对话ID是必需的"
+            )
+        
+        # 3. 删除对话
+        resp, status = dify_service.delete_conversation(
+            conversation_id=conversation_id,
+            username=username
+        )
+        
+        # 4. 处理响应
+        if status == 204 or status == 200:  # Dify返回204 No Content
+            # 清除相关缓存
+            dify_service.invalidate_user_cache(username)
+            
+            logging.info(f"[DELETE CONVERSATION] user={username}, conversation={conversation_id}")
+            
+            return ResponseBuilder.success(
+                message="对话删除成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '对话删除失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[DELETE CONVERSATION ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="对话删除异常"
+        )
+
+
+@require_auth()
+@require_permissions(['edit_conversations'])
+@auto_refresh_token()
+def api_rename_conversation():
+    """重命名对话"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取对话ID
+        conversation_id = request.view_args.get('conversation_id')
+        if not conversation_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="对话ID是必需的"
+            )
+        
+        # 3. 请求验证
+        try:
+            from utils.request_validator import ConversationRenameRequest
+            rename_request = validate_and_convert(request.get_json(), ConversationRenameRequest)
+        except ValidationError as e:
+            return ResponseBuilder.validation_error(e.errors)
+        
+        # 4. 重命名对话
+        resp, status = dify_service.rename_conversation(
+            conversation_id=conversation_id,
+            name=rename_request.name,
+            auto_generate=rename_request.auto_generate,
+            username=username
+        )
+        
+        # 5. 处理响应
+        if status == 200:
+            # 清除相关缓存
+            dify_service.invalidate_user_cache(username)
+            
+            logging.info(f"[RENAME CONVERSATION] user={username}, conversation={conversation_id}, "
+                        f"name={rename_request.name}, auto={rename_request.auto_generate}")
+            
+            return ResponseBuilder.success(
+                data=resp,
+                message="对话重命名成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '对话重命名失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[RENAME CONVERSATION ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="对话重命名异常"
+        )
+
+
+@require_auth()
+@require_permissions(['send_messages'])
+@auto_refresh_token()
+def api_audio_to_text():
+    """语音转文字"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 检查文件上传
+        if 'file' not in request.files:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="音频文件是必需的"
+            )
+        
+        file = request.files['file']
+        if file.filename == '':
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="请选择音频文件"
+            )
+        
+        # 3. 验证文件类型
+        allowed_extensions = ['mp3', 'mp4', 'mpeg', 'mpga', 'm4a', 'wav', 'webm']
+        file_ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else ''
+        if file_ext not in allowed_extensions:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.INVALID_FIELD_VALUE,
+                message=f"不支持的音频格式，支持的格式: {', '.join(allowed_extensions)}"
+            )
+        
+        # 4. 转换语音
+        resp, status = dify_service.audio_to_text(
+            file_data=file,
+            username=username
+        )
+        
+        # 5. 处理响应
+        if status == 200:
+            text = resp.get('text', '')
+            
+            logging.info(f"[AUDIO TO TEXT] user={username}, file={file.filename}, text_length={len(text)}")
+            
+            return ResponseBuilder.success(
+                data={"text": text},
+                message="语音转文字成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '语音转文字失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[AUDIO TO TEXT ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="语音转文字异常"
+        )
+
+
+@require_auth()
+@require_permissions(['send_messages'])
+@auto_refresh_token()
+def api_text_to_audio():
+    """文字转语音"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 请求验证
+        try:
+            from utils.request_validator import TextToAudioRequest
+            audio_request = validate_and_convert(request.get_json(), TextToAudioRequest)
+        except ValidationError as e:
+            return ResponseBuilder.validation_error(e.errors)
+        
+        # 3. 转换语音
+        resp, status = dify_service.text_to_audio(
+            message_id=audio_request.message_id,
+            text=audio_request.text,
+            username=username
+        )
+        
+        # 4. 处理响应
+        if status == 200:
+            logging.info(f"[TEXT TO AUDIO] user={username}, message_id={audio_request.message_id}, "
+                        f"text_length={len(audio_request.text or '')}")
+            
+            # 对于音频响应，我们需要特殊处理
+            from flask import Response
+            return Response(
+                resp,
+                mimetype='audio/wav',
+                headers={
+                    'Content-Disposition': 'attachment; filename=audio.wav'
+                }
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '文字转语音失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[TEXT TO AUDIO ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="文字转语音异常"
+        )
+
+
+@require_auth()
+@require_permissions(['view_conversations'])
+@auto_refresh_token()
+def api_messages_history():
+    """获取会话历史消息"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取查询参数
+        conversation_id = request.args.get('conversation_id')
+        if not conversation_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="对话ID是必需的"
+            )
+        
+        first_id = request.args.get('first_id')
+        limit = min(int(request.args.get('limit', 20)), 100)  # 限制最大100
+        
+        # 3. 获取历史消息
+        resp, status = dify_service.get_messages_history(
+            conversation_id=conversation_id,
+            username=username,
+            first_id=first_id,
+            limit=limit
+        )
+        
+        # 4. 处理响应
+        if status == 200:
+            messages = resp.get('data', [])
+            has_more = resp.get('has_more', False)
+            
+            logging.info(f"[MESSAGES HISTORY] user={username}, conversation={conversation_id}, "
+                        f"count={len(messages)}, has_more={has_more}")
+            
+            # 构建分页信息
+            pagination = PaginationInfo(
+                page=1,  # 历史消息使用滚动加载，不是传统分页
+                page_size=limit,
+                total=len(messages),
+                total_pages=1
+            )
+            pagination.has_next = has_more
+            
+            return ResponseBuilder.success(
+                data=messages,
+                message="获取历史消息成功",
+                pagination=pagination
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '获取历史消息失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[MESSAGES HISTORY ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取历史消息异常"
+        )
+
+
+@require_auth()
+@require_permissions(['view_app_info'])
+@auto_refresh_token()
+def api_app_info():
+    """获取应用基本信息"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        # 2. 获取应用信息
+        resp, status = dify_service.get_app_info()
+        
+        # 3. 处理响应
+        if status == 200:
+            logging.info(f"[APP INFO] user={current_user['username']}")
+            
+            return ResponseBuilder.success(
+                data=resp,
+                message="获取应用信息成功"
+            )
+        else:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=resp.get('message', '获取应用信息失败')
+            )
+        
+    except Exception as e:
+        logging.error(f"[APP INFO ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取应用信息异常"
+        )

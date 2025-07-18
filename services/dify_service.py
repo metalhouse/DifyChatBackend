@@ -546,5 +546,106 @@ class DifyService:
         
         return base_stats
 
+    # ========== 新增功能方法 ==========
+    
+    def send_message_feedback(self, message_id: str, rating: str, content: str = None, username: str = None, agent_id: str = None) -> tuple:
+        """发送消息反馈（点赞/点踩）"""
+        payload = {
+            'rating': rating,
+            'user': username,
+        }
+        if content:
+            payload['content'] = content
+        
+        return self.make_request('POST', f'/messages/{message_id}/feedbacks', json_data=payload, agent_id=agent_id)
+    
+    def get_suggested_questions(self, message_id: str, username: str, agent_id: str = None) -> tuple:
+        """获取下一轮建议问题列表"""
+        params = {'user': username}
+        return self.make_request('GET', f'/messages/{message_id}/suggested', params=params, agent_id=agent_id)
+    
+    def delete_conversation(self, conversation_id: str, username: str, agent_id: str = None) -> tuple:
+        """删除对话"""
+        payload = {'user': username}
+        return self.make_request('DELETE', f'/conversations/{conversation_id}', json_data=payload, agent_id=agent_id)
+    
+    def rename_conversation(self, conversation_id: str, name: str = None, auto_generate: bool = False, username: str = None, agent_id: str = None) -> tuple:
+        """重命名对话"""
+        payload = {
+            'user': username,
+            'auto_generate': auto_generate
+        }
+        if name:
+            payload['name'] = name
+        
+        return self.make_request('POST', f'/conversations/{conversation_id}/name', json_data=payload, agent_id=agent_id)
+    
+    def audio_to_text(self, file_data, username: str, agent_id: str = None) -> tuple:
+        """语音转文字"""
+        # 注意：这个需要特殊处理，因为是文件上传
+        import requests
+        
+        # 获取API密钥
+        if agent_id:
+            api_key = self.get_agent_api_key(agent_id)
+            if not api_key:
+                logging.error(f"[DIFY] No API key available for agent_id: {agent_id}")
+                return {'success': False, 'message': f'智能体 {agent_id} 的API密钥未配置'}, 500
+        else:
+            api_key = self.default_api_key
+            if not api_key:
+                return {'success': False, 'message': 'API密钥未配置'}, 500
+        
+        url = f"{self.base_url}/audio-to-text"
+        headers = {
+            'Authorization': f'Bearer {api_key}'
+        }
+        
+        files = {'file': file_data}
+        data = {'user': username}
+        
+        try:
+            resp = requests.post(url, headers=headers, files=files, data=data, timeout=self.timeout)
+            
+            if resp.status_code == 200:
+                return resp.json(), 200
+            else:
+                return {'success': False, 'message': '语音转文字失败'}, resp.status_code
+                
+        except Exception as e:
+            logging.error(f"[DIFY] audio_to_text error: {e}")
+            return {'success': False, 'message': str(e)}, 500
+    
+    def text_to_audio(self, message_id: str = None, text: str = None, username: str = None, agent_id: str = None) -> tuple:
+        """文字转语音"""
+        payload = {'user': username}
+        
+        if message_id:
+            payload['message_id'] = message_id
+        elif text:
+            payload['text'] = text
+        
+        return self.make_request('POST', '/text-to-audio', json_data=payload, agent_id=agent_id)
+    
+    def get_app_info(self, agent_id: str = None) -> tuple:
+        """获取应用基本信息"""
+        return self.make_request('GET', '/info', agent_id=agent_id)
+    
+    def get_app_parameters(self, agent_id: str = None) -> tuple:
+        """获取应用参数"""
+        return self.make_request('GET', '/parameters', agent_id=agent_id)
+    
+    def get_messages_history(self, conversation_id: str, username: str, first_id: str = None, limit: int = 20, agent_id: str = None) -> tuple:
+        """获取会话历史消息"""
+        params = {
+            'conversation_id': conversation_id,
+            'user': username,
+            'limit': limit
+        }
+        if first_id:
+            params['first_id'] = first_id
+        
+        return self.make_request('GET', '/messages', params=params, agent_id=agent_id)
+
 # 全局Dify服务实例
 dify_service = DifyService()

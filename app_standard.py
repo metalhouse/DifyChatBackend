@@ -23,7 +23,12 @@ from utils.response_builder import ResponseBuilder, ErrorCode
 
 # 导入标准化的API路由
 from api.auth_routes_v2 import login, refresh_token, logout, get_current_user
-from api.chat_routes_v2 import api_agents, api_conversations, api_chat, api_create_conversation
+from api.chat_routes_v2 import (
+    api_agents, api_conversations, api_chat, api_create_conversation,
+    api_message_feedback, api_suggested_questions, api_delete_conversation,
+    api_rename_conversation, api_audio_to_text, api_text_to_audio,
+    api_messages_history, api_app_info
+)
 from api.cache_routes_v2 import (
     api_user_permissions, api_agent_config, api_preload_cache,
     api_refresh_agent_cache, api_invalidate_cache, api_cache_stats, api_cache_health
@@ -142,6 +147,16 @@ def register_routes(app):
     app.add_url_rule('/api/v1/chat/conversations', 'api_conversations', api_conversations, methods=['GET'])
     app.add_url_rule('/api/v1/chat/conversations', 'api_create_conversation', api_create_conversation, methods=['POST'])
     app.add_url_rule('/api/v1/chat/messages', 'api_chat', api_chat, methods=['POST'])
+    
+    # ========== 新增Dify功能路由 ==========
+    app.add_url_rule('/api/v1/messages/<message_id>/feedbacks', 'api_message_feedback', api_message_feedback, methods=['POST'])
+    app.add_url_rule('/api/v1/messages/<message_id>/suggested-questions', 'api_suggested_questions', api_suggested_questions, methods=['GET'])
+    app.add_url_rule('/api/v1/conversations/<conversation_id>', 'api_delete_conversation', api_delete_conversation, methods=['DELETE'])
+    app.add_url_rule('/api/v1/conversations/<conversation_id>/name', 'api_rename_conversation', api_rename_conversation, methods=['POST'])
+    app.add_url_rule('/api/v1/conversations/<conversation_id>/messages', 'api_messages_history', api_messages_history, methods=['GET'])
+    app.add_url_rule('/api/v1/audio-to-text', 'api_audio_to_text', api_audio_to_text, methods=['POST'])
+    app.add_url_rule('/api/v1/text-to-audio', 'api_text_to_audio', api_text_to_audio, methods=['POST'])
+    app.add_url_rule('/api/v1/info', 'api_app_info', api_app_info, methods=['GET'])
     
     # ========== 缓存管理路由 ==========
     app.add_url_rule('/api/v1/user/permissions', 'api_user_permissions', api_user_permissions, methods=['GET'])
