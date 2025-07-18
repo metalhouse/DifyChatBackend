@@ -1,7 +1,6 @@
 """
-Dify API服务模块 - Task 5.1 现代化增强版
+Dify API服务模块
 提供与Dify平台的API交互功能，支持缓存
-新增功能：异步HTTP客户端、错误处理和重试机制、API调用监控和日志
 """
 import requests
 import logging
@@ -12,85 +11,9 @@ from typing import Optional, List, Dict, Any, Tuple
 from config import get_dify_config, get_database_config
 from utils.cache_manager import get_cache_manager, CacheKeyGenerator
 
-# Task 5.1 新增依赖
-import aiohttp
-import asyncio
-import backoff
-from dataclasses import dataclass
-
-
-# Task 5.1 新增：API响应数据类
-@dataclass
-class APIResponse:
-    """标准化API响应数据类"""
-    data: Any
-    status_code: int
-    headers: Dict[str, str]
-    success: bool
-    error_message: Optional[str] = None
-    request_id: Optional[str] = None
-    duration: float = 0.0
-
-
-# Task 5.1 新增：API监控装饰器
-def api_monitor(func):
-    """API调用监控装饰器"""
-    @wraps(func)
-    def wrapper(self, *args, **kwargs):
-        start_time = time.time()
-        method_name = func.__name__
-        
-        try:
-            result = func(self, *args, **kwargs)
-            duration = time.time() - start_time
-            
-            # 记录成功调用
-            if hasattr(self, '_record_api_call'):
-                self._record_api_call(method_name, True, duration)
-            logging.debug(f"[DIFY API] {method_name} 成功, 耗时: {duration:.3f}s")
-            
-            return result
-            
-        except Exception as e:
-            duration = time.time() - start_time
-            
-            # 记录失败调用  
-            if hasattr(self, '_record_api_call'):
-                self._record_api_call(method_name, False, duration, str(e))
-            logging.error(f"[DIFY API] {method_name} 失败, 耗时: {duration:.3f}s, 错误: {e}")
-            
-            raise
-    
-    return wrapper
-
-
-# Task 5.1 新增：自定义异常类
-class DifyAPIException(Exception):
-    """Dify API异常基类"""
-    def __init__(self, message: str, status_code: int = 500, response_data: Dict = None):
-        self.message = message
-        self.status_code = status_code
-        self.response_data = response_data or {}
-        super().__init__(self.message)
-
-
-class RetryableError(DifyAPIException):
-    """可重试的错误"""
-    pass
-
-
-class NonRetryableError(DifyAPIException):
-    """不可重试的错误"""
-    pass
-
 
 class DifyService:
-    """
-    Dify API服务类 - Task 5.1 现代化增强版
-    
-    原有功能：缓存管理、智能体管理、API调用
-    新增功能：异步HTTP客户端、智能重试机制、API监控统计
-    """
+    """Dify API服务类"""
     
     def __init__(self, base_url: str = None, api_key: str = None):
         dify_config = get_dify_config()
@@ -107,224 +30,6 @@ class DifyService:
         self.conversation_cache_ttl = 300  # 5分钟
         self.agent_cache_ttl = 3600  # 1小时
         self.permission_cache_ttl = 1800  # 30分钟
-        
-        # Task 5.1 新增：异步HTTP客户端
-        self._session: Optional[aiohttp.ClientSession] = None
-        
-        # Task 5.1 新增：API监控统计
-        self.api_stats = {
-            'total_calls': 0,
-            'successful_calls': 0,
-            'failed_calls': 0,
-            'average_response_time': 0.0,
-            'error_distribution': {},
-            'call_history': []  # 最近100次调用
-        }
-        
-        logging.info("[DIFY SERVICE] Task 5.1 现代化初始化完成 - 支持异步HTTP、智能重试、API监控")
-    
-    # Task 5.1 新增：API统计记录
-    def _record_api_call(self, method: str, success: bool, duration: float, error: str = None):
-        """记录API调用统计"""
-        self.api_stats['total_calls'] += 1
-        
-        if success:
-            self.api_stats['successful_calls'] += 1
-        else:
-            self.api_stats['failed_calls'] += 1
-            
-            # 记录错误分布
-            error_type = type(error).__name__ if error else 'Unknown'
-            self.api_stats['error_distribution'][error_type] = \
-                self.api_stats['error_distribution'].get(error_type, 0) + 1
-        
-        # 更新平均响应时间
-        total_calls = self.api_stats['total_calls']
-        avg_time = self.api_stats['average_response_time']
-        self.api_stats['average_response_time'] = \
-            (avg_time * (total_calls - 1) + duration) / total_calls
-        
-        # 记录调用历史（保留最近100次）
-        call_record = {
-            'method': method,
-            'success': success,
-            'duration': duration,
-            'timestamp': time.time(),
-            'error': error
-        }
-        
-        self.api_stats['call_history'].append(call_record)
-        if len(self.api_stats['call_history']) > 100:
-            self.api_stats['call_history'].pop(0)
-    
-    # Task 5.1 新增：异步HTTP会话管理
-    async def _ensure_session(self):
-        """确保异步会话存在"""
-        if self._session is None or self._session.closed:
-            connector = aiohttp.TCPConnector(
-                limit=100,  # 最大连接数
-                ttl_dns_cache=300,  # DNS缓存时间
-                use_dns_cache=True,
-            )
-            
-            timeout = aiohttp.ClientTimeout(total=self.timeout)
-            
-            self._session = aiohttp.ClientSession(
-                connector=connector,
-                timeout=timeout,
-                headers={'User-Agent': 'DifyChatBackend/2.0'}
-            )
-            
-            logging.debug("[DIFY SERVICE] 异步HTTP会话已创建")
-    
-    async def _close_session(self):
-        """关闭异步会话"""
-        if self._session and not self._session.closed:
-            await self._session.close()
-            logging.debug("[DIFY SERVICE] 异步HTTP会话已关闭")
-    
-    # Task 5.1 新增：智能重试判断
-    def _should_retry(self, status_code: int, error: Exception = None) -> bool:
-        """判断是否应该重试"""
-        # 5xx错误可以重试
-        if 500 <= status_code < 600:
-            return True
-        
-        # 429 限流错误可以重试
-        if status_code == 429:
-            return True
-        
-        # 连接错误可以重试
-        if isinstance(error, (requests.ConnectionError, requests.Timeout)):
-            return True
-        
-        return False
-    
-    # Task 5.1 新增：支持重试的同步HTTP请求
-    @backoff.on_exception(
-        backoff.expo,
-        (requests.ConnectionError, requests.Timeout, RetryableError),
-        max_tries=3,
-        max_time=30
-    )
-    def _make_request_with_retry(self, method: str, url: str, **kwargs):
-        """支持重试的HTTP请求"""
-        try:
-            response = requests.request(method, url, timeout=self.timeout, **kwargs)
-            
-            # 检查是否需要重试
-            if self._should_retry(response.status_code):
-                raise RetryableError(f"HTTP {response.status_code}", response.status_code)
-            
-            return response
-            
-        except (requests.ConnectionError, requests.Timeout) as e:
-            # 网络错误，触发重试
-            raise RetryableError(f"网络错误: {e}", 500)
-    
-    # Task 5.1 新增：异步HTTP请求方法
-    @api_monitor
-    async def make_async_request(self, method: str, path: str, params: Dict = None,
-                                json_data: Dict = None, agent_id: str = None) -> APIResponse:
-        """
-        异步HTTP请求接口
-        """
-        await self._ensure_session()
-        
-        url = f"{self.base_url}{path}"
-        api_key = self._get_api_key(agent_id)
-        
-        headers = {
-            'Authorization': f'Bearer {api_key}',
-            'Content-Type': 'application/json'
-        }
-        
-        start_time = time.time()
-        
-        try:
-            async with self._session.request(
-                method, url,
-                params=params,
-                json=json_data,
-                headers=headers
-            ) as response:
-                
-                duration = time.time() - start_time
-                
-                # 获取响应数据
-                try:
-                    response_data = await response.json()
-                except Exception:
-                    response_data = await response.text()
-                
-                # 返回标准化API响应
-                return APIResponse(
-                    data=response_data,
-                    status_code=response.status,
-                    headers=dict(response.headers),
-                    success=response.status == 200,
-                    error_message=None if response.status == 200 else str(response_data),
-                    request_id=response.headers.get('X-Request-ID'),
-                    duration=duration
-                )
-                
-        except aiohttp.ClientError as e:
-            duration = time.time() - start_time
-            logging.error(f"[DIFY] 异步API请求失败: {e}")
-            return APIResponse(
-                data={'success': False, 'message': str(e)},
-                status_code=500,
-                headers={},
-                success=False,
-                error_message=str(e),
-                duration=duration
-            )
-    
-    # Task 5.1 新增：异步上下文管理器支持
-    async def __aenter__(self):
-        """异步上下文管理器入口"""
-        await self._ensure_session()
-        return self
-    
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        """异步上下文管理器出口"""
-        await self._close_session()
-    
-    def _get_api_key(self, agent_id: str = None) -> str:
-        """获取API密钥（增强错误处理）"""
-        if agent_id:
-            api_key = self.get_agent_api_key(agent_id)
-            if not api_key:
-                raise NonRetryableError(f"智能体 {agent_id} 的API密钥未配置", 401)
-            return api_key
-        
-        # 使用默认密钥或第一个可用密钥
-        api_key = self.default_api_key
-        if not api_key:
-            api_key = self._get_fallback_api_key()
-        
-        if not api_key:
-            raise NonRetryableError("API密钥未配置", 401)
-        
-        return api_key
-    
-    def _get_fallback_api_key(self) -> Optional[str]:
-        """获取备用API密钥"""
-        try:
-            with open(self.agents_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            
-            agents = data.get('agents', {})
-            if agents:
-                first_agent_id = list(agents.keys())[0]
-                api_key = self.get_agent_api_key(first_agent_id)
-                if api_key:
-                    logging.info(f"[DIFY] 使用备用API密钥: {first_agent_id}")
-                return api_key
-        except Exception as e:
-            logging.error(f"[DIFY] 获取备用API密钥失败: {e}")
-        
-        return None
     
     def _is_cache_enabled(self) -> bool:
         """检查缓存是否可用"""
@@ -411,7 +116,6 @@ class DifyService:
         self.cache_manager.set(cache_key, cache_data, ttl=self.agent_cache_ttl)
         logging.debug(f"[CACHE] 智能体列表已缓存: {username}")
     
-    @api_monitor
     def get_user_agents(self, username: str, use_cache: bool = True) -> List[Dict[str, str]]:
         """获取用户可用的智能体列表"""
         # 尝试从缓存获取
@@ -441,7 +145,6 @@ class DifyService:
             logging.error(f"[AGENT] get_user_agents error: {e}")
             return []
     
-    @api_monitor
     def get_conversations(self, username: str, agent_id: str = None, 
                          params: Dict = None, use_cache: bool = True) -> Tuple[Dict, int]:
         """获取对话列表，支持缓存"""
@@ -516,79 +219,69 @@ class DifyService:
             logging.error(f"[AGENT] get_agent_api_key error: {e}")
             return None
 
-    # Task 5.1 增强：智能重试机制的同步请求方法
-    @api_monitor
     def make_request(self, method: str, path: str, params: Dict = None, 
                     json_data: Dict = None, stream: bool = False, 
-                    agent_id: str = None, files: Dict = None, data: Dict = None) -> Tuple[Dict, int]:
-        """
-        向Dify API发送请求 - Task 5.1 增强版
-        新增功能：智能重试、详细错误处理、API监控
-        """
+                    agent_id: str = None) -> tuple:
+        """向Dify API发送请求"""
         url = f"{self.base_url}{path}"
         
+        # 选择API密钥
+        if agent_id:
+            api_key = self.get_agent_api_key(agent_id)
+            if not api_key:
+                logging.error(f"[DIFY] No API key available for agent_id: {agent_id}")
+                return {'success': False, 'message': f'智能体 {agent_id} 的API密钥未配置'}, 500
+        else:
+            # 当没有指定agent_id时，使用默认API密钥或第一个可用智能体的密钥
+            api_key = self.default_api_key
+            if not api_key:
+                # 尝试获取第一个可用智能体的API密钥
+                try:
+                    with open(self.agents_file, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    agents = data.get('agents', {})
+                    if agents:
+                        first_agent_id = list(agents.keys())[0]
+                        api_key = self.get_agent_api_key(first_agent_id)
+                        logging.info(f"[DIFY] Using first available agent key: {first_agent_id}")
+                except Exception as e:
+                    logging.error(f"[DIFY] Failed to get fallback API key: {e}")
+                
+                if not api_key:
+                    logging.error(f"[DIFY] No API key available")
+                    return {'success': False, 'message': 'API密钥未配置'}, 500
+        
+        headers = {
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json'
+        }
+        
         try:
-            # 获取API密钥（使用新的增强方法）
-            api_key = self._get_api_key(agent_id)
-            
-            headers = {
-                'Authorization': f'Bearer {api_key}',
-            }
-            
-            # 文件上传时不设置Content-Type
-            if not files:
-                headers['Content-Type'] = 'application/json'
-            
-            # 使用带重试的请求方法
-            resp = self._make_request_with_retry(
-                method.upper(), url, 
-                headers=headers, 
-                params=params, 
-                json=json_data, 
-                stream=stream,
-                files=files,
-                data=data
+            resp = requests.request(
+                method.upper(), url, headers=headers, params=params, 
+                json=json_data, stream=stream, timeout=self.timeout
             )
             
             if stream:
                 return resp, 200
                 
-            # 解析响应数据
             try:
-                response_data = resp.json()
+                data = resp.json()
             except Exception:
-                response_data = {'success': False, 'message': resp.text}
+                data = {'success': False, 'message': resp.text}
                 
             if resp.status_code == 200:
-                return response_data, 200
+                return data, 200
             else:
-                logging.error(f"[DIFY] API请求失败: {resp.status_code} - {resp.text}")
+                logging.error(f"[DIFY] API request failed: {resp.status_code} - {resp.text}")
                 return {
                     'success': False, 
-                    'message': response_data.get('message', '请求失败'), 
-                    'data': response_data
+                    'message': data.get('message', '请求失败'), 
+                    'data': data
                 }, resp.status_code
                 
-        except NonRetryableError as e:
-            # 不可重试的错误，直接返回
-            logging.error(f"[DIFY] 不可重试错误: {e.message}")
-            return {
-                'success': False, 
-                'message': e.message,
-                'data': e.response_data
-            }, e.status_code
-            
-        except RetryableError as e:
-            # 重试耗尽后的错误
-            logging.error(f"[DIFY] 重试耗尽: {e.message}")
-            return {
-                'success': False, 
-                'message': f'请求失败（已重试）: {e.message}',
-                'data': e.response_data
-            }, e.status_code
-                
         except Exception as e:
-            logging.error(f"[DIFY] {method} {url} 未预期错误: {e}")
+            logging.error(f"[DIFY] {method} {url} error: {e}")
             return {'success': False, 'message': str(e)}, 500
                 
         except Exception as e:
@@ -953,104 +646,6 @@ class DifyService:
             params['first_id'] = first_id
         
         return self.make_request('GET', '/messages', params=params, agent_id=agent_id)
-    
-    # ========== Task 5.1 新增：API监控和统计功能 ==========
-    
-    def get_api_stats(self) -> Dict[str, Any]:
-        """获取API调用统计信息"""
-        success_rate = 0.0
-        if self.api_stats['total_calls'] > 0:
-            success_rate = (self.api_stats['successful_calls'] / self.api_stats['total_calls']) * 100
-        
-        return {
-            'total_calls': self.api_stats['total_calls'],
-            'successful_calls': self.api_stats['successful_calls'],
-            'failed_calls': self.api_stats['failed_calls'],
-            'success_rate': round(success_rate, 2),
-            'average_response_time': round(self.api_stats['average_response_time'], 3),
-            'error_distribution': self.api_stats['error_distribution'],
-            'recent_calls': self.api_stats['call_history'][-10:],  # 最近10次调用
-            'cache_enabled': self._is_cache_enabled(),
-            'cache_stats': self.get_cache_stats() if self._is_cache_enabled() else None
-        }
-    
-    def reset_api_stats(self) -> None:
-        """重置API统计信息"""
-        self.api_stats = {
-            'total_calls': 0,
-            'successful_calls': 0,
-            'failed_calls': 0,
-            'average_response_time': 0.0,
-            'error_distribution': {},
-            'call_history': []
-        }
-        logging.info("[DIFY SERVICE] API统计信息已重置")
-    
-    # ========== Task 5.1 新增：健康检查和监控 ==========
-    
-    @api_monitor
-    def health_check(self) -> Dict[str, Any]:
-        """服务健康检查"""
-        try:
-            # 测试API连通性
-            resp, status = self.make_request('GET', '/info')
-            
-            api_available = status == 200
-            cache_available = self._is_cache_enabled()
-            
-            return {
-                'status': 'healthy' if api_available else 'degraded',
-                'api_available': api_available,
-                'cache_available': cache_available,
-                'base_url': self.base_url,
-                'stats': self.get_api_stats(),
-                'timestamp': time.time()
-            }
-            
-        except Exception as e:
-            logging.error(f"[DIFY SERVICE] 健康检查失败: {e}")
-            return {
-                'status': 'unhealthy',
-                'api_available': False,
-                'cache_available': self._is_cache_enabled(),
-                'error': str(e),
-                'timestamp': time.time()
-            }
-    
-    # ========== Task 5.1 新增：资源清理 ==========
-    
-    def cleanup(self):
-        """清理服务资源"""
-        try:
-            # 清理异步会话
-            if self._session and not self._session.closed:
-                try:
-                    loop = asyncio.get_event_loop()
-                    if loop.is_running():
-                        loop.create_task(self._close_session())
-                    else:
-                        loop.run_until_complete(self._close_session())
-                except Exception as e:
-                    logging.warning(f"[DIFY SERVICE] 清理异步会话时出错: {e}")
-            
-            logging.info("[DIFY SERVICE] 资源清理完成")
-            
-        except Exception as e:
-            logging.error(f"[DIFY SERVICE] 资源清理失败: {e}")
 
-
-# Task 5.1 增强：全局Dify服务实例（延迟初始化以避免导入问题）
-_dify_service_instance = None
-
-def get_dify_service() -> DifyService:
-    """获取Dify服务实例（单例模式）"""
-    global _dify_service_instance
-    if _dify_service_instance is None:
-        _dify_service_instance = DifyService()
-        # 注册清理函数
-        import atexit
-        atexit.register(_dify_service_instance.cleanup)
-    return _dify_service_instance
-
-# 为了向后兼容，保留全局实例
-dify_service = get_dify_service()
+# 全局Dify服务实例
+dify_service = DifyService()
