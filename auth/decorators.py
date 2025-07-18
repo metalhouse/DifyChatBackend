@@ -175,7 +175,9 @@ def get_user_permissions(username: str) -> List[str]:
             'use_chat',
             'view_conversations',
             'manage_conversations',
-            'access_agents'
+            'access_agents',
+            'send_messages',
+            'create_conversations'
         ])
         
         return permissions

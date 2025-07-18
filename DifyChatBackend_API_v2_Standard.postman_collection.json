@@ -1,0 +1,808 @@
+{
+  "info": {
+    "name": "DifyChatBackend API v2.0 - 标准化版本",
+    "description": "DifyChatBackend标准化API测试集合 - 包含所有新的v1端点和标准化响应格式",
+    "version": "2.0.0-standard",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "api_version",
+      "value": "v1",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔍 系统检查",
+      "item": [
+        {
+          "name": "健康检查",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('健康检查响应状态正常', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('响应格式标准化', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData).to.have.property('request_id');",
+                  "    pm.expect(jsonData).to.have.property('timestamp');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "API健康检查",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "health"]
+            }
+          }
+        },
+        {
+          "name": "API信息",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/info",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "info"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('API信息获取成功', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.have.property('name');",
+                  "    pm.expect(jsonData.data).to.have.property('version');",
+                  "    pm.expect(jsonData.data).to.have.property('api_version');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "🔐 认证管理",
+      "item": [
+        {
+          "name": "用户登录",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\",\n  \"remember_me\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('登录成功', function () {",
+                  "    if (pm.response.code === 200) {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.have.property('tokens');",
+                  "        ",
+                  "        // 保存令牌到环境变量",
+                  "        const tokens = jsonData.data.tokens;",
+                  "        pm.collectionVariables.set('access_token', tokens.access_token);",
+                  "        pm.collectionVariables.set('refresh_token', tokens.refresh_token);",
+                  "        ",
+                  "        console.log('访问令牌已保存');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "登录验证错误测试",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ab\",\n  \"password\": \"123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('验证错误处理正确', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.error_code).to.eql('VALIDATION_ERROR');",
+                  "    pm.expect(jsonData.data).to.have.property('username');",
+                  "    pm.expect(jsonData.data).to.have.property('password');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "获取当前用户信息",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "auth", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('获取用户信息成功', function () {",
+                  "    if (pm.response.code === 200) {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.have.property('username');",
+                  "        pm.expect(jsonData.data).to.have.property('permissions');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "刷新令牌",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "auth", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "用户登出",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🤖 智能体管理",
+      "item": [
+        {
+          "name": "获取智能体列表",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/agents?page=1&page_size=10&use_cache=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "agents"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "10"
+                },
+                {
+                  "key": "use_cache",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('智能体列表获取成功', function () {",
+                  "    if (pm.response.code === 200) {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.be.an('array');",
+                  "        pm.expect(jsonData).to.have.property('pagination');",
+                  "        pm.expect(jsonData.pagination).to.have.property('page');",
+                  "        pm.expect(jsonData.pagination).to.have.property('page_size');",
+                  "        pm.expect(jsonData.pagination).to.have.property('total');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "搜索智能体",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/agents?search=ChatGPT&category=assistant",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "agents"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "ChatGPT"
+                },
+                {
+                  "key": "category",
+                  "value": "assistant"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "获取智能体配置",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/agent/config?agent_id=chatgpt-001&use_cache=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "agent", "config"],
+              "query": [
+                {
+                  "key": "agent_id",
+                  "value": "chatgpt-001"
+                },
+                {
+                  "key": "use_cache",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💬 对话管理",
+      "item": [
+        {
+          "name": "获取对话列表",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/conversations?agent_id=chatgpt-001&page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "conversations"],
+              "query": [
+                {
+                  "key": "agent_id",
+                  "value": "chatgpt-001"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('对话列表获取成功', function () {",
+                  "    if (pm.response.code === 200) {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.be.an('array');",
+                  "        pm.expect(jsonData).to.have.property('pagination');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "创建新对话",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agent_id\": \"chatgpt-001\",\n  \"first_message\": \"你好，这是一个测试对话\",\n  \"inputs\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/conversations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "conversations"]
+            }
+          }
+        },
+        {
+          "name": "发送聊天消息",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agent_id\": \"chatgpt-001\",\n  \"message\": \"你好，请介绍一下你自己\",\n  \"stream\": false,\n  \"conversation_id\": null,\n  \"inputs\": {},\n  \"auto_generate_name\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "chat"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('聊天消息发送成功', function () {",
+                  "    if (pm.response.code === 200) {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.be.an('object');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "发送流式聊天消息",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agent_id\": \"chatgpt-001\",\n  \"message\": \"请用流式方式回答：什么是人工智能？\",\n  \"stream\": true,\n  \"conversation_id\": null,\n  \"inputs\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "chat"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🗂️ 缓存管理",
+      "item": [
+        {
+          "name": "获取用户权限",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/user/permissions?use_cache=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "user", "permissions"],
+              "query": [
+                {
+                  "key": "use_cache",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "缓存健康检查",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/cache/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "cache", "health"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('缓存健康检查成功', function () {",
+                  "    if (pm.response.code === 200) {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData.success).to.be.true;",
+                  "        pm.expect(jsonData.data).to.have.property('status');",
+                  "        pm.expect(jsonData.data).to.have.property('enabled');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "获取缓存统计",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/cache/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "cache", "stats"]
+            }
+          }
+        },
+        {
+          "name": "预热缓存",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usernames\": [\"admin\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/cache/preload",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "cache", "preload"]
+            }
+          }
+        },
+        {
+          "name": "刷新智能体配置缓存",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/cache/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "cache", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "清除缓存",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"agent_id\": \"chatgpt-001\",\n  \"cache_type\": \"conversations\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/cache/invalidate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "cache", "invalidate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔧 错误处理测试",
+      "item": [
+        {
+          "name": "404 - 资源不存在",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/nonexistent",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "nonexistent"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('404错误处理正确', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.error_code).to.eql('RESOURCE_NOT_FOUND');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "405 - 方法不允许",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "health"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('405错误处理正确', function () {",
+                  "    pm.response.to.have.status(405);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.error_code).to.eql('METHOD_NOT_ALLOWED');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "401 - 未授权访问",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/agents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "{{api_version}}", "agents"]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('401错误处理正确', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "    pm.expect(jsonData.error_code).to.be.oneOf(['AUTHENTICATION_REQUIRED', 'AUTHENTICATION_FAILED']);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "📊 向后兼容性测试",
+      "item": [
+        {
+          "name": "兼容旧版登录路径",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('向后兼容性正常', function () {",
+                  "    // 兼容路径应该返回与新路径相同的标准化响应",
+                  "    if (pm.response.code === 200) {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData).to.have.property('success');",
+                  "        pm.expect(jsonData).to.have.property('message');",
+                  "        pm.expect(jsonData).to.have.property('request_id');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "兼容旧版智能体路径",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/agents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "agents"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// 设置请求ID（用于追踪）",
+          "pm.request.headers.add({",
+          "    key: 'X-Request-ID',",
+          "    value: pm.variables.replaceIn('{{$randomUUID}}'),",
+          "});",
+          "",
+          "// 设置时间戳",
+          "pm.request.headers.add({",
+          "    key: 'X-Request-Timestamp',",
+          "    value: new Date().toISOString(),",
+          "});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// 全局响应格式验证",
+          "pm.test('响应包含必需的标准化字段', function () {",
+          "    if (pm.response.code !== 0) {  // 跳过无响应的情况",
+          "        const jsonData = pm.response.json();",
+          "        pm.expect(jsonData).to.have.property('success');",
+          "        pm.expect(jsonData).to.have.property('request_id');",
+          "        pm.expect(jsonData).to.have.property('timestamp');",
+          "        ",
+          "        if (jsonData.success) {",
+          "            pm.expect(jsonData).to.have.property('message');",
+          "            pm.expect(jsonData).to.have.property('data');",
+          "        } else {",
+          "            pm.expect(jsonData).to.have.property('error_code');",
+          "            pm.expect(jsonData).to.have.property('message');",
+          "        }",
+          "    }",
+          "});",
+          "",
+          "// 自动刷新令牌检查",
+          "const newToken = pm.response.headers.get('X-New-Access-Token');",
+          "if (newToken) {",
+          "    pm.collectionVariables.set('access_token', newToken);",
+          "    console.log('访问令牌已自动刷新');",
+          "}"
+        ]
+      }
+    }
+  ]
+}

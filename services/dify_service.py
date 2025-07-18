@@ -150,6 +150,9 @@ class DifyService:
         """获取对话列表，支持缓存"""
         params = params or {}
         
+        # 确保params包含必需的user参数
+        params['user'] = username
+        
         # 尝试从缓存获取
         if use_cache:
             cached_data = self._get_cached_conversations(username, agent_id, params)
@@ -202,7 +205,16 @@ class DifyService:
         try:
             with open(self.agents_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-            return data.get('agents', {}).get(agent_id, {}).get('dify_api_key')
+            encoded_key = data.get('agents', {}).get(agent_id, {}).get('dify_api_key')
+            if encoded_key:
+                # 解码Base64编码的API Key
+                import base64
+                try:
+                    return base64.urlsafe_b64decode(encoded_key.encode('utf-8')).decode('utf-8')
+                except Exception:
+                    # 如果解码失败，返回原始值
+                    return encoded_key
+            return None
         except Exception as e:
             logging.error(f"[AGENT] get_agent_api_key error: {e}")
             return None
@@ -212,37 +224,33 @@ class DifyService:
                     agent_id: str = None) -> tuple:
         """向Dify API发送请求"""
         url = f"{self.base_url}{path}"
-        api_key = self.get_agent_api_key(agent_id) if agent_id else self.default_api_key
         
-        if not api_key:
-            logging.error(f"[DIFY] No API key available for agent_id: {agent_id}")
-            return False, "API密钥未配置"
-        
-        headers = {
-            'Authorization': f'Bearer {api_key}',
-            'Content-Type': 'application/json'
-        }
-        
-        try:
-            response = requests.request(
-                method=method.upper(),
-                url=url,
-                headers=headers,
-                params=params,
-                json=json_data,
-                stream=stream,
-                timeout=self.timeout
-            )
-            
-            if response.status_code == 200:
-                return True, response
-            else:
-                logging.error(f"[DIFY] API request failed: {response.status_code} - {response.text}")
-                return False, f"API请求失败: {response.status_code}"
+        # 选择API密钥
+        if agent_id:
+            api_key = self.get_agent_api_key(agent_id)
+            if not api_key:
+                logging.error(f"[DIFY] No API key available for agent_id: {agent_id}")
+                return {'success': False, 'message': f'智能体 {agent_id} 的API密钥未配置'}, 500
+        else:
+            # 当没有指定agent_id时，使用默认API密钥或第一个可用智能体的密钥
+            api_key = self.default_api_key
+            if not api_key:
+                # 尝试获取第一个可用智能体的API密钥
+                try:
+                    with open(self.agents_file, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    agents = data.get('agents', {})
+                    if agents:
+                        first_agent_id = list(agents.keys())[0]
+                        api_key = self.get_agent_api_key(first_agent_id)
+                        logging.info(f"[DIFY] Using first available agent key: {first_agent_id}")
+                except Exception as e:
+                    logging.error(f"[DIFY] Failed to get fallback API key: {e}")
                 
-        except requests.RequestException as e:
-            logging.error(f"[DIFY] Request exception: {e}")
-            return False, f"请求异常: {str(e)}"
+                if not api_key:
+                    logging.error(f"[DIFY] No API key available")
+                    return {'success': False, 'message': 'API密钥未配置'}, 500
+        
         headers = {
             'Authorization': f'Bearer {api_key}',
             'Content-Type': 'application/json'
@@ -250,8 +258,8 @@ class DifyService:
         
         try:
             resp = requests.request(
-                method, url, headers=headers, params=params, 
-                json=json_data, stream=stream, timeout=60
+                method.upper(), url, headers=headers, params=params, 
+                json=json_data, stream=stream, timeout=self.timeout
             )
             
             if stream:
@@ -263,13 +271,18 @@ class DifyService:
                 data = {'success': False, 'message': resp.text}
                 
             if resp.status_code == 200:
-                return {'success': True, 'data': data}, 200
+                return data, 200
             else:
+                logging.error(f"[DIFY] API request failed: {resp.status_code} - {resp.text}")
                 return {
                     'success': False, 
                     'message': data.get('message', '请求失败'), 
                     'data': data
                 }, resp.status_code
+                
+        except Exception as e:
+            logging.error(f"[DIFY] {method} {url} error: {e}")
+            return {'success': False, 'message': str(e)}, 500
                 
         except Exception as e:
             logging.error(f"[DIFY] {method} {url} error: {e}")

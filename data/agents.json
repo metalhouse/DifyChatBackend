@@ -1,0 +1,15 @@
+{
+  "agents": {
+    "agent_1751526225_7744": {
+      "name": "财务助手_A",
+      "dify_api_key": "YXBwLWZjd0F3cGVrSTd3blNsdkVMNVYzZ0ZpQg=="
+    }
+  },
+  "user_agents": {
+    "metalhouse": [
+      "agent_1751526225_7744"
+    ],
+    "user2": [],
+    "chen00": []
+  }
+}

@@ -603,3 +603,1390 @@
 2025-07-17 23:55:38,723 - root - INFO - 日志系统初始化完成
 2025-07-17 23:55:38,723 - utils.cache_manager - INFO - Redis缓存已禁用
 2025-07-17 23:55:38,724 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:05:30,962 - root - INFO - 日志系统初始化完成
+2025-07-18 11:05:30,962 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:05:30,963 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:05:30,966 - root - INFO - 启动DifyChatBackend服务 - 环境: development
+2025-07-18 11:05:30,966 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:05:32,493 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.1:5000
+2025-07-18 11:05:32,494 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 11:05:32,496 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:05:33,580 - root - INFO - 日志系统初始化完成
+2025-07-18 11:05:33,581 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:05:33,581 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:05:33,584 - root - INFO - 启动DifyChatBackend服务 - 环境: development
+2025-07-18 11:05:33,584 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:05:33,605 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:05:33,613 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:06:32,670 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\auth_routes_v2.py', reloading
+2025-07-18 11:06:32,710 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:06:33,756 - root - INFO - 日志系统初始化完成
+2025-07-18 11:06:33,757 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:06:33,757 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:06:33,761 - root - INFO - 启动DifyChatBackend服务 - 环境: development
+2025-07-18 11:06:33,761 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:06:33,783 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:06:33,791 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:06:39,104 - root - INFO - 日志系统初始化完成
+2025-07-18 11:06:39,105 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:06:39,105 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:07:32,617 - root - INFO - 日志系统初始化完成
+2025-07-18 11:07:32,617 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:07:32,617 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:07:32,623 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:07:32,624 - root - INFO - 环境: development
+2025-07-18 11:07:32,624 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:07:32,624 - root - INFO - API版本: v1
+2025-07-18 11:07:32,625 - root - INFO - 响应格式: 标准化
+2025-07-18 11:07:33,956 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.1:5000
+2025-07-18 11:07:33,956 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 11:07:33,958 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:07:35,180 - root - INFO - 日志系统初始化完成
+2025-07-18 11:07:35,181 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:07:35,181 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:07:35,186 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:07:35,186 - root - INFO - 环境: development
+2025-07-18 11:07:35,186 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:07:35,186 - root - INFO - API版本: v1
+2025-07-18 11:07:35,187 - root - INFO - 响应格式: 标准化
+2025-07-18 11:07:35,227 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:07:35,238 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:08:22,908 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:08:22] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:08:39,430 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:08:39] "[33mGET /api/v1/health HTTP/1.1[0m" 404 -
+2025-07-18 11:09:39,223 - root - INFO - 日志系统初始化完成
+2025-07-18 11:09:39,224 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:09:39,224 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:09:39,229 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:09:39,229 - root - INFO - 环境: development
+2025-07-18 11:09:39,230 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:09:39,230 - root - INFO - API版本: v1
+2025-07-18 11:09:39,230 - root - INFO - 响应格式: 标准化
+2025-07-18 11:09:40,555 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.1:5000
+2025-07-18 11:09:40,555 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 11:09:40,557 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:09:41,761 - root - INFO - 日志系统初始化完成
+2025-07-18 11:09:41,761 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:09:41,762 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:09:41,766 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:09:41,766 - root - INFO - 环境: development
+2025-07-18 11:09:41,767 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:09:41,767 - root - INFO - API版本: v1
+2025-07-18 11:09:41,767 - root - INFO - 响应格式: 标准化
+2025-07-18 11:09:41,788 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:09:41,810 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:10:09,658 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:10:09] "[35m[1mGET /health HTTP/1.1[0m" 500 -
+2025-07-18 11:10:35,649 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\response_builder.py', reloading
+2025-07-18 11:10:35,699 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:10:36,958 - root - INFO - 日志系统初始化完成
+2025-07-18 11:10:36,958 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:10:36,959 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:10:36,965 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:10:36,966 - root - INFO - 环境: development
+2025-07-18 11:10:36,966 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:10:36,967 - root - INFO - API版本: v1
+2025-07-18 11:10:36,967 - root - INFO - 响应格式: 标准化
+2025-07-18 11:10:36,988 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:10:36,996 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:11:08,424 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\response_builder.py', reloading
+2025-07-18 11:11:08,484 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:11:09,891 - root - INFO - 日志系统初始化完成
+2025-07-18 11:11:09,891 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:11:09,892 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:11:09,897 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:11:09,897 - root - INFO - 环境: development
+2025-07-18 11:11:09,898 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:11:09,898 - root - INFO - API版本: v1
+2025-07-18 11:11:09,898 - root - INFO - 响应格式: 标准化
+2025-07-18 11:11:09,921 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:11:09,928 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:11:26,175 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\response_builder.py', reloading
+2025-07-18 11:11:26,237 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:11:27,528 - root - INFO - 日志系统初始化完成
+2025-07-18 11:11:27,529 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:11:27,529 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:11:27,535 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:11:27,535 - root - INFO - 环境: development
+2025-07-18 11:11:27,536 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:11:27,536 - root - INFO - API版本: v1
+2025-07-18 11:11:27,537 - root - INFO - 响应格式: 标准化
+2025-07-18 11:11:27,560 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:11:27,569 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:11:54,957 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\response_builder.py', reloading
+2025-07-18 11:11:55,018 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:11:56,310 - root - INFO - 日志系统初始化完成
+2025-07-18 11:11:56,311 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:11:56,311 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:11:56,316 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:11:56,317 - root - INFO - 环境: development
+2025-07-18 11:11:56,317 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:11:56,317 - root - INFO - API版本: v1
+2025-07-18 11:11:56,318 - root - INFO - 响应格式: 标准化
+2025-07-18 11:11:56,342 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:11:56,350 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:13:29,576 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\response_builder.py', reloading
+2025-07-18 11:13:29,655 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:13:30,914 - root - INFO - 日志系统初始化完成
+2025-07-18 11:13:30,914 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:13:30,915 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:13:30,921 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:13:30,921 - root - INFO - 环境: development
+2025-07-18 11:13:30,921 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:13:30,922 - root - INFO - API版本: v1
+2025-07-18 11:13:30,922 - root - INFO - 响应格式: 标准化
+2025-07-18 11:13:30,943 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:13:30,951 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:13:48,616 - root - INFO - 日志系统初始化完成
+2025-07-18 11:13:48,616 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:13:48,617 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:13:48,621 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:13:48,621 - root - INFO - 环境: development
+2025-07-18 11:13:48,622 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:13:48,622 - root - INFO - API版本: v1
+2025-07-18 11:13:48,623 - root - INFO - 响应格式: 标准化
+2025-07-18 11:13:49,956 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.1:5000
+2025-07-18 11:13:49,957 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 11:13:49,959 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:13:51,197 - root - INFO - 日志系统初始化完成
+2025-07-18 11:13:51,197 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:13:51,198 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:13:51,205 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:13:51,205 - root - INFO - 环境: development
+2025-07-18 11:13:51,205 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:13:51,206 - root - INFO - API版本: v1
+2025-07-18 11:13:51,206 - root - INFO - 响应格式: 标准化
+2025-07-18 11:13:51,257 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:13:51,266 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:13:59,604 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:13:59] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:14:37,435 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:14:37] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:14:48,656 - root - INFO - [LOGIN ATTEMPT] username=admin, ip=127.0.0.1, device_id=8dd542b6758dc358...
+2025-07-18 11:14:48,656 - root - INFO - Login attempt started: username=admin, ip=127.0.0.1, device_id=8dd542b6758dc358..., user_agent=Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) W...
+2025-07-18 11:14:48,663 - root - INFO - Login attempt for admin: success=False, ip=127.0.0.1, total_attempts=1
+2025-07-18 11:14:48,664 - root - WARNING - Login failed: username=admin, ip=127.0.0.1, attempts_left=4
+2025-07-18 11:14:48,664 - root - WARNING - [LOGIN FAILED] user=admin, reason=INVALID_CREDENTIALS
+2025-07-18 11:14:48,665 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:14:48] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 401 -
+2025-07-18 11:15:21,430 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=a32a8f5dbe358129...
+2025-07-18 11:15:21,430 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=a32a8f5dbe358129..., user_agent=Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) W...
+2025-07-18 11:15:21,431 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:15:21,431 - root - INFO - Login successful: username=metalhouse, device_id=a32a8f5dbe358129..., active_sessions=1
+2025-07-18 11:15:21,432 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:15:21,433 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:15:21] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:16:27,601 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_api_standard.py', reloading
+2025-07-18 11:16:27,662 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:16:28,916 - root - INFO - 日志系统初始化完成
+2025-07-18 11:16:28,917 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:16:28,917 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:16:28,923 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:16:28,923 - root - INFO - 环境: development
+2025-07-18 11:16:28,924 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:16:28,924 - root - INFO - API版本: v1
+2025-07-18 11:16:28,925 - root - INFO - 响应格式: 标准化
+2025-07-18 11:16:28,948 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:16:28,955 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:16:35,065 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_api_standard.py', reloading
+2025-07-18 11:16:35,140 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:16:36,818 - root - INFO - 日志系统初始化完成
+2025-07-18 11:16:36,819 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:16:36,819 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:16:36,823 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:16:36,824 - root - INFO - 环境: development
+2025-07-18 11:16:36,824 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:16:36,825 - root - INFO - API版本: v1
+2025-07-18 11:16:36,825 - root - INFO - 响应格式: 标准化
+2025-07-18 11:16:36,847 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:16:36,854 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:16:36,875 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:36] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:16:36,895 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:36] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:16:36,939 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:36] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:16:36,974 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:36] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:16:37,009 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:37] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:16:37,045 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:37] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:16:37,074 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:37] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:16:37,127 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:37] "[31m[1mPUT /api/v1/health HTTP/1.1[0m" 400 -
+2025-07-18 11:16:37,171 - root - INFO - [LOGIN ATTEMPT] username=admin, ip=127.0.0.1, device_id=b4dc399b9bda7637...
+2025-07-18 11:16:37,174 - root - INFO - Login attempt started: username=admin, ip=127.0.0.1, device_id=b4dc399b9bda7637..., user_agent=python-requests/2.32.4...
+2025-07-18 11:16:37,180 - root - INFO - Login attempt for admin: success=False, ip=127.0.0.1, total_attempts=1
+2025-07-18 11:16:37,187 - root - WARNING - Login failed: username=admin, ip=127.0.0.1, attempts_left=4
+2025-07-18 11:16:37,191 - root - WARNING - [LOGIN FAILED] user=admin, reason=INVALID_CREDENTIALS
+2025-07-18 11:16:37,191 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:16:37] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 401 -
+2025-07-18 11:16:57,159 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_api_standard.py', reloading
+2025-07-18 11:16:57,228 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:16:58,494 - root - INFO - 日志系统初始化完成
+2025-07-18 11:16:58,495 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:16:58,495 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:16:58,501 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:16:58,501 - root - INFO - 环境: development
+2025-07-18 11:16:58,502 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:16:58,502 - root - INFO - API版本: v1
+2025-07-18 11:16:58,503 - root - INFO - 响应格式: 标准化
+2025-07-18 11:16:58,526 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:16:58,535 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:17:22,895 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_api_standard.py', reloading
+2025-07-18 11:17:22,963 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:17:24,639 - root - INFO - 日志系统初始化完成
+2025-07-18 11:17:24,639 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:17:24,640 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:17:24,644 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:17:24,645 - root - INFO - 环境: development
+2025-07-18 11:17:24,645 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:17:24,645 - root - INFO - API版本: v1
+2025-07-18 11:17:24,646 - root - INFO - 响应格式: 标准化
+2025-07-18 11:17:24,664 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:17:24,672 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:17:28,012 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:17:28] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:19:20,522 - root - INFO - 日志系统初始化完成
+2025-07-18 11:19:20,522 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:19:20,523 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:19:20,535 - root - INFO - [LOGIN ATTEMPT] username=test, ip=127.0.0.1, device_id=a48f21ecfe5fa02f..., remember_me=False
+2025-07-18 11:19:20,535 - root - INFO - Login attempt started: username=test, ip=127.0.0.1, device_id=a48f21ecfe5fa02f..., user_agent=Werkzeug/3.1.3...
+2025-07-18 11:19:20,536 - root - INFO - Login attempt for test: success=False, ip=127.0.0.1, total_attempts=1
+2025-07-18 11:19:20,536 - root - WARNING - Login failed: username=test, ip=127.0.0.1, attempts_left=4
+2025-07-18 11:19:20,536 - root - WARNING - [LOGIN FAILED] user=test, reason=INVALID_CREDENTIALS, message=用户名或密码错误，剩余尝试次数：4
+2025-07-18 11:19:53,545 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:19:53,592 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:19:53,636 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:19:53,671 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:19:53,708 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:19:53,718 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=6dab9bc7e72b611e...
+2025-07-18 11:19:53,719 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=6dab9bc7e72b611e..., user_agent=python-requests/2.32.4...
+2025-07-18 11:19:53,732 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:19:53,734 - root - INFO - Login successful: username=metalhouse, device_id=6dab9bc7e72b611e..., active_sessions=1
+2025-07-18 11:19:53,735 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:19:53,735 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:19:53,769 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:19:53,798 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "[33mGET /api/v1/chat/agents HTTP/1.1[0m" 404 -
+2025-07-18 11:19:53,831 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "[33mGET /api/v1/chat/conversations HTTP/1.1[0m" 404 -
+2025-07-18 11:19:53,854 - root - WARNING - User metalhouse lacks permissions: ['manage_cache', 'admin']
+2025-07-18 11:19:53,855 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "[31m[1mGET /api/v1/cache/health HTTP/1.1[0m" 403 -
+2025-07-18 11:19:53,895 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:19:53,931 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "[31m[1mGET /api/v1/auth/me HTTP/1.1[0m" 401 -
+2025-07-18 11:19:53,969 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:19:53] "[33mGET /api/v1/chat/agents HTTP/1.1[0m" 404 -
+2025-07-18 11:20:20,135 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\app_standard.py', reloading
+2025-07-18 11:20:20,211 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:20:21,592 - root - INFO - 日志系统初始化完成
+2025-07-18 11:20:21,593 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:20:21,593 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:20:21,598 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:20:21,599 - root - INFO - 环境: development
+2025-07-18 11:20:21,599 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:20:21,600 - root - INFO - API版本: v1
+2025-07-18 11:20:21,601 - root - INFO - 响应格式: 标准化
+2025-07-18 11:20:21,625 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:20:21,634 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:20:33,834 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\app_standard.py', reloading
+2025-07-18 11:20:33,912 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:20:35,331 - root - INFO - 日志系统初始化完成
+2025-07-18 11:20:35,331 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:20:35,332 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:20:35,336 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:20:35,337 - root - INFO - 环境: development
+2025-07-18 11:20:35,337 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:20:35,337 - root - INFO - API版本: v1
+2025-07-18 11:20:35,338 - root - INFO - 响应格式: 标准化
+2025-07-18 11:20:35,403 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:20:35,412 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:20:40,134 - root - INFO - 日志系统初始化完成
+2025-07-18 11:20:40,134 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:20:40,135 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:20:40,143 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:20:40,143 - root - INFO - 环境: development
+2025-07-18 11:20:40,143 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:20:40,144 - root - INFO - API版本: v1
+2025-07-18 11:20:40,145 - root - INFO - 响应格式: 标准化
+2025-07-18 11:20:41,479 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.1:5000
+2025-07-18 11:20:41,479 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 11:20:41,481 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:20:42,774 - root - INFO - 日志系统初始化完成
+2025-07-18 11:20:42,775 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:20:42,775 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:20:42,780 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:20:42,780 - root - INFO - 环境: development
+2025-07-18 11:20:42,780 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:20:42,781 - root - INFO - API版本: v1
+2025-07-18 11:20:42,781 - root - INFO - 响应格式: 标准化
+2025-07-18 11:20:42,804 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:20:42,813 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:20:54,128 - root - INFO - 日志系统初始化完成
+2025-07-18 11:20:54,129 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:20:54,129 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:20:54,134 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:20:54,134 - root - INFO - 环境: development
+2025-07-18 11:20:54,134 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:20:54,135 - root - INFO - API版本: v1
+2025-07-18 11:20:54,135 - root - INFO - 响应格式: 标准化
+2025-07-18 11:20:55,454 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.1:5000
+2025-07-18 11:20:55,454 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 11:20:55,456 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:20:56,691 - root - INFO - 日志系统初始化完成
+2025-07-18 11:20:56,691 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:20:56,692 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:20:56,696 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:20:56,696 - root - INFO - 环境: development
+2025-07-18 11:20:56,697 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:20:56,697 - root - INFO - API版本: v1
+2025-07-18 11:20:56,697 - root - INFO - 响应格式: 标准化
+2025-07-18 11:20:56,716 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:20:56,730 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:21:25,242 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_api_standard.py', reloading
+2025-07-18 11:21:25,299 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:21:26,705 - root - INFO - 日志系统初始化完成
+2025-07-18 11:21:26,705 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:21:26,705 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:21:26,710 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:21:26,710 - root - INFO - 环境: development
+2025-07-18 11:21:26,710 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:21:26,711 - root - INFO - API版本: v1
+2025-07-18 11:21:26,711 - root - INFO - 响应格式: 标准化
+2025-07-18 11:21:26,733 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:21:26,742 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:21:32,859 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_api_standard.py', reloading
+2025-07-18 11:21:32,941 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:21:35,140 - root - INFO - 日志系统初始化完成
+2025-07-18 11:21:35,141 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:21:35,142 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:21:35,147 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:21:35,147 - root - INFO - 环境: development
+2025-07-18 11:21:35,148 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:21:35,148 - root - INFO - API版本: v1
+2025-07-18 11:21:35,149 - root - INFO - 响应格式: 标准化
+2025-07-18 11:21:35,175 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:21:35,183 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:21:35,207 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:21:35,235 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:21:35,286 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:21:35,313 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:21:35,353 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:21:35,373 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:21:35,420 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:21:35,429 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "[31m[1mPUT /api/v1/health HTTP/1.1[0m" 400 -
+2025-07-18 11:21:35,459 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=4b9f5d3a52a0dafc...
+2025-07-18 11:21:35,468 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=4b9f5d3a52a0dafc..., user_agent=python-requests/2.32.4...
+2025-07-18 11:21:35,480 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:21:35,480 - root - INFO - Login successful: username=metalhouse, device_id=4b9f5d3a52a0dafc..., active_sessions=1
+2025-07-18 11:21:35,481 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:21:35,483 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:21:35,518 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:21:35,592 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:21:35,592 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:21:35,593 - root - INFO - [GET AGENTS] user=metalhouse, count=0/0
+2025-07-18 11:21:35,594 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:21:35,644 - root - WARNING - User metalhouse lacks permissions: ['manage_cache', 'admin']
+2025-07-18 11:21:35,645 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "[31m[1mGET /api/v1/cache/health HTTP/1.1[0m" 403 -
+2025-07-18 11:21:35,706 - root - WARNING - User metalhouse lacks permissions: ['view_stats']
+2025-07-18 11:21:35,707 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:35] "[31m[1mGET /api/v1/cache/stats HTTP/1.1[0m" 403 -
+2025-07-18 11:21:46,181 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:21:46,215 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:21:46,243 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:21:46,276 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:21:46,304 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:21:46,336 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=5ef037debb530eb1...
+2025-07-18 11:21:46,336 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=5ef037debb530eb1..., user_agent=python-requests/2.32.4...
+2025-07-18 11:21:46,338 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:21:46,338 - root - INFO - Login successful: username=metalhouse, device_id=5ef037debb530eb1..., active_sessions=1
+2025-07-18 11:21:46,339 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:21:46,339 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:21:46,361 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:21:46,393 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:21:46,394 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:21:46,394 - root - INFO - [GET AGENTS] user=metalhouse, count=0/0
+2025-07-18 11:21:46,395 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:21:46,429 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:21:46,429 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:21:46,430 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:21:46,431 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:21:46,459 - root - WARNING - User metalhouse lacks permissions: ['manage_cache', 'admin']
+2025-07-18 11:21:46,460 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "[31m[1mGET /api/v1/cache/health HTTP/1.1[0m" 403 -
+2025-07-18 11:21:46,491 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:21:46,520 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "[31m[1mGET /api/v1/auth/me HTTP/1.1[0m" 401 -
+2025-07-18 11:21:46,551 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:21:46] "[31m[1mGET /api/v1/chat/agents HTTP/1.1[0m" 401 -
+2025-07-18 11:23:46,977 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_api_standard.py', reloading
+2025-07-18 11:23:47,026 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:23:48,301 - root - INFO - 日志系统初始化完成
+2025-07-18 11:23:48,302 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:23:48,302 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:23:48,306 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:23:48,307 - root - INFO - 环境: development
+2025-07-18 11:23:48,307 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:23:48,307 - root - INFO - API版本: v1
+2025-07-18 11:23:48,308 - root - INFO - 响应格式: 标准化
+2025-07-18 11:23:48,328 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:23:48,336 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:23:58,535 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_api_standard.py', reloading
+2025-07-18 11:23:58,627 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:24:00,233 - root - INFO - 日志系统初始化完成
+2025-07-18 11:24:00,234 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:24:00,234 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:24:00,239 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:24:00,241 - root - INFO - 环境: development
+2025-07-18 11:24:00,242 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:24:00,242 - root - INFO - API版本: v1
+2025-07-18 11:24:00,243 - root - INFO - 响应格式: 标准化
+2025-07-18 11:24:00,278 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:24:00,286 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:24:13,526 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\validate_api_standard.py', reloading
+2025-07-18 11:24:13,589 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:24:14,888 - root - INFO - 日志系统初始化完成
+2025-07-18 11:24:14,888 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:24:14,889 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:24:14,894 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:24:14,894 - root - INFO - 环境: development
+2025-07-18 11:24:14,894 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:24:14,895 - root - INFO - API版本: v1
+2025-07-18 11:24:14,895 - root - INFO - 响应格式: 标准化
+2025-07-18 11:24:14,917 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:24:14,924 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:24:36,227 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\validate_api_standard.py', reloading
+2025-07-18 11:24:36,336 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:24:38,340 - root - INFO - 日志系统初始化完成
+2025-07-18 11:24:38,340 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:24:38,341 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:24:38,345 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:24:38,346 - root - INFO - 环境: development
+2025-07-18 11:24:38,346 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:24:38,346 - root - INFO - API版本: v1
+2025-07-18 11:24:38,347 - root - INFO - 响应格式: 标准化
+2025-07-18 11:24:38,368 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:24:38,375 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:25:03,167 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:25:03,213 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:25:03,244 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:25:03,284 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:25:03,305 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:25:03,345 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:25:03,368 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:25:03,408 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "[31m[1mPUT /api/v1/health HTTP/1.1[0m" 400 -
+2025-07-18 11:25:03,437 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=23576c4621a1d51d...
+2025-07-18 11:25:03,438 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=23576c4621a1d51d..., user_agent=python-requests/2.32.4...
+2025-07-18 11:25:03,441 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:25:03,444 - root - INFO - Login successful: username=metalhouse, device_id=23576c4621a1d51d..., active_sessions=1
+2025-07-18 11:25:03,446 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:25:03,448 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:25:03,492 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:25:03,542 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:25:03,545 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:25:03,546 - root - INFO - [GET AGENTS] user=metalhouse, count=0/0
+2025-07-18 11:25:03,548 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:25:03,569 - root - WARNING - User metalhouse lacks permissions: ['manage_cache', 'admin']
+2025-07-18 11:25:03,570 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "[31m[1mGET /api/v1/cache/health HTTP/1.1[0m" 403 -
+2025-07-18 11:25:03,603 - root - WARNING - User metalhouse lacks permissions: ['view_stats']
+2025-07-18 11:25:03,604 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:03] "[31m[1mGET /api/v1/cache/stats HTTP/1.1[0m" 403 -
+2025-07-18 11:25:15,060 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:25:15,073 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:25:15,106 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:25:15,139 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:25:15,170 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:25:15,179 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=6effa4c99b48916e...
+2025-07-18 11:25:15,179 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=6effa4c99b48916e..., user_agent=python-requests/2.32.4...
+2025-07-18 11:25:15,181 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:25:15,181 - root - INFO - Login successful: username=metalhouse, device_id=6effa4c99b48916e..., active_sessions=1
+2025-07-18 11:25:15,181 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:25:15,182 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:25:15,198 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:25:15,232 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:25:15,233 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:25:15,233 - root - INFO - [GET AGENTS] user=metalhouse, count=0/0
+2025-07-18 11:25:15,234 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:25:15,264 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:25:15,264 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:25:15,264 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:25:15,266 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:25:15,295 - root - WARNING - User metalhouse lacks permissions: ['manage_cache', 'admin']
+2025-07-18 11:25:15,296 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "[31m[1mGET /api/v1/cache/health HTTP/1.1[0m" 403 -
+2025-07-18 11:25:15,326 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:25:15,357 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "[31m[1mPUT /api/v1/auth/login HTTP/1.1[0m" 400 -
+2025-07-18 11:25:15,392 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "[31m[1mGET /api/v1/auth/me HTTP/1.1[0m" 401 -
+2025-07-18 11:25:15,421 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:25:15] "[31m[1mGET /api/v1/chat/agents HTTP/1.1[0m" 401 -
+2025-07-18 11:29:23,732 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:23] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:29:23,770 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:23] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:29:23,805 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:23] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:29:23,842 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:23] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:29:23,887 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:23] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:29:23,897 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:23] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:29:23,936 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:23] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:29:23,965 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:23] "[31m[1mPUT /api/v1/health HTTP/1.1[0m" 400 -
+2025-07-18 11:29:24,004 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=5b3f3ef33593765d...
+2025-07-18 11:29:24,005 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=5b3f3ef33593765d..., user_agent=python-requests/2.32.4...
+2025-07-18 11:29:24,006 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:29:24,007 - root - INFO - Login successful: username=metalhouse, device_id=5b3f3ef33593765d..., active_sessions=1
+2025-07-18 11:29:24,007 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:29:24,008 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:24] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:29:24,048 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:24] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:29:24,088 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:29:24,088 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:29:24,088 - root - INFO - [GET AGENTS] user=metalhouse, count=0/0
+2025-07-18 11:29:24,089 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:24] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:29:24,133 - root - WARNING - User metalhouse lacks permissions: ['manage_cache', 'admin']
+2025-07-18 11:29:24,133 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:24] "[31m[1mGET /api/v1/cache/health HTTP/1.1[0m" 403 -
+2025-07-18 11:29:24,170 - root - WARNING - User metalhouse lacks permissions: ['view_stats']
+2025-07-18 11:29:24,174 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:24] "[31m[1mGET /api/v1/cache/stats HTTP/1.1[0m" 403 -
+2025-07-18 11:29:25,379 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:29:25,406 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:29:25,457 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:29:25,485 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:29:25,533 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:29:25,562 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:29:25,627 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:29:25,657 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "[31m[1mPUT /api/v1/health HTTP/1.1[0m" 400 -
+2025-07-18 11:29:25,717 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=06c0b528f5678474...
+2025-07-18 11:29:25,717 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=06c0b528f5678474..., user_agent=python-requests/2.32.4...
+2025-07-18 11:29:25,719 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:29:25,720 - root - INFO - Login successful: username=metalhouse, device_id=06c0b528f5678474..., active_sessions=1
+2025-07-18 11:29:25,720 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:29:25,721 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:29:25,738 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:29:25,784 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:29:25,784 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:29:25,785 - root - INFO - [GET AGENTS] user=metalhouse, count=0/0
+2025-07-18 11:29:25,786 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:29:25,811 - root - WARNING - User metalhouse lacks permissions: ['manage_cache', 'admin']
+2025-07-18 11:29:25,811 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "[31m[1mGET /api/v1/cache/health HTTP/1.1[0m" 403 -
+2025-07-18 11:29:25,860 - root - WARNING - User metalhouse lacks permissions: ['view_stats']
+2025-07-18 11:29:25,862 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:29:25] "[31m[1mGET /api/v1/cache/stats HTTP/1.1[0m" 403 -
+2025-07-18 11:30:48,285 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:30:48,350 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:30:49,752 - root - INFO - 日志系统初始化完成
+2025-07-18 11:30:49,753 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:30:49,753 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:30:49,758 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:30:49,758 - root - INFO - 环境: development
+2025-07-18 11:30:49,758 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:30:49,758 - root - INFO - API版本: v1
+2025-07-18 11:30:49,759 - root - INFO - 响应格式: 标准化
+2025-07-18 11:30:49,784 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:30:49,792 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:31:15,148 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:31:15,197 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:31:16,531 - root - INFO - 日志系统初始化完成
+2025-07-18 11:31:16,532 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:31:16,532 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:31:16,537 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:31:16,538 - root - INFO - 环境: development
+2025-07-18 11:31:16,538 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:31:16,538 - root - INFO - API版本: v1
+2025-07-18 11:31:16,539 - root - INFO - 响应格式: 标准化
+2025-07-18 11:31:16,560 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:31:16,569 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:31:16,703 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=b827bc9871724aed...
+2025-07-18 11:31:16,704 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=b827bc9871724aed..., user_agent=python-requests/2.32.4...
+2025-07-18 11:31:16,705 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:31:16,705 - root - INFO - Login successful: username=metalhouse, device_id=b827bc9871724aed..., active_sessions=1
+2025-07-18 11:31:16,705 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:31:16,706 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:31:16] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:31:16,742 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:31:16] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:31:16,752 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:31:16,752 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:31:16,752 - root - INFO - [GET AGENTS] user=metalhouse, count=0/0
+2025-07-18 11:31:16,753 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:31:16] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:31:16,780 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:31:16,781 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:31:16,781 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:31:16,783 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:31:16] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:31:16,802 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:31:16,803 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:31:16,803 - root - ERROR - [AGENT] get_agent_api_key error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:31:16,804 - root - ERROR - [DIFY] No API key available for agent_id: agent_1751526225_7744
+2025-07-18 11:31:16,804 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:31:16,805 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:31:16] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:31:16,843 - root - WARNING - User metalhouse lacks permissions: ['send_messages']
+2025-07-18 11:31:16,844 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:31:16] "[31m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 403 -
+2025-07-18 11:31:16,877 - root - WARNING - User metalhouse lacks permissions: ['create_conversations']
+2025-07-18 11:31:16,878 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:31:16] "[31m[1mPOST /api/v1/chat/conversations HTTP/1.1[0m" 403 -
+2025-07-18 11:31:16,923 - root - WARNING - User metalhouse lacks permissions: ['send_messages']
+2025-07-18 11:31:16,924 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:31:16] "[31m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 403 -
+2025-07-18 11:31:50,050 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\auth\\decorators.py', reloading
+2025-07-18 11:31:50,105 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:31:51,405 - root - INFO - 日志系统初始化完成
+2025-07-18 11:31:51,406 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:31:51,406 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:31:51,411 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:31:51,412 - root - INFO - 环境: development
+2025-07-18 11:31:51,412 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:31:51,413 - root - INFO - API版本: v1
+2025-07-18 11:31:51,413 - root - INFO - 响应格式: 标准化
+2025-07-18 11:31:51,436 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:31:51,444 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:32:18,841 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\auth\\decorators.py', reloading
+2025-07-18 11:32:18,902 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:32:20,592 - root - INFO - 日志系统初始化完成
+2025-07-18 11:32:20,593 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:32:20,593 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:32:20,600 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:32:20,601 - root - INFO - 环境: development
+2025-07-18 11:32:20,601 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:32:20,602 - root - INFO - API版本: v1
+2025-07-18 11:32:20,602 - root - INFO - 响应格式: 标准化
+2025-07-18 11:32:20,625 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:32:20,632 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:32:43,356 - root - INFO - 日志系统初始化完成
+2025-07-18 11:32:43,356 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:32:43,357 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:32:43,361 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:32:43,361 - root - INFO - 环境: development
+2025-07-18 11:32:43,362 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:32:43,362 - root - INFO - API版本: v1
+2025-07-18 11:32:43,362 - root - INFO - 响应格式: 标准化
+2025-07-18 11:32:44,690 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.1:5000
+2025-07-18 11:32:44,690 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 11:32:44,692 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:32:45,950 - root - INFO - 日志系统初始化完成
+2025-07-18 11:32:45,951 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:32:45,951 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:32:45,956 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:32:45,956 - root - INFO - 环境: development
+2025-07-18 11:32:45,956 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:32:45,956 - root - INFO - API版本: v1
+2025-07-18 11:32:45,957 - root - INFO - 响应格式: 标准化
+2025-07-18 11:32:45,977 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:32:45,983 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:33:01,542 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=caa5cbc95975216e...
+2025-07-18 11:33:01,543 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=caa5cbc95975216e..., user_agent=python-requests/2.32.4...
+2025-07-18 11:33:01,544 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:33:01,544 - root - INFO - Login successful: username=metalhouse, device_id=caa5cbc95975216e..., active_sessions=1
+2025-07-18 11:33:01,545 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:33:01,545 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:33:01] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:33:01,572 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:33:01] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:33:01,603 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:33:01,603 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:33:01,604 - root - INFO - [GET AGENTS] user=metalhouse, count=0/0
+2025-07-18 11:33:01,604 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:33:01] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:33:01,634 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:33:01,634 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:33:01,635 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:33:01,642 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:33:01] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:33:01,665 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:33:01,665 - root - ERROR - [AGENT] get_user_agents error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:33:01,666 - root - ERROR - [AGENT] get_agent_api_key error: [Errno 2] No such file or directory: 'D:\\ChatDify_Codes\\DifyChatBackend\\data\\agents.json'
+2025-07-18 11:33:01,666 - root - ERROR - [DIFY] No API key available for agent_id: agent_1751526225_7744
+2025-07-18 11:33:01,666 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:33:01,667 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:33:01] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:33:01,695 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:33:01,696 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:33:01] "[31m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 422 -
+2025-07-18 11:33:01,726 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:33:01,726 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:33:01] "[31m[1mPOST /api/v1/chat/conversations HTTP/1.1[0m" 422 -
+2025-07-18 11:33:01,757 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:33:01,758 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:33:01] "[31m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 422 -
+2025-07-18 11:33:15,392 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:33:15,437 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:33:16,617 - root - INFO - 日志系统初始化完成
+2025-07-18 11:33:16,618 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:33:16,618 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:33:16,622 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:33:16,623 - root - INFO - 环境: development
+2025-07-18 11:33:16,623 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:33:16,623 - root - INFO - API版本: v1
+2025-07-18 11:33:16,624 - root - INFO - 响应格式: 标准化
+2025-07-18 11:33:16,643 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:33:16,650 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:33:23,769 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:33:23,820 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:33:25,121 - root - INFO - 日志系统初始化完成
+2025-07-18 11:33:25,122 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:33:25,123 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:33:25,127 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:33:25,127 - root - INFO - 环境: development
+2025-07-18 11:33:25,129 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:33:25,129 - root - INFO - API版本: v1
+2025-07-18 11:33:25,130 - root - INFO - 响应格式: 标准化
+2025-07-18 11:33:25,184 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:33:25,193 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:33:53,598 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:33:53,648 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:33:56,123 - root - INFO - 日志系统初始化完成
+2025-07-18 11:33:56,123 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:33:56,124 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:33:56,130 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:33:56,130 - root - INFO - 环境: development
+2025-07-18 11:33:56,131 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:33:56,131 - root - INFO - API版本: v1
+2025-07-18 11:33:56,131 - root - INFO - 响应格式: 标准化
+2025-07-18 11:33:56,150 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:33:56,158 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:35:30,210 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=0eccbe350c5f734e...
+2025-07-18 11:35:30,211 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=0eccbe350c5f734e..., user_agent=python-requests/2.32.4...
+2025-07-18 11:35:30,212 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:35:30,212 - root - INFO - Login successful: username=metalhouse, device_id=0eccbe350c5f734e..., active_sessions=1
+2025-07-18 11:35:30,213 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:35:30,214 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:35:30] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:35:30,251 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:35:30] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:35:30,287 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:35:30,298 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:35:30,298 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:35:30] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:35:30,332 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:35:30,332 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:35:30,333 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:35:30,334 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:35:30] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:35:30,364 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:35:30,367 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:35:30,828 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 401 78
+2025-07-18 11:35:30,829 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:35:30,829 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:35:30,831 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:35:30] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:35:30,862 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:35:30,863 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:35:30] "[31m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 422 -
+2025-07-18 11:35:30,893 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:35:30,894 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:35:30] "[31m[1mPOST /api/v1/chat/conversations HTTP/1.1[0m" 422 -
+2025-07-18 11:35:30,924 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:35:30,924 - root - ERROR - [CHAT ERROR] 'ChatMessageRequest' object has no attribute 'inputs'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 232, in api_chat
+    'inputs': chat_request.inputs or {},
+              ^^^^^^^^^^^^^^^^^^^
+  File "D:\ChatDify_Codes\DifyChatBackend\.venv\Lib\site-packages\pydantic\main.py", line 991, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'ChatMessageRequest' object has no attribute 'inputs'
+2025-07-18 11:35:30,926 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:35:30] "[35m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 500 -
+2025-07-18 11:36:04,975 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\request_validator.py', reloading
+2025-07-18 11:36:05,031 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:36:06,294 - root - INFO - 日志系统初始化完成
+2025-07-18 11:36:06,295 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:36:06,295 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:36:06,300 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:36:06,300 - root - INFO - 环境: development
+2025-07-18 11:36:06,300 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:36:06,301 - root - INFO - API版本: v1
+2025-07-18 11:36:06,301 - root - INFO - 响应格式: 标准化
+2025-07-18 11:36:06,322 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:36:06,329 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:36:16,487 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\utils\\request_validator.py', reloading
+2025-07-18 11:36:16,545 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:36:17,783 - root - INFO - 日志系统初始化完成
+2025-07-18 11:36:17,783 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:36:17,783 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:36:17,789 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:36:17,789 - root - INFO - 环境: development
+2025-07-18 11:36:17,789 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:36:17,790 - root - INFO - API版本: v1
+2025-07-18 11:36:17,790 - root - INFO - 响应格式: 标准化
+2025-07-18 11:36:17,809 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:36:17,816 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:36:28,992 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:36:29,056 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:36:30,361 - root - INFO - 日志系统初始化完成
+2025-07-18 11:36:30,362 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:36:30,362 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:36:30,368 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:36:30,368 - root - INFO - 环境: development
+2025-07-18 11:36:30,369 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:36:30,369 - root - INFO - API版本: v1
+2025-07-18 11:36:30,369 - root - INFO - 响应格式: 标准化
+2025-07-18 11:36:30,389 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:36:30,398 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:36:36,507 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:36:36,556 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:36:37,744 - root - INFO - 日志系统初始化完成
+2025-07-18 11:36:37,745 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:36:37,745 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:36:37,750 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:36:37,751 - root - INFO - 环境: development
+2025-07-18 11:36:37,751 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:36:37,751 - root - INFO - API版本: v1
+2025-07-18 11:36:37,751 - root - INFO - 响应格式: 标准化
+2025-07-18 11:36:37,770 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:36:37,777 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:36:46,918 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:36:46,969 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:36:48,776 - root - INFO - 日志系统初始化完成
+2025-07-18 11:36:48,777 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:36:48,777 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:36:48,782 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:36:48,782 - root - INFO - 环境: development
+2025-07-18 11:36:48,782 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:36:48,783 - root - INFO - API版本: v1
+2025-07-18 11:36:48,783 - root - INFO - 响应格式: 标准化
+2025-07-18 11:36:48,802 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:36:48,812 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:36:48,860 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=e777d78a5a04fefb...
+2025-07-18 11:36:48,860 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=e777d78a5a04fefb..., user_agent=python-requests/2.32.4...
+2025-07-18 11:36:48,861 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:36:48,862 - root - INFO - Login successful: username=metalhouse, device_id=e777d78a5a04fefb..., active_sessions=1
+2025-07-18 11:36:48,862 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:36:48,863 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:36:48] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:36:48,897 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:36:48] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:36:48,931 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:36:48,932 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:36:48,932 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:36:48] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:36:48,958 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:36:48,958 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:36:48,958 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:36:48,960 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:36:48] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:36:48,988 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:36:48,992 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:36:49,398 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 401 78
+2025-07-18 11:36:49,399 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:36:49,400 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:36:49,402 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:36:49] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:36:49,434 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:36:49,436 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:36:49,808 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 401 78
+2025-07-18 11:36:49,810 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:36:49,810 - root - ERROR - [CHAT ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 290, in api_chat
+    message=resp.get('message', '消息发送失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:36:49,811 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:36:49] "[35m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 500 -
+2025-07-18 11:36:49,840 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:36:49,842 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:36:50,261 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 401 78
+2025-07-18 11:36:50,262 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:36:50,262 - root - ERROR - [CREATE CONVERSATION ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 361, in api_create_conversation
+    message=resp.get('message', '对话创建失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:36:50,263 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:36:50] "[35m[1mPOST /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:36:50,290 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:36:50,292 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:36:50,718 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 401 78
+2025-07-18 11:36:50,719 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:36:50,719 - root - INFO - [CHAT STREAM] user=metalhouse, agent=agent_1751526225_7744 - 缓存已清除
+2025-07-18 11:36:50,758 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:36:50] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:37:39,139 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "GET /health HTTP/1.1" 200 -
+2025-07-18 11:37:39,167 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "GET /api/v1/health HTTP/1.1" 200 -
+2025-07-18 11:37:39,201 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "GET /api/v1/info HTTP/1.1" 200 -
+2025-07-18 11:37:39,231 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:37:39,261 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "[31m[1mPOST /api/v1/auth/login HTTP/1.1[0m" 422 -
+2025-07-18 11:37:39,292 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=cd836b75226e63e6...
+2025-07-18 11:37:39,293 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=cd836b75226e63e6..., user_agent=python-requests/2.32.4...
+2025-07-18 11:37:39,294 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:37:39,294 - root - INFO - Login successful: username=metalhouse, device_id=cd836b75226e63e6..., active_sessions=1
+2025-07-18 11:37:39,295 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:37:39,295 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:37:39,327 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:37:39,354 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:37:39,354 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:37:39,355 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:37:39,384 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:37:39,385 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:37:39,385 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:37:39,386 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:37:39,411 - root - WARNING - User metalhouse lacks permissions: ['manage_cache', 'admin']
+2025-07-18 11:37:39,412 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "[31m[1mGET /api/v1/cache/health HTTP/1.1[0m" 403 -
+2025-07-18 11:37:39,450 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "[33mGET /api/v1/nonexistent HTTP/1.1[0m" 404 -
+2025-07-18 11:37:39,478 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "[31m[1mPUT /api/v1/auth/login HTTP/1.1[0m" 400 -
+2025-07-18 11:37:39,512 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "[31m[1mGET /api/v1/auth/me HTTP/1.1[0m" 401 -
+2025-07-18 11:37:39,542 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:37:39] "[31m[1mGET /api/v1/chat/agents HTTP/1.1[0m" 401 -
+2025-07-18 11:38:46,355 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:38:46,413 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:38:47,738 - root - INFO - 日志系统初始化完成
+2025-07-18 11:38:47,738 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:38:47,738 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:38:47,743 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:38:47,743 - root - INFO - 环境: development
+2025-07-18 11:38:47,744 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:38:47,744 - root - INFO - API版本: v1
+2025-07-18 11:38:47,745 - root - INFO - 响应格式: 标准化
+2025-07-18 11:38:47,765 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:38:47,772 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:38:55,905 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_real_chat.py', reloading
+2025-07-18 11:38:55,988 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:38:57,659 - root - INFO - 日志系统初始化完成
+2025-07-18 11:38:57,660 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:38:57,660 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:38:57,665 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:38:57,665 - root - INFO - 环境: development
+2025-07-18 11:38:57,665 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:38:57,666 - root - INFO - API版本: v1
+2025-07-18 11:38:57,666 - root - INFO - 响应格式: 标准化
+2025-07-18 11:38:57,688 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:38:57,695 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:41:28,006 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=6cd4f497f383e466...
+2025-07-18 11:41:28,006 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=6cd4f497f383e466..., user_agent=python-requests/2.32.4...
+2025-07-18 11:41:28,007 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:41:28,008 - root - INFO - Login successful: username=metalhouse, device_id=6cd4f497f383e466..., active_sessions=1
+2025-07-18 11:41:28,008 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:41:28,009 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:41:28] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:41:28,040 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:41:28] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:41:28,077 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:41:28,078 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:41:28,078 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:41:28] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:41:28,113 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:41:28,114 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:41:28,114 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:41:28,116 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:41:28] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:41:28,144 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:41:28,150 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:41:28,548 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 401 78
+2025-07-18 11:41:28,549 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:41:28,550 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:41:28,551 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:41:28] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:41:28,576 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:41:28,577 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:41:28,937 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 401 78
+2025-07-18 11:41:28,939 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:41:28,939 - root - ERROR - [CHAT ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 290, in api_chat
+    message=resp.get('message', '消息发送失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:41:28,940 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:41:28] "[35m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 500 -
+2025-07-18 11:41:28,965 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:41:28,967 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:41:29,356 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 401 78
+2025-07-18 11:41:29,357 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:41:29,357 - root - ERROR - [CREATE CONVERSATION ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 361, in api_create_conversation
+    message=resp.get('message', '对话创建失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:41:29,358 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:41:29] "[35m[1mPOST /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:41:29,383 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:41:29,385 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:41:29,788 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 401 78
+2025-07-18 11:41:29,789 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:41:29,790 - root - INFO - [CHAT STREAM] user=metalhouse, agent=agent_1751526225_7744 - 缓存已清除
+2025-07-18 11:41:29,796 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:41:29] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:42:29,386 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_dify_direct.py', reloading
+2025-07-18 11:42:29,438 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:42:30,798 - root - INFO - 日志系统初始化完成
+2025-07-18 11:42:30,799 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:42:30,799 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:42:30,805 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:42:30,806 - root - INFO - 环境: development
+2025-07-18 11:42:30,806 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:42:30,807 - root - INFO - API版本: v1
+2025-07-18 11:42:30,808 - root - INFO - 响应格式: 标准化
+2025-07-18 11:42:30,831 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:42:30,840 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:43:40,815 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_dify_direct.py', reloading
+2025-07-18 11:43:40,872 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:43:42,123 - root - INFO - 日志系统初始化完成
+2025-07-18 11:43:42,123 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:43:42,123 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:43:42,128 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:43:42,128 - root - INFO - 环境: development
+2025-07-18 11:43:42,129 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:43:42,129 - root - INFO - API版本: v1
+2025-07-18 11:43:42,129 - root - INFO - 响应格式: 标准化
+2025-07-18 11:43:42,149 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:43:42,156 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:43:45,409 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=d27518daa3a40631...
+2025-07-18 11:43:45,410 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=d27518daa3a40631..., user_agent=python-requests/2.32.4...
+2025-07-18 11:43:45,411 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:43:45,412 - root - INFO - Login successful: username=metalhouse, device_id=d27518daa3a40631..., active_sessions=1
+2025-07-18 11:43:45,412 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:43:45,413 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:43:45] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:43:45,422 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:43:45,423 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:43:45,424 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:43:45] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:43:45,432 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:43:45,433 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:43:45,433 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:43:45,435 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:43:45] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:43:45,444 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:43:45,448 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:43:45,519 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 401 78
+2025-07-18 11:43:45,522 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:43:45,522 - root - ERROR - [GET CONVERSATIONS ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 186, in api_conversations
+    message=resp.get('message', '获取对话列表失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:43:45,524 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:43:45] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:43:45,534 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:43:45,536 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:43:45,584 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 401 78
+2025-07-18 11:43:45,585 - root - ERROR - [DIFY] API request failed: 401 - {"code": "unauthorized", "message": "Access token is invalid", "status": 401}
+
+2025-07-18 11:43:45,585 - root - ERROR - [CHAT ERROR] 'bool' object has no attribute 'get'
+Traceback (most recent call last):
+  File "D:\ChatDify_Codes\DifyChatBackend\api\chat_routes_v2.py", line 290, in api_chat
+    message=resp.get('message', '消息发送失败')
+            ^^^^^^^^
+AttributeError: 'bool' object has no attribute 'get'
+2025-07-18 11:43:45,586 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:43:45] "[35m[1mPOST /api/v1/chat/messages HTTP/1.1[0m" 500 -
+2025-07-18 11:44:39,937 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:44:39,986 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:44:41,182 - root - INFO - 日志系统初始化完成
+2025-07-18 11:44:41,182 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:44:41,183 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:44:41,189 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:44:41,189 - root - INFO - 环境: development
+2025-07-18 11:44:41,190 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:44:41,190 - root - INFO - API版本: v1
+2025-07-18 11:44:41,191 - root - INFO - 响应格式: 标准化
+2025-07-18 11:44:41,212 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:44:41,221 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:45:00,489 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:45:00,538 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:45:01,850 - root - INFO - 日志系统初始化完成
+2025-07-18 11:45:01,851 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:45:01,851 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:45:01,856 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:45:01,856 - root - INFO - 环境: development
+2025-07-18 11:45:01,856 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:45:01,857 - root - INFO - API版本: v1
+2025-07-18 11:45:01,858 - root - INFO - 响应格式: 标准化
+2025-07-18 11:45:01,880 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:45:01,888 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:45:15,075 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:45:15,120 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:45:16,375 - root - INFO - 日志系统初始化完成
+2025-07-18 11:45:16,375 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:45:16,375 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:45:16,380 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:45:16,380 - root - INFO - 环境: development
+2025-07-18 11:45:16,380 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:45:16,381 - root - INFO - API版本: v1
+2025-07-18 11:45:16,381 - root - INFO - 响应格式: 标准化
+2025-07-18 11:45:16,399 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:45:16,406 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:47:31,168 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=5a4323889e6dcacc...
+2025-07-18 11:47:31,168 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=5a4323889e6dcacc..., user_agent=python-requests/2.32.4...
+2025-07-18 11:47:31,170 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:47:31,170 - root - INFO - Login successful: username=metalhouse, device_id=5a4323889e6dcacc..., active_sessions=1
+2025-07-18 11:47:31,170 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:47:31,171 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:47:31] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:47:31,208 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:47:31] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:47:31,236 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:47:31,237 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:47:31,238 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:47:31] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:47:31,264 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:47:31,265 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:47:31,266 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:47:31] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:47:31,295 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:47:31,299 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:47:31,407 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 200 22478
+2025-07-18 11:47:31,410 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:47:31] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:47:31,433 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:47:31,435 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:47:34,717 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 829
+2025-07-18 11:47:34,719 - root - INFO - [CHAT SUCCESS] user=metalhouse, agent=agent_1751526225_7744
+2025-07-18 11:47:34,720 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:47:34] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:47:34,743 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:47:34,745 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:48:02,402 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 2372
+2025-07-18 11:48:02,403 - root - INFO - [CREATE CONVERSATION] user=metalhouse, agent=agent_1751526225_7744
+2025-07-18 11:48:02,404 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:48:02] "POST /api/v1/chat/conversations HTTP/1.1" 200 -
+2025-07-18 11:48:02,432 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:48:02,434 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:48:02,757 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 None
+2025-07-18 11:48:02,757 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:48:02] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:48:04,420 - root - INFO - [CHAT STREAM] user=metalhouse, agent=agent_1751526225_7744 - 缓存已清除
+2025-07-18 11:48:47,117 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:48:47,180 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:48:48,590 - root - INFO - 日志系统初始化完成
+2025-07-18 11:48:48,591 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:48:48,592 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:48:48,599 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:48:48,600 - root - INFO - 环境: development
+2025-07-18 11:48:48,600 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:48:48,600 - root - INFO - API版本: v1
+2025-07-18 11:48:48,601 - root - INFO - 响应格式: 标准化
+2025-07-18 11:48:48,623 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:48:48,631 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:49:10,969 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:49:11,035 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:49:12,561 - root - INFO - 日志系统初始化完成
+2025-07-18 11:49:12,562 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:49:12,562 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:49:12,568 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:49:12,568 - root - INFO - 环境: development
+2025-07-18 11:49:12,569 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:49:12,569 - root - INFO - API版本: v1
+2025-07-18 11:49:12,569 - root - INFO - 响应格式: 标准化
+2025-07-18 11:49:12,594 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:49:12,601 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:50:43,852 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_dify_conversations.py', reloading
+2025-07-18 11:50:43,908 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:50:45,233 - root - INFO - 日志系统初始化完成
+2025-07-18 11:50:45,233 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:50:45,234 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:50:45,239 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:50:45,240 - root - INFO - 环境: development
+2025-07-18 11:50:45,240 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:50:45,240 - root - INFO - API版本: v1
+2025-07-18 11:50:45,241 - root - INFO - 响应格式: 标准化
+2025-07-18 11:50:45,262 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:50:45,269 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:51:51,150 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_dify_conversations.py', reloading
+2025-07-18 11:51:51,212 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:51:52,430 - root - INFO - 日志系统初始化完成
+2025-07-18 11:51:52,431 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:51:52,431 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:51:52,440 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:51:52,441 - root - INFO - 环境: development
+2025-07-18 11:51:52,442 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:51:52,442 - root - INFO - API版本: v1
+2025-07-18 11:51:52,443 - root - INFO - 响应格式: 标准化
+2025-07-18 11:51:52,499 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:51:52,508 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:53:05,472 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:53:05,530 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:53:06,758 - root - INFO - 日志系统初始化完成
+2025-07-18 11:53:06,758 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:53:06,758 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:53:06,763 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:53:06,763 - root - INFO - 环境: development
+2025-07-18 11:53:06,764 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:53:06,764 - root - INFO - API版本: v1
+2025-07-18 11:53:06,764 - root - INFO - 响应格式: 标准化
+2025-07-18 11:53:06,784 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:53:06,791 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:53:25,048 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:53:25,095 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:53:27,175 - root - INFO - 日志系统初始化完成
+2025-07-18 11:53:27,175 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:53:27,176 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:53:27,181 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:53:27,181 - root - INFO - 环境: development
+2025-07-18 11:53:27,181 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:53:27,182 - root - INFO - API版本: v1
+2025-07-18 11:53:27,182 - root - INFO - 响应格式: 标准化
+2025-07-18 11:53:27,202 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:53:27,209 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:53:27,229 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=18b28a54c7817282...
+2025-07-18 11:53:27,230 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=18b28a54c7817282..., user_agent=python-requests/2.32.4...
+2025-07-18 11:53:27,231 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:53:27,232 - root - INFO - Login successful: username=metalhouse, device_id=18b28a54c7817282..., active_sessions=1
+2025-07-18 11:53:27,232 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:53:27,233 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:53:27] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:53:27,268 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:53:27] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:53:27,294 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:53:27,295 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:53:27,296 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:53:27] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:53:27,305 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:53:27,306 - root - ERROR - [DIFY] No API key available for agent_id: None
+2025-07-18 11:53:27,306 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:53:27] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:53:27,322 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:53:27,327 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:53:27,471 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 200 22346
+2025-07-18 11:53:27,472 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:53:27] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:53:27,493 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:53:27,494 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:53:30,717 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 829
+2025-07-18 11:53:30,718 - root - INFO - [CHAT SUCCESS] user=metalhouse, agent=agent_1751526225_7744
+2025-07-18 11:53:30,719 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:53:30] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:53:30,739 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:53:30,741 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:53:46,592 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 2194
+2025-07-18 11:53:46,593 - root - INFO - [CREATE CONVERSATION] user=metalhouse, agent=agent_1751526225_7744
+2025-07-18 11:53:46,594 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:53:46] "POST /api/v1/chat/conversations HTTP/1.1" 200 -
+2025-07-18 11:53:46,630 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:53:46,638 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:53:46,851 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 None
+2025-07-18 11:53:46,852 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:53:46] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:53:49,493 - root - INFO - [CHAT STREAM] user=metalhouse, agent=agent_1751526225_7744 - 缓存已清除
+2025-07-18 11:54:39,295 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:54:39,352 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:54:40,967 - root - INFO - 日志系统初始化完成
+2025-07-18 11:54:40,968 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:54:40,968 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:54:40,972 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:54:40,972 - root - INFO - 环境: development
+2025-07-18 11:54:40,973 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:54:40,973 - root - INFO - API版本: v1
+2025-07-18 11:54:40,974 - root - INFO - 响应格式: 标准化
+2025-07-18 11:54:40,998 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:54:41,007 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:54:59,274 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
+2025-07-18 11:54:59,324 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:55:01,160 - root - INFO - 日志系统初始化完成
+2025-07-18 11:55:01,160 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:55:01,161 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:55:01,165 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:55:01,165 - root - INFO - 环境: development
+2025-07-18 11:55:01,166 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:55:01,166 - root - INFO - API版本: v1
+2025-07-18 11:55:01,166 - root - INFO - 响应格式: 标准化
+2025-07-18 11:55:01,184 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:55:01,191 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:55:01,213 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=dc26f72f726ee1dd...
+2025-07-18 11:55:01,213 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=dc26f72f726ee1dd..., user_agent=python-requests/2.32.4...
+2025-07-18 11:55:01,214 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:55:01,215 - root - INFO - Login successful: username=metalhouse, device_id=dc26f72f726ee1dd..., active_sessions=1
+2025-07-18 11:55:01,215 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:55:01,216 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:55:01] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:55:01,250 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:55:01] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:55:01,266 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:55:01,268 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:55:01,268 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:55:01] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:55:01,296 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:55:01,297 - root - INFO - [DIFY] Using first available agent key: agent_1751526225_7744
+2025-07-18 11:55:01,301 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:55:01,512 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 200 22214
+2025-07-18 11:55:01,516 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:55:01] "[35m[1mGET /api/v1/chat/conversations HTTP/1.1[0m" 500 -
+2025-07-18 11:55:01,546 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:55:01,549 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:55:01,688 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 200 22214
+2025-07-18 11:55:01,690 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:55:01] "[35m[1mGET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1[0m" 500 -
+2025-07-18 11:55:01,715 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:55:01,717 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:55:05,084 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 830
+2025-07-18 11:55:05,085 - root - INFO - [CHAT SUCCESS] user=metalhouse, agent=agent_1751526225_7744
+2025-07-18 11:55:05,085 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:55:05] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:55:05,111 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:55:05,112 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:55:21,726 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 2076
+2025-07-18 11:55:21,727 - root - INFO - [CREATE CONVERSATION] user=metalhouse, agent=agent_1751526225_7744
+2025-07-18 11:55:21,728 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:55:21] "POST /api/v1/chat/conversations HTTP/1.1" 200 -
+2025-07-18 11:55:21,766 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:55:21,769 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:55:22,001 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 None
+2025-07-18 11:55:22,002 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:55:22] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:55:23,056 - root - INFO - [CHAT STREAM] user=metalhouse, agent=agent_1751526225_7744 - 缓存已清除
+2025-07-18 11:55:56,926 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\chat_routes_v2.py', reloading
+2025-07-18 11:55:56,986 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:55:58,235 - root - INFO - 日志系统初始化完成
+2025-07-18 11:55:58,236 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:55:58,236 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:55:58,240 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:55:58,241 - root - INFO - 环境: development
+2025-07-18 11:55:58,241 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:55:58,242 - root - INFO - API版本: v1
+2025-07-18 11:55:58,242 - root - INFO - 响应格式: 标准化
+2025-07-18 11:55:58,263 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:55:58,270 - werkzeug - INFO -  * Debugger PIN: 338-538-685
+2025-07-18 11:56:05,622 - root - INFO - [LOGIN ATTEMPT] username=metalhouse, ip=127.0.0.1, device_id=9317f20702575d7f...
+2025-07-18 11:56:05,622 - root - INFO - Login attempt started: username=metalhouse, ip=127.0.0.1, device_id=9317f20702575d7f..., user_agent=python-requests/2.32.4...
+2025-07-18 11:56:05,624 - root - INFO - Login attempt for metalhouse: success=True, ip=127.0.0.1, total_attempts=0
+2025-07-18 11:56:05,624 - root - INFO - Login successful: username=metalhouse, device_id=9317f20702575d7f..., active_sessions=1
+2025-07-18 11:56:05,624 - root - INFO - [LOGIN SUCCESS] user=metalhouse, active_sessions=1
+2025-07-18 11:56:05,625 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:56:05] "POST /api/v1/auth/login HTTP/1.1" 200 -
+2025-07-18 11:56:05,663 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:56:05] "GET /api/v1/auth/me HTTP/1.1" 200 -
+2025-07-18 11:56:05,702 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:56:05,702 - root - INFO - [GET AGENTS] user=metalhouse, count=1/1
+2025-07-18 11:56:05,703 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:56:05] "GET /api/v1/chat/agents HTTP/1.1" 200 -
+2025-07-18 11:56:05,731 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:56:05,732 - root - INFO - [DIFY] Using first available agent key: agent_1751526225_7744
+2025-07-18 11:56:05,735 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:56:05,848 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 200 22082
+2025-07-18 11:56:05,850 - root - INFO - [GET CONVERSATIONS] user=metalhouse, agent=None, count=20
+2025-07-18 11:56:05,851 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:56:05] "GET /api/v1/chat/conversations HTTP/1.1" 200 -
+2025-07-18 11:56:05,892 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:56:05,894 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:56:05,942 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "GET http://192.168.1.68/v1/conversations?user=metalhouse&limit=20 HTTP/1.1" 200 22082
+2025-07-18 11:56:05,943 - root - INFO - [GET CONVERSATIONS] user=metalhouse, agent=agent_1751526225_7744, count=20
+2025-07-18 11:56:05,944 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:56:05] "GET /api/v1/chat/conversations?agent_id=agent_1751526225_7744 HTTP/1.1" 200 -
+2025-07-18 11:56:05,982 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:56:05,984 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:56:09,488 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 829
+2025-07-18 11:56:09,490 - root - INFO - [CHAT SUCCESS] user=metalhouse, agent=agent_1751526225_7744
+2025-07-18 11:56:09,491 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:56:09] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:56:09,499 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:56:09,500 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:56:24,084 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 2049
+2025-07-18 11:56:24,085 - root - INFO - [CREATE CONVERSATION] user=metalhouse, agent=agent_1751526225_7744
+2025-07-18 11:56:24,086 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:56:24] "POST /api/v1/chat/conversations HTTP/1.1" 200 -
+2025-07-18 11:56:24,120 - root - DEBUG - Token auto-refresh check failed: Signature verification failed
+2025-07-18 11:56:24,122 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 127.0.0.1:2080
+2025-07-18 11:56:24,371 - urllib3.connectionpool - DEBUG - http://127.0.0.1:2080 "POST http://192.168.1.68/v1/chat-messages HTTP/1.1" 200 None
+2025-07-18 11:56:24,372 - werkzeug - INFO - 127.0.0.1 - - [18/Jul/2025 11:56:24] "POST /api/v1/chat/messages HTTP/1.1" 200 -
+2025-07-18 11:56:25,596 - root - INFO - [CHAT STREAM] user=metalhouse, agent=agent_1751526225_7744 - 缓存已清除
+2025-07-18 11:56:44,925 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\api\\chat_routes_v2.py', reloading
+2025-07-18 11:56:44,982 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 11:56:46,200 - root - INFO - 日志系统初始化完成
+2025-07-18 11:56:46,200 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 11:56:46,200 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 11:56:46,205 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 11:56:46,205 - root - INFO - 环境: development
+2025-07-18 11:56:46,205 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 11:56:46,206 - root - INFO - API版本: v1
+2025-07-18 11:56:46,206 - root - INFO - 响应格式: 标准化
+2025-07-18 11:56:46,225 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 11:56:46,232 - werkzeug - INFO -  * Debugger PIN: 338-538-685
