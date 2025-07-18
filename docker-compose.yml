@@ -9,12 +9,14 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - FLASK_ENV=development
-      - DIFY_BASE_URL=http://192.168.1.68/v1
-      - SECRET_KEY=docker-dev-secret-key
+      - FLASK_ENV=${FLASK_ENV:-development}
+      - DIFY_BASE_URL=${DIFY_BASE_URL:-http://your-dify-server/v1}
+      - SECRET_KEY=${SECRET_KEY:-please-change-this-secret-key}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-please-change-this-jwt-secret}
       - REDIS_ENABLED=true
       - REDIS_HOST=redis
-      - LOG_LEVEL=INFO
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs

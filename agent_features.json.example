@@ -1,0 +1,10 @@
+{
+  "agent_example_id": {
+    "suggested_questions": {"enabled": true},
+    "file_upload": {"enabled": false},
+    "text_to_audio": {"enabled": true},
+    "audio_to_text": {"enabled": false},
+    "message_feedback": {"enabled": true},
+    "conversation_rename": {"enabled": true}
+  }
+}

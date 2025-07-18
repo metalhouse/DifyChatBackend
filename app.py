@@ -27,7 +27,8 @@ from api.chat_routes import (
     api_agents, api_conversations, api_chat, api_create_conversation,
     api_message_feedback, api_suggested_questions, api_delete_conversation,
     api_rename_conversation, api_audio_to_text, api_text_to_audio,
-    api_messages_history, api_app_info, api_chat_messages
+    api_messages_history, api_app_info, api_chat_messages,
+    api_streaming_stats, api_streaming_reset_stats
 )
 from api.cache_routes import (
     api_user_permissions, api_agent_config, api_preload_cache,
@@ -171,6 +172,10 @@ def register_routes(app):
     app.add_url_rule('/api/v1/cache/invalidate', 'api_invalidate_cache', api_invalidate_cache, methods=['DELETE'])
     app.add_url_rule('/api/v1/cache/stats', 'api_cache_stats', api_cache_stats, methods=['GET'])
     app.add_url_rule('/api/v1/cache/health', 'api_cache_health', api_cache_health, methods=['GET'])
+    
+    # ========== Task 5.3 新增：流式监控路由 ==========
+    app.add_url_rule('/api/v1/streaming/stats', 'api_streaming_stats', api_streaming_stats, methods=['GET'])
+    app.add_url_rule('/api/v1/streaming/reset', 'api_streaming_reset_stats', api_streaming_reset_stats, methods=['POST'])
     
     # ========== 智能体功能配置路由 ==========
     app.register_blueprint(agent_config_bp)

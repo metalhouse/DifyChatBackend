@@ -1,8 +1,10 @@
 """
-聊天相关的API路由 (标准化版本)
+聊天相关的API路由 (标准化版本) - Task 5.3 流式响应优化增强版
 """
 from flask import request, jsonify, g, Response
 import logging
+import json
+from datetime import datetime
 
 from utils.response_builder import ResponseBuilder, ErrorCode, PaginationInfo
 from utils.request_validator import (
@@ -11,6 +13,7 @@ from utils.request_validator import (
 )
 from auth.decorators import require_auth, require_permissions, check_agent_access, auto_refresh_token
 from services.dify_service import dify_service
+from services.streaming_service import streaming_processor, stream_response, SSEEvent, SSEEventType
 # 导入功能检查装饰器
 from middleware.feature_check import (
     require_agent_feature,
@@ -31,6 +34,147 @@ def _get_current_user():
             message="用户认证信息缺失"
         )
     return current_user, None
+
+# ========== Task 5.3 新增：流式聊天处理函数 ==========
+
+def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payload: dict) -> Response:
+    """
+    处理流式聊天请求 - Task 5.3 现代化版本
+    
+    Args:
+        username: 用户名
+        chat_request: 聊天请求对象
+        payload: 请求负载
+        
+    Returns:
+        Flask Response 对象
+    """
+    try:
+        # 创建流式连接
+        connection_id = streaming_processor.create_connection(
+            user_id=username,
+            agent_id=chat_request.agent_id,
+            conversation_id=chat_request.conversation_id,
+            metadata={
+                'message_length': len(chat_request.message),
+                'has_files': bool(chat_request.files),
+                'auto_generate_name': chat_request.auto_generate_name
+            }
+        )
+        
+        def dify_data_generator():
+            """Dify数据生成器"""
+            try:
+                resp, status = dify_service.make_request(
+                    'POST', '/chat-messages', json_data=payload, 
+                    stream=True, agent_id=chat_request.agent_id
+                )
+                
+                if status != 200:
+                    error_msg = f"Dify API error: status={status}"
+                    if hasattr(resp, 'get'):
+                        error_msg = resp.get('message', error_msg)
+                    raise Exception(error_msg)
+                
+                # 处理流式响应
+                for line in resp.iter_lines():
+                    if line:
+                        yield line
+                        
+            except Exception as e:
+                logging.error(f"[STREAM DIFY ERROR] {connection_id}: {e}")
+                raise
+            finally:
+                # 清除用户对话缓存
+                try:
+                    dify_service.invalidate_user_cache(username, chat_request.agent_id)
+                    logging.info(f"[CHAT STREAM] user={username}, agent={chat_request.agent_id} - 缓存已清除")
+                except Exception as cache_error:
+                    logging.error(f"[STREAM CACHE ERROR] {connection_id}: {cache_error}")
+        
+        def dify_chunk_processor(chunk: bytes) -> SSEEvent:
+            """Dify数据块处理器"""
+            try:
+                if not chunk:
+                    return SSEEvent(
+                        event_type=SSEEventType.HEARTBEAT,
+                        data={"status": "keepalive"}
+                    )
+                
+                # 解码数据
+                chunk_str = chunk.decode('utf-8').strip()
+                if not chunk_str:
+                    return SSEEvent(
+                        event_type=SSEEventType.HEARTBEAT,
+                        data={"status": "keepalive"}
+                    )
+                
+                # 解析Dify的SSE格式
+                if chunk_str.startswith('data: '):
+                    chunk_str = chunk_str[6:]  # 移除 'data: ' 前缀
+                
+                # 处理特殊的SSE事件
+                if chunk_str == '[DONE]':
+                    return SSEEvent(
+                        event_type=SSEEventType.COMPLETION,
+                        data={"status": "completed", "message": "Stream finished"}
+                    )
+                
+                # 解析JSON数据
+                try:
+                    data = json.loads(chunk_str)
+                    
+                    # 根据Dify的事件类型创建对应的SSE事件
+                    event_type = data.get('event', 'message')
+                    
+                    if event_type == 'message':
+                        return SSEEvent(
+                            event_type=SSEEventType.MESSAGE,
+                            data=data
+                        )
+                    elif event_type == 'message_end':
+                        return SSEEvent(
+                            event_type=SSEEventType.COMPLETION,
+                            data=data
+                        )
+                    elif event_type in ['agent_message', 'message_file']:
+                        return SSEEvent(
+                            event_type=SSEEventType.MESSAGE,
+                            data=data
+                        )
+                    else:
+                        return SSEEvent(
+                            event_type=SSEEventType.METADATA,
+                            data=data
+                        )
+                        
+                except json.JSONDecodeError:
+                    # 不是JSON，作为文本处理
+                    return SSEEvent(
+                        event_type=SSEEventType.CHUNK,
+                        data={"text": chunk_str, "raw": True}
+                    )
+                    
+            except Exception as e:
+                logging.error(f"Error processing Dify chunk: {e}")
+                return SSEEvent(
+                    event_type=SSEEventType.ERROR,
+                    data={"error": f"Chunk processing error: {str(e)}"}
+                )
+        
+        # 创建SSE响应
+        return streaming_processor.create_sse_response(
+            connection_id=connection_id,
+            data_generator=dify_data_generator(),
+            process_chunk=dify_chunk_processor
+        )
+        
+    except Exception as e:
+        logging.error(f"[STREAM CHAT ERROR] user={username}, agent={chat_request.agent_id}: {e}")
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message=f"流式聊天处理异常: {str(e)}"
+        )
 
 @require_auth()
 @require_permissions(['access_agents'])
@@ -250,23 +394,8 @@ def api_chat():
         
         # 5. 发送消息
         if chat_request.stream:
-            # 流式响应
-            def stream():
-                try:
-                    resp, _ = dify_service.make_request(
-                        'POST', '/chat-messages', json_data=payload, 
-                        stream=True, agent_id=chat_request.agent_id
-                    )
-                    
-                    for line in resp.iter_lines():
-                        if line:
-                            yield line + b'\n'
-                finally:
-                    # 清除用户对话缓存
-                    dify_service.invalidate_user_cache(username, chat_request.agent_id)
-                    logging.info(f"[CHAT STREAM] user={username}, agent={chat_request.agent_id} - 缓存已清除")
-                    
-            return Response(stream(), content_type='text/event-stream')
+            # Task 5.3 增强：使用现代化流式处理器
+            return _handle_streaming_chat(username, chat_request, payload)
         else:
             # 阻塞式响应
             resp, status = dify_service.make_request(
@@ -956,5 +1085,59 @@ def api_chat_messages():
         return ResponseBuilder.error(
             error_code=ErrorCode.INTERNAL_ERROR,
             message="发送消息异常"
+        )
+
+# ========== Task 5.3 新增：流式监控API ==========
+
+@require_auth()
+@require_permissions(['system_admin'])
+@auto_refresh_token()
+def api_streaming_stats():
+    """获取流式连接统计信息（管理员接口）"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        # 2. 获取统计信息
+        stats = streaming_processor.get_connection_stats()
+        
+        return ResponseBuilder.success(
+            data=stats,
+            message="流式连接统计获取成功"
+        )
+        
+    except Exception as e:
+        logging.error(f"[STREAMING STATS ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取流式统计异常"
+        )
+
+@require_auth()
+@require_permissions(['system_admin'])
+@auto_refresh_token()
+def api_streaming_reset_stats():
+    """重置流式连接统计信息（管理员接口）"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        # 2. 重置统计
+        streaming_processor.reset_stats()
+        
+        return ResponseBuilder.success(
+            data={"reset": True, "timestamp": datetime.now().isoformat()},
+            message="流式连接统计重置成功"
+        )
+        
+    except Exception as e:
+        logging.error(f"[STREAMING RESET ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="重置流式统计异常"
         )
 

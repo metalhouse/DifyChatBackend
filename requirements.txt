@@ -12,6 +12,10 @@ Werkzeug>=2.0.0
 # HTTP客户端
 requests>=2.31.0
 
+# Task 5.1 新增：异步HTTP客户端和重试机制
+aiohttp>=3.9.0
+backoff>=2.2.1
+
 # 数据处理
 pathlib2>=2.3.7
 

@@ -4936,3 +4936,96 @@ TypeError: The view function did not return a valid response. The return type mu
 2025-07-18 17:27:02,246 - werkzeug - INFO -  * Debugger PIN: 503-103-557
 2025-07-18 17:33:22,908 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\dify_service.py', reloading
 2025-07-18 17:33:22,954 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 18:58:28,234 - root - INFO - 日志系统初始化完成
+2025-07-18 18:58:28,235 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 18:58:28,235 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 18:58:28,243 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 18:58:28,243 - root - INFO - 环境: development
+2025-07-18 18:58:28,243 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 18:58:28,244 - root - INFO - API版本: v1
+2025-07-18 18:58:28,244 - root - INFO - 响应格式: 标准化
+2025-07-18 18:58:28,298 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.68:5000
+2025-07-18 18:58:28,299 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-18 18:58:28,300 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 18:58:29,780 - root - INFO - 日志系统初始化完成
+2025-07-18 18:58:29,780 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 18:58:29,781 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 18:58:29,790 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 18:58:29,790 - root - INFO - 环境: development
+2025-07-18 18:58:29,791 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 18:58:29,792 - root - INFO - API版本: v1
+2025-07-18 18:58:29,793 - root - INFO - 响应格式: 标准化
+2025-07-18 18:58:29,843 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 18:58:29,870 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 18:59:57,302 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\services\\streaming_service.py', reloading
+2025-07-18 18:59:57,303 - root - INFO - [DIFY SERVICE] 资源清理完成
+2025-07-18 18:59:57,365 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 18:59:58,858 - root - INFO - 日志系统初始化完成
+2025-07-18 18:59:58,859 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 18:59:58,859 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 18:59:58,869 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 18:59:58,869 - root - INFO - 环境: development
+2025-07-18 18:59:58,871 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 18:59:58,871 - root - INFO - API版本: v1
+2025-07-18 18:59:58,871 - root - INFO - 响应格式: 标准化
+2025-07-18 18:59:58,892 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 18:59:58,899 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 19:00:07,067 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_task_5_3.py', reloading
+2025-07-18 19:00:07,067 - root - INFO - [DIFY SERVICE] 资源清理完成
+2025-07-18 19:00:07,154 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 19:00:08,639 - root - INFO - 日志系统初始化完成
+2025-07-18 19:00:08,640 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 19:00:08,640 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 19:00:08,649 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 19:00:08,649 - root - INFO - 环境: development
+2025-07-18 19:00:08,649 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 19:00:08,650 - root - INFO - API版本: v1
+2025-07-18 19:00:08,650 - root - INFO - 响应格式: 标准化
+2025-07-18 19:00:08,670 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 19:00:08,677 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 19:01:24,954 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\app.py', reloading
+2025-07-18 19:01:24,954 - root - INFO - [DIFY SERVICE] 资源清理完成
+2025-07-18 19:01:25,015 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 19:01:26,435 - root - INFO - 日志系统初始化完成
+2025-07-18 19:01:26,435 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 19:01:26,436 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 19:01:26,445 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 19:01:26,445 - root - INFO - 环境: development
+2025-07-18 19:01:26,445 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 19:01:26,446 - root - INFO - API版本: v1
+2025-07-18 19:01:26,446 - root - INFO - 响应格式: 标准化
+2025-07-18 19:01:26,465 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 19:01:26,471 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 19:01:38,705 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\app.py', reloading
+2025-07-18 19:01:38,706 - root - INFO - [DIFY SERVICE] 资源清理完成
+2025-07-18 19:01:38,796 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 19:01:40,479 - root - INFO - 日志系统初始化完成
+2025-07-18 19:01:40,480 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 19:01:40,480 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 19:01:40,489 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 19:01:40,489 - root - INFO - 环境: development
+2025-07-18 19:01:40,489 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 19:01:40,490 - root - INFO - API版本: v1
+2025-07-18 19:01:40,490 - root - INFO - 响应格式: 标准化
+2025-07-18 19:01:40,509 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 19:01:40,515 - werkzeug - INFO -  * Debugger PIN: 503-103-557
+2025-07-18 19:03:44,118 - root - INFO - 日志系统初始化完成
+2025-07-18 19:03:44,118 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 19:03:44,119 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 19:03:44,130 - root - INFO - [DIFY SERVICE] 资源清理完成
+2025-07-18 19:05:32,248 - werkzeug - INFO -  * Detected change in 'D:\\ChatDify_Codes\\DifyChatBackend\\test_task_5_3.py', reloading
+2025-07-18 19:05:32,248 - root - INFO - [DIFY SERVICE] 资源清理完成
+2025-07-18 19:05:32,300 - werkzeug - INFO -  * Restarting with stat
+2025-07-18 19:05:33,762 - root - INFO - 日志系统初始化完成
+2025-07-18 19:05:33,763 - utils.cache_manager - INFO - Redis缓存已禁用
+2025-07-18 19:05:33,763 - root - INFO - 缓存管理器初始化完成: 禁用
+2025-07-18 19:05:33,773 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-18 19:05:33,773 - root - INFO - 环境: development
+2025-07-18 19:05:33,773 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-18 19:05:33,774 - root - INFO - API版本: v1
+2025-07-18 19:05:33,774 - root - INFO - 响应格式: 标准化
+2025-07-18 19:05:33,792 - werkzeug - WARNING -  * Debugger is active!
+2025-07-18 19:05:33,799 - werkzeug - INFO -  * Debugger PIN: 503-103-557

@@ -1,0 +1,15 @@
+{
+  "agents": {
+    "agent_example_id": {
+      "name": "示例智能体",
+      "dify_api_key": "your-dify-api-key-here"
+    }
+  },
+  "user_agents": {
+    "example_user": [
+      "agent_example_id"
+    ],
+    "user2": [],
+    "admin": []
+  }
+}

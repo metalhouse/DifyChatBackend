@@ -1,0 +1,16 @@
+{
+  "example_user": {
+    "password_hash": "pbkdf2:sha256:600000$example_salt$hashed_password_here",
+    "permissions": ["send_messages", "view_conversations", "create_conversations"],
+    "created_at": "2024-01-01T00:00:00Z",
+    "last_login": "2024-01-15T10:30:00Z",
+    "status": "active"
+  },
+  "admin": {
+    "password_hash": "pbkdf2:sha256:600000$admin_salt$admin_hashed_password_here",
+    "permissions": ["system_admin"],
+    "created_at": "2024-01-01T00:00:00Z",
+    "last_login": "2024-01-15T10:30:00Z",
+    "status": "active"
+  }
+}

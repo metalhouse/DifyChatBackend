@@ -3,31 +3,75 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.egg-info/
+dist/
+build/
+.venv/
 venv/
 ENV/
+env/
+.env/
 
 # 环境配置文件 (包含敏感信息，不应提交)
 *.env
 .env*
+!.env.example
+!.env.*.example
 .env.local
 .env.dev
 .env.test
 .env.prod
 .env.production
 .env.redis*
+.env.development
+.env.staging
 
-# 配置文件
+# 敏感配置文件
 users.json
+agents.json
+agent_features.json
+*.key
+*.pem
+*.crt
+*.cert
+config/secrets.py
+config/local_settings.py
 
-# VSCode
-.vscode/
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# Redis dumps
+dump.rdb
 
 # 日志文件
+*.log
 login.log
+app.log
+logs/
+log/
+
+# 缓存文件
+.cache/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# IDE和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
 
 # 系统文件
 .DS_Store
 Thumbs.db
+Desktop.ini
 
 # 测试文件 (临时调试和演示用，但保留tests/目录)
 test_*.py
@@ -40,12 +84,35 @@ quick_*.py
 simple_*.py
 run_*.py
 !tests/
+!test_*.py.example
 
 # 临时文档和报告
 task_*_completion_report.md
 TASK_*.md
 *_COMPLETED.md
+*_REPORT.md
+archived_docs/
+!archived_docs/README.md
 
-# 其他
+# 部署相关
+docker-compose.override.yml
+kubernetes/secrets/
+
+# 备份文件
 *.bak
+*.backup
+*.old
+*.orig
+*.tmp
+
+# Node.js (如果使用前端工具)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 操作系统生成的文件
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 *.swp
