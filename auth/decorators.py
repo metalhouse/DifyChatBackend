@@ -180,7 +180,13 @@ def get_user_permissions(username: str) -> List[str]:
             'create_conversations'
         ])
         
-        return permissions
+        # 从 users.json 中获取用户配置的权限
+        user_permissions = user.get('permissions', [])
+        if user_permissions:
+            permissions.extend(user_permissions)
+        
+        # 去重并返回
+        return list(set(permissions))
         
     except Exception as e:
         logging.error(f"Error getting user permissions for {username}: {e}")

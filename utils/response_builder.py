@@ -168,7 +168,8 @@ class ResponseBuilder:
         if pagination:
             response_dict['pagination'] = asdict(pagination)
         
-        return jsonify(response_dict), 200
+        # 安全地使用jsonify，如果没有应用上下文则返回原始数据
+        return ResponseBuilder._safe_jsonify(response_dict), 200
     
     @staticmethod
     def error(error_code: ErrorCode, message: str = None, data: Any = None, request_id: str = None) -> Tuple[Any, int]:
@@ -185,7 +186,8 @@ class ResponseBuilder:
         # 根据错误码确定HTTP状态码
         http_status = ResponseBuilder._get_http_status_from_error_code(error_code)
         
-        return jsonify(response.to_dict()), http_status
+        # 安全地使用jsonify，如果没有应用上下文则返回原始数据
+        return ResponseBuilder._safe_jsonify(response.to_dict()), http_status
     
     @staticmethod
     def _get_http_status_from_error_code(error_code: ErrorCode) -> int:
@@ -211,6 +213,26 @@ class ResponseBuilder:
             return 500  # 服务器错误
         else:
             return 400  # 默认错误
+    
+    @staticmethod
+    def _safe_jsonify(data: Dict[str, Any]) -> Any:
+        """安全地使用jsonify，如果没有应用上下文则返回原始数据"""
+        try:
+            from flask import has_app_context, jsonify
+            if has_app_context():
+                return jsonify(data)
+            else:
+                # 没有应用上下文时，返回字典和状态码的元组
+                import json
+                return json.dumps(data, ensure_ascii=False, indent=2)
+        except ImportError:
+            # 如果Flask不可用，返回JSON字符串
+            import json
+            return json.dumps(data, ensure_ascii=False, indent=2)
+        except Exception:
+            # 其他异常情况，返回原始数据
+            import json
+            return json.dumps(data, ensure_ascii=False, indent=2)
     
     @staticmethod
     def paginated(items: List[Any], page: int, page_size: int, total: int, 
