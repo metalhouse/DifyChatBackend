@@ -10,13 +10,13 @@ from typing import Optional, Any
 # 设置模块日志
 logger = logging.getLogger(__name__)
 
-def init_chatroom_system(app, socketio, db_session=None):
+def init_chatroom_system(app, socketio=None, db_session=None):
     """
     初始化聊天室系统
     
     Args:
         app: Flask应用实例
-        socketio: SocketIO实例
+        socketio: SocketIO实例（可选，如果不提供将仅使用原生WebSocket）
         db_session: 数据库会话（可选，如果不提供将使用SQLite）
     """
     try:
@@ -66,8 +66,16 @@ def init_chatroom_system(app, socketio, db_session=None):
         from .services.online_user_manager import OnlineUserManager
         from .services.permissions import setup_chatroom_permissions
         from .websocket.connection_manager import ConnectionManager
-        from .websocket.handlers import ChatroomWebSocketHandler
         from .api.routes import chatroom_bp
+        
+        # 可选导入SocketIO处理器（仅在需要时）
+        ChatroomWebSocketHandler = None
+        if socketio is not None:
+            try:
+                from .websocket.handlers import ChatroomWebSocketHandler
+            except ImportError as e:
+                logger.warning(f"⚠️ 无法导入SocketIO处理器: {e}")
+                ChatroomWebSocketHandler = None
         
         logger.info("✅ 聊天室模块导入成功")
         
@@ -83,16 +91,25 @@ def init_chatroom_system(app, socketio, db_session=None):
         # 3. 连接管理器
         connection_manager = ConnectionManager()
         
-        # 4. WebSocket处理器
-        ws_handler = ChatroomWebSocketHandler(
-            socketio=socketio,
-            db_service=db_service,
-            online_manager=online_manager,
-            connection_manager=connection_manager
-        )
-        
-        # 5. 注册WebSocket事件
-        ws_handler.register_handlers()
+        # 4. WebSocket处理器（仅在提供SocketIO且处理器可用时创建）
+        ws_handler = None
+        if socketio is not None and ChatroomWebSocketHandler is not None:
+            try:
+                ws_handler = ChatroomWebSocketHandler(
+                    socketio=socketio,
+                    db_service=db_service,
+                    online_manager=online_manager,
+                    connection_manager=connection_manager
+                )
+                
+                # 5. 注册WebSocket事件（仅在有处理器时）
+                ws_handler.register_handlers()
+                logger.info("✅ Flask-SocketIO WebSocket处理器已初始化")
+            except Exception as e:
+                logger.warning(f"⚠️ Flask-SocketIO WebSocket处理器初始化失败: {e}")
+                ws_handler = None
+        else:
+            logger.info("ℹ️ 跳过Flask-SocketIO WebSocket处理器（使用原生WebSocket）")
         
         # 6. 注册HTTP API路由
         app.register_blueprint(chatroom_bp, url_prefix='/api/v1/chatroom')
@@ -107,7 +124,7 @@ def init_chatroom_system(app, socketio, db_session=None):
         app.chatroom_db_service = db_service
         app.chatroom_online_manager = online_manager
         app.chatroom_connection_manager = connection_manager
-        app.chatroom_ws_handler = ws_handler
+        app.chatroom_ws_handler = ws_handler  # 可能为None
         
         # 9. 添加关闭钩子
         @app.teardown_appcontext
@@ -122,8 +139,8 @@ def init_chatroom_system(app, socketio, db_session=None):
                 if hasattr(app, 'chatroom_connection_manager'):
                     # ConnectionManager没有cleanup方法，但可以清理连接
                     try:
-                        # 如果有同步的清理方法，可以在这里调用
-                        connection_count = len(app.chatroom_connection_manager.connections)
+                        # 使用正确的属性名 active_connections
+                        connection_count = len(app.chatroom_connection_manager.active_connections)
                         logger.info(f"聊天室连接管理器清理，当前连接数: {connection_count}")
                     except Exception as cm_error:
                         logger.warning(f"连接管理器清理警告: {cm_error}")

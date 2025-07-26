@@ -1,4 +1,4 @@
-# DifyChatBackend - 现代化智能对话后端服务 v2.1.3
+# DifyChatBackend - 现代化智能对话后端服务 v2.1.4
 
 > 🚀 **企业级智能对话API服务** - 基于Flask的现代化后端，为DCApp安卓应用提供安全、高性能的Dify API中转服务
 
@@ -15,11 +15,35 @@
 - 🆕 **单资源详情** - 支持获取单个智能体和对话的详细信息
 - 🆕 **实时系统统计** - 为管理员提供系统运行状态监控
 - 🆕 **智能体欢迎语** - 支持自定义智能体欢迎信息
-- 🔥 **聊天室系统** - 完整的实时聊天室功能 (v2.1.3)
+- 🔥 **聊天室系统** - 完整的实时聊天室功能 (v2.1.4)
+- ⚡ **WebSocket支持** - 原生WebSocket实时通信 (v2.1.4)
 
-## 🔥 v2.1.3 版本更新 - 聊天室系统
+## 🔥 v2.1.4 版本更新 - WebSocket实时通信
 
-### 🆕 全新聊天室功能
+### 🌐 原生WebSocket支持
+- **完整WebSocket服务器**: 基于websockets 15.0.1的高性能实现
+- **JWT认证集成**: WebSocket连接支持JWT Token认证
+- **实时消息推送**: 支持聊天室实时消息广播
+- **连接管理**: 智能连接管理和自动重连机制
+- **标准化协议**: 遵循WebSocket RFC 6455标准
+
+### 📡 WebSocket API
+- **连接端点**: `ws://localhost:6000/ws/chatroom`
+- **认证方式**: URL参数或消息认证
+- **支持消息**:
+  - `get_chatrooms` - 获取聊天室列表
+  - `join_chatroom` - 加入聊天室
+  - `leave_chatroom` - 离开聊天室
+  - `send_message` - 发送消息
+  - `get_messages` - 获取历史消息
+
+### 🛠️ 技术实现
+- **双端口架构**: HTTP API(5000) + WebSocket(6000)
+- **异步处理**: 完全异步的消息处理机制
+- **错误处理**: 完善的连接错误处理和恢复
+- **兼容性**: 支持现代浏览器和移动端WebSocket
+
+### 🔧 聊天室系统增强
 - **完整CRUD操作**: 创建、查询、更新、删除聊天室
 - **权限管理**: 基于角色的聊天室访问控制
 - **成员管理**: 支持聊天室成员的添加和管理
@@ -27,14 +51,7 @@
 - **双Redis架构**: 主应用DB0，聊天室DB1，完全数据隔离
 - **智能初始化**: 避免重复数据库初始化，优化启动速度
 
-### 🔧 核心技术特性
-- **数据库优化**: 实现表存在性检查，避免重复SQL执行
-- **JWT增强**: 修复聊天室API的JWT密钥验证问题
-- **原生SQL**: 使用原生SQL查询提升性能和兼容性
-- **连接池**: MariaDB连接池管理，支持高并发访问
-- **软删除**: 聊天室使用软删除机制保护数据
-
-### 📡 聊天室API端点
+### � HTTP API端点
 ```
 POST   /api/v1/chatroom/create       - 创建聊天室
 GET    /api/v1/chatroom/list         - 获取聊天室列表  
@@ -45,9 +62,16 @@ GET    /api/v1/chatroom/{id}/members - 获取聊天室成员
 POST   /api/v1/chatroom/{id}/members - 添加聊天室成员
 ```
 
+### 🌐 WebSocket端点
+```
+ws://localhost:6000/ws/chatroom?token=JWT_TOKEN
+```
+
 ### 🏗️ 系统架构增强
+- **多协议支持**: HTTP REST API + WebSocket实时通信
 - **双数据库**: SQLite(主应用) + MariaDB(聊天室)
-- **双缓存**: Redis DB0(主应用) + Redis DB1(聊天室)  
+- **双缓存**: Redis DB0(主应用) + Redis DB1(聊天室)
+- **双端口**: 5000(HTTP) + 6000(WebSocket)  
 - **权限统一**: 聊天室权限集成到现有RBAC系统
 - **配置优化**: 环境变量统一管理数据库和缓存配置
 
@@ -546,9 +570,27 @@ grep "user123" logs/app.log
 ## 📚 文档链接
 
 - [API详细文档](API_DOCUMENTATION.md) - 完整的API接口说明
+- [WebSocket前端指南](WEBSOCKET_FRONTEND_GUIDE.md) - WebSocket集成完整指南
+- [WebSocket测试指南](WEBSOCKET_TESTING_GUIDE.md) - 快速测试WebSocket连接
+- [项目架构文档](PROJECT_ARCHITECTURE.md) - 系统架构说明
 - [配置说明](CONFIG.md) - 详细的配置参数说明
 - [项目完成总结](PROJECT_COMPLETION_SUMMARY.md) - 项目优化成果
 - [Postman使用指南](POSTMAN_USAGE_GUIDE.md) - API测试工具使用
+
+## 🧪 测试工具
+
+### WebSocket连接测试
+- **websocket_diagnostic.html** - 完整的WebSocket服务诊断工具 (推荐)
+- **websocket_test.html** - 基础WebSocket连接测试
+- **websocket_check.ps1** - PowerShell状态检查脚本
+
+### 快速服务检查
+```powershell
+# Windows PowerShell
+.\websocket_check.ps1
+```
+
+**重要**: 如果看到"426 Upgrade Required"错误，这是**正常的**！说明WebSocket服务正在运行。
 
 ## 🤝 贡献指南
 

@@ -24,6 +24,12 @@ from utils.response_builder import ResponseBuilder, ErrorCode
 # 导入认证装饰器
 from auth.decorators import require_auth, auto_refresh_token
 
+# 导入速率限制装饰器
+from utils.rate_limiter import health_check_rate_limit, api_rate_limit, auth_rate_limit
+
+# 导入安全配置
+from utils.security import setup_security
+
 # 导入标准化的API路由
 from api.auth_routes import login, refresh_token, logout, get_current_user
 from api.chat_routes import (
@@ -51,7 +57,6 @@ except ImportError:
 
 # 可选导入聊天室系统
 try:
-    from flask_socketio import SocketIO
     from chatroom import init_chatroom_system
     CHATROOM_AVAILABLE = True
     print("✅ 聊天室系统模块已加载")
@@ -84,28 +89,21 @@ def create_app(config_env: str = None) -> Flask:
     # 初始化缓存管理器
     cache_manager = init_cache_manager(config)
     
+    # 设置安全配置
+    security_config = setup_security(app)
+    
     # 记录缓存状态
     cache_status = "启用" if cache_manager.enabled else "禁用"
     logging.info(f"缓存管理器初始化完成: {cache_status}")
     
     # 初始化聊天室系统（如果启用）
-    socketio = None
     chatroom_enabled = os.getenv('CHATROOM_ENABLED', 'false').lower() == 'true'
     
     if CHATROOM_AVAILABLE and chatroom_enabled:
         try:
             logging.info("🔧 启用聊天室系统...")
             
-            # 创建SocketIO实例
-            socketio = SocketIO(
-                app,
-                cors_allowed_origins=os.getenv('SOCKETIO_CORS_ALLOWED_ORIGINS', '*'),
-                async_mode=os.getenv('SOCKETIO_ASYNC_MODE', 'threading'),
-                ping_timeout=int(os.getenv('SOCKETIO_PING_TIMEOUT', 60)),
-                ping_interval=int(os.getenv('SOCKETIO_PING_INTERVAL', 25)),
-                max_http_buffer_size=int(os.getenv('SOCKETIO_MAX_HTTP_BUFFER_SIZE', 1000000))
-            )
-            
+            # 移除SocketIO初始化，直接使用原生WebSocket
             # 尝试创建数据库会话
             db_session = None
             mariadb_enabled = os.getenv('MARIADB_ENABLED', 'false').lower() == 'true'
@@ -122,8 +120,8 @@ def create_app(config_env: str = None) -> Flask:
                     logging.warning(f"⚠️ MariaDB连接失败，降级到SQLite: {e}")
                     db_session = None
             else:
+                # 使用SQLite作为默认数据库
                 try:
-                    # 优先尝试使用SQLAlchemy + SQLite
                     from sqlalchemy import create_engine
                     from sqlalchemy.orm import sessionmaker
                     
@@ -131,7 +129,7 @@ def create_app(config_env: str = None) -> Flask:
                     data_dir = os.path.join(os.path.dirname(__file__), 'data')
                     os.makedirs(data_dir, exist_ok=True)
                     
-                    # 使用SQLite作为默认数据库
+                    # 创建SQLite引擎和会话
                     engine = create_engine(f'sqlite:///{data_dir}/chatroom.db', echo=False)
                     Session = sessionmaker(bind=engine)
                     db_session = Session()
@@ -142,25 +140,32 @@ def create_app(config_env: str = None) -> Flask:
                     logging.info("⚠️ SQLAlchemy不可用，使用简化数据库会话")
                     db_session = None  # 聊天室系统会自动创建SQLite会话
             
-            # 初始化聊天室系统
-            success = init_chatroom_system(app, socketio, db_session)
+            # 初始化聊天室系统（移除SocketIO依赖）
+            success = init_chatroom_system(app, None, db_session)
             
             if success:
                 logging.info("✅ 聊天室系统初始化成功")
+                
+                # 初始化原生WebSocket支持（兼容前端需求）
+                try:
+                    from chatroom.websocket.native_websocket import setup_native_websocket
+                    websocket_server = setup_native_websocket(app, db_session)
+                    app.native_websocket_server = websocket_server
+                    logging.info("✅ 原生WebSocket服务器初始化成功")
+                except Exception as e:
+                    logging.warning(f"⚠️ 原生WebSocket初始化失败: {e}")
             else:
                 logging.warning("⚠️ 聊天室系统初始化失败，仅提供基本功能")
-                socketio = None
             
         except Exception as e:
             logging.error(f"❌ 聊天室系统初始化失败: {e}")
-            socketio = None
     elif CHATROOM_AVAILABLE and not chatroom_enabled:
         logging.info("ℹ️ 聊天室系统已禁用（CHATROOM_ENABLED=false）")
     else:
         logging.info("⚠️ 聊天室系统不可用（缺少依赖包）")
     
-    # 将socketio实例附加到app，以便在主程序中使用
-    app.socketio = socketio
+    # 移除socketio依赖 - 不再需要
+    # app.socketio = None
     
     # 注册路由
     register_routes(app)
@@ -229,8 +234,8 @@ def register_routes(app):
     
     # ========== 认证路由 ==========
     # 注意：login和refresh_token不需要认证，使用根路径
-    app.add_url_rule('/api/v1/auth/login', 'login', login, methods=['POST'])
-    app.add_url_rule('/api/v1/auth/refresh', 'refresh_token', refresh_token, methods=['POST'])
+    app.add_url_rule('/api/v1/auth/login', 'login', auth_rate_limit()(login), methods=['POST'])
+    app.add_url_rule('/api/v1/auth/refresh', 'refresh_token', api_rate_limit()(refresh_token), methods=['POST'])
     app.add_url_rule('/api/v1/auth/logout', 'logout', logout, methods=['POST'])
     app.add_url_rule('/api/v1/auth/me', 'get_current_user', get_current_user, methods=['GET'])
     
@@ -274,8 +279,150 @@ def register_routes(app):
     # ========== 智能体功能配置路由 ==========
     app.register_blueprint(agent_config_bp)
     
+    # ========== 安全监控路由 ==========
+    @app.route('/api/v1/security/stats')
+    @require_auth()
+    @api_rate_limit()
+    def api_security_stats():
+        """获取安全监控统计（需要管理员权限）"""
+        try:
+            from utils.security_monitor import get_security_monitor
+            from flask import g
+            
+            # 检查管理员权限
+            user_info = getattr(g, 'current_user', {})
+            if not user_info.get('is_admin', False):
+                return ResponseBuilder.error(
+                    error_code=ErrorCode.ACCESS_DENIED,
+                    message="需要管理员权限"
+                ), 403
+            
+            monitor = get_security_monitor()
+            stats = monitor.get_stats()
+            
+            return ResponseBuilder.success(
+                data=stats,
+                message="安全统计获取成功"
+            )
+            
+        except Exception as e:
+            logging.error(f"获取安全统计失败: {e}")
+            return ResponseBuilder.error(
+                error_code=ErrorCode.INTERNAL_ERROR,
+                message="获取安全统计失败"
+            )
+    
+    @app.route('/api/v1/security/ip/<ip_address>')
+    @require_auth()
+    @api_rate_limit()
+    def api_ip_report(ip_address):
+        """获取特定IP的安全报告（需要管理员权限）"""
+        try:
+            from utils.security_monitor import get_security_monitor
+            from flask import g
+            
+            # 检查管理员权限
+            user_info = getattr(g, 'current_user', {})
+            if not user_info.get('is_admin', False):
+                return ResponseBuilder.error(
+                    error_code=ErrorCode.ACCESS_DENIED,
+                    message="需要管理员权限"
+                ), 403
+            
+            monitor = get_security_monitor()
+            report = monitor.get_ip_report(ip_address)
+            
+            return ResponseBuilder.success(
+                data=report,
+                message=f"IP {ip_address} 报告获取成功"
+            )
+            
+        except Exception as e:
+            logging.error(f"获取IP报告失败: {e}")
+            return ResponseBuilder.error(
+                error_code=ErrorCode.INTERNAL_ERROR,
+                message="获取IP报告失败"
+            )
+    
+    @app.route('/api/v1/security/ban/<ip_address>', methods=['POST'])
+    @require_auth()
+    @api_rate_limit()
+    def api_ban_ip(ip_address):
+        """手动封禁IP（需要管理员权限）"""
+        try:
+            from utils.security_monitor import get_security_monitor
+            from flask import g, request
+            
+            # 检查管理员权限
+            user_info = getattr(g, 'current_user', {})
+            if not user_info.get('is_admin', False):
+                return ResponseBuilder.error(
+                    error_code=ErrorCode.ACCESS_DENIED,
+                    message="需要管理员权限"
+                ), 403
+            
+            data = request.get_json() or {}
+            reason = data.get('reason', 'Manual ban by admin')
+            duration = data.get('duration', 3600)  # 默认1小时
+            
+            monitor = get_security_monitor()
+            monitor.ban_ip(ip_address, reason, duration)
+            
+            return ResponseBuilder.success(
+                data={
+                    'ip': ip_address,
+                    'reason': reason,
+                    'duration': duration,
+                    'banned_by': user_info.get('username', 'admin')
+                },
+                message=f"IP {ip_address} 已被封禁"
+            )
+            
+        except Exception as e:
+            logging.error(f"封禁IP失败: {e}")
+            return ResponseBuilder.error(
+                error_code=ErrorCode.INTERNAL_ERROR,
+                message="封禁IP失败"
+            )
+    
+    @app.route('/api/v1/security/unban/<ip_address>', methods=['POST'])
+    @require_auth()
+    @api_rate_limit()
+    def api_unban_ip(ip_address):
+        """手动解除IP封禁（需要管理员权限）"""
+        try:
+            from utils.security_monitor import get_security_monitor
+            from flask import g
+            
+            # 检查管理员权限
+            user_info = getattr(g, 'current_user', {})
+            if not user_info.get('is_admin', False):
+                return ResponseBuilder.error(
+                    error_code=ErrorCode.ACCESS_DENIED,
+                    message="需要管理员权限"
+                ), 403
+            
+            monitor = get_security_monitor()
+            monitor.unban_ip(ip_address)
+            
+            return ResponseBuilder.success(
+                data={
+                    'ip': ip_address,
+                    'unbanned_by': user_info.get('username', 'admin')
+                },
+                message=f"IP {ip_address} 封禁已解除"
+            )
+            
+        except Exception as e:
+            logging.error(f"解除IP封禁失败: {e}")
+            return ResponseBuilder.error(
+                error_code=ErrorCode.INTERNAL_ERROR,
+                message="解除IP封禁失败"
+            )
+    
     # ========== 系统健康检查路由 ==========
     @app.route('/health')
+    @health_check_rate_limit()
     def health_check():
         """系统健康检查端点"""
         config = get_config()
@@ -323,6 +470,7 @@ def register_routes(app):
         )
     
     @app.route('/api/v1/health')
+    @health_check_rate_limit()
     def api_health_check():
         """API健康检查端点（标准化响应格式）"""
         return health_check()
@@ -540,25 +688,43 @@ if __name__ == '__main__':
     logging.info(f"响应格式: 标准化")
     
     try:
-        # 如果聊天室系统可用，使用SocketIO启动
-        if hasattr(app, 'socketio') and app.socketio:
-            logging.info("🔌 使用SocketIO模式启动服务器")
-            app.socketio.run(
-                app,
-                host=config.server.host,
-                port=config.server.port,
-                debug=config.server.debug,
-                allow_unsafe_werkzeug=True  # 仅用于开发环境
-            )
-        else:
-            # 标准Flask启动模式
-            logging.info("🌐 使用标准Flask模式启动服务器")
-            app.run(
-                host=config.server.host,
-                port=config.server.port,
-                debug=config.server.debug,
-                threaded=config.server.threaded
-            )
+        # 原生WebSocket模式启动
+        logging.info("🌐 使用标准Flask模式启动服务器")
+        
+        # 如果有原生WebSocket服务器，在后台启动
+        if hasattr(app, 'native_websocket_server') and app.native_websocket_server:
+            import threading
+            import os
+            
+            # 检测是否为Flask开发模式重启
+            is_restarting = os.environ.get('WERKZEUG_RUN_MAIN') == 'true'
+            
+            def start_native_websocket():
+                import asyncio
+                try:
+                    # 使用WebSocket专用配置，而不是Flask服务器配置
+                    app.native_websocket_server.start(
+                        host=config.chatroom.websocket_host,
+                        port=config.chatroom.websocket_port
+                    )
+                except Exception as e:
+                    logging.error(f"原生WebSocket服务器启动失败: {e}")
+            
+            if not is_restarting:
+                # 只在主进程启动WebSocket服务器
+                websocket_thread = threading.Thread(target=start_native_websocket, daemon=True)
+                websocket_thread.start()
+                logging.info("🚀 原生WebSocket服务器已在后台启动")
+            else:
+                logging.info("ℹ️ Flask重启进程，跳过WebSocket服务器启动")
+        
+        # 启动Flask HTTP服务器
+        app.run(
+            host=config.server.host,
+            port=config.server.port,
+            debug=config.server.debug,
+            threaded=config.server.threaded
+        )
     except KeyboardInterrupt:
         logging.info("服务器关闭")
     except Exception as e:

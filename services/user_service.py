@@ -6,6 +6,7 @@ import json
 import hashlib
 import secrets
 import string
+import os
 from typing import Optional, Dict, Any, List, Tuple
 import logging
 from datetime import datetime, timedelta
@@ -13,7 +14,7 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 from werkzeug.security import check_password_hash, generate_password_hash
 import jwt
-from config import get_database_config, get_security_config
+from config import get_database_config, get_security_config, get_backup_config
 from auth.auth_manager import auth_manager
 from auth.utils import validate_password_strength, get_client_info, create_session_token
 
@@ -641,19 +642,42 @@ class UserService:
     def save_users(self, users_data: Dict[str, Any]) -> bool:
         """保存用户数据（Task 5.2 增强版）"""
         try:
-            # 创建备份
-            import shutil
-            backup_file = f"{self.users_file}.backup.{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-            try:
-                shutil.copy2(self.users_file, backup_file)
-            except FileNotFoundError:
-                pass  # 原文件不存在，无需备份
+            backup_config = get_backup_config()
+            
+            # 检查是否启用备份
+            if backup_config.enabled and backup_config.backup_on_save:
+                # 创建备份
+                import shutil
+                import glob
+                backup_file = f"{self.users_file}.backup.{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                try:
+                    shutil.copy2(self.users_file, backup_file)
+                except FileNotFoundError:
+                    pass  # 原文件不存在，无需备份
+                
+                # 清理旧备份文件，根据配置保留指定数量
+                backup_pattern = f"{self.users_file}.backup.*"
+                backup_files = glob.glob(backup_pattern)
+                if len(backup_files) > backup_config.max_backup_files:
+                    # 按文件名排序（包含时间戳，自然排序即为时间顺序）
+                    backup_files.sort()
+                    # 删除最旧的备份文件
+                    files_to_delete = backup_files[:-backup_config.max_backup_files]  # 保留最新的指定数量
+                    for old_backup in files_to_delete:
+                        try:
+                            os.remove(old_backup)
+                            logging.info(f"Removed old backup: {old_backup}")
+                        except OSError as e:
+                            logging.warning(f"Failed to remove old backup {old_backup}: {e}")
+                            
+                logging.info(f"Users data saved successfully, backup created: {backup_file}")
+            else:
+                logging.info("Users data saved successfully, backup disabled by configuration")
             
             # 保存数据
             with open(self.users_file, 'w', encoding='utf-8') as f:
                 json.dump(users_data, f, ensure_ascii=False, indent=2)
             
-            logging.info(f"Users data saved successfully, backup created: {backup_file}")
             return True
             
         except Exception as e:

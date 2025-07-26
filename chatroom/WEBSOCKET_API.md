@@ -2,20 +2,22 @@
 
 ## 📡 连接信息
 
-**WebSocket 端点**: `ws://localhost:5000/chatroom`
+**WebSocket 端点**: `ws://127.0.0.1:6000/ws/chatroom`
 
-**认证方式**: JWT Token（通过查询参数或认证头传递）
+**认证方式**: JWT Token（通过查询参数传递）
 
 ```javascript
-// 方式1: 查询参数
-const socket = io('/chatroom?token=your_jwt_token');
+// 通过查询参数传递token
+const socket = new WebSocket('ws://127.0.0.1:6000/ws/chatroom?token=your_jwt_token');
 
-// 方式2: 认证头
-const socket = io('/chatroom', {
-    auth: {
+// 或者连接后发送认证消息
+const socket = new WebSocket('ws://127.0.0.1:6000/ws/chatroom');
+socket.onopen = () => {
+    socket.send(JSON.stringify({
+        type: 'auth',
         token: 'your_jwt_token'
-    }
-});
+    }));
+};
 ```
 
 ## 🔌 连接生命周期
@@ -25,80 +27,94 @@ const socket = io('/chatroom', {
 客户端连接时，服务器会验证JWT token并发送连接确认：
 
 ```javascript
-socket.on('connected', (data) => {
-    console.log(data);
-    // 输出:
-    // {
-    //     "success": true,
-    //     "message": "连接成功",
-    //     "user_id": "user123",
-    //     "timestamp": "2024-01-15T10:30:00Z"
-    // }
-});
+socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'connected') {
+        console.log(data);
+        // 输出:
+        // {
+        //     "type": "connected",
+        //     "data": {
+        //         "connection_id": "uuid",
+        //         "user_id": "user123",
+        //         "username": "用户名",
+        //         "server_time": "2025-07-26T10:30:00Z"
+        //     },
+        //     "status": "success",
+        //     "message": "连接成功"
+        // }
+    }
+};
 ```
 
 ### 连接断开
 
 ```javascript
-socket.on('disconnect', (reason) => {
-    console.log('断开连接:', reason);
-});
+socket.onclose = (event) => {
+    console.log('断开连接:', event.code, event.reason);
+};
 ```
 
 ## 📤 客户端发送事件
 
 ### 1. 获取聊天室列表
 
-**事件名**: `get_chatrooms`
-
-**参数**: 无
-
+**消息格式**: 
 ```javascript
-socket.emit('get_chatrooms');
+{
+    "type": "get_chatrooms"
+}
 ```
 
-**响应事件**: `chatroom_list`
+**发送示例**:
+```javascript
+socket.send(JSON.stringify({
+    type: 'get_chatrooms'
+}));
+```
+
+**响应类型**: `chatroom_list`
 
 ---
 
 ### 2. 加入聊天室
 
-**事件名**: `join_chatroom`
-
-**参数**:
+**消息格式**:
 ```javascript
 {
-    "chatroom_id": "chatroom-uuid"
+    "type": "join_chatroom",
+    "chatroom_id": "chatroom-id"
 }
 ```
 
-**示例**:
+**发送示例**:
 ```javascript
-socket.emit('join_chatroom', {
-    chatroom_id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
-});
+socket.send(JSON.stringify({
+    type: 'join_chatroom',
+    chatroom_id: 'general'
+}));
 ```
 
-**响应事件**: `chatroom_joined` 或 `error`
+**响应类型**: `chatroom_joined` 或 `error`
 
 ---
 
 ### 3. 离开聊天室
 
-**事件名**: `leave_chatroom`
-
-**参数**:
+**消息格式**:
 ```javascript
 {
-    "chatroom_id": "chatroom-uuid"
+    "type": "leave_chatroom",
+    "chatroom_id": "chatroom-id"
 }
 ```
 
-**示例**:
+**发送示例**:
 ```javascript
-socket.emit('leave_chatroom', {
-    chatroom_id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
-});
+socket.send(JSON.stringify({
+    type: 'leave_chatroom',
+    chatroom_id: 'general'
+}));
 ```
 
 **响应事件**: `chatroom_left` 或 `error`

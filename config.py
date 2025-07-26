@@ -43,6 +43,15 @@ class DatabaseConfig:
         Path(self.data_dir).mkdir(parents=True, exist_ok=True)
 
 
+@dataclass
+class BackupConfig:
+    """备份配置"""
+    enabled: bool = True
+    max_backup_files: int = 5
+    backup_on_save: bool = True
+    cleanup_on_startup: bool = False
+    
+    
 @dataclass 
 class DifyConfig:
     """Dify API配置"""
@@ -99,6 +108,8 @@ class ChatroomConfig:
     message_retention_days: int = 30
     enable_encryption: bool = True
     encryption_algorithm: str = 'AES-256-GCM'
+    websocket_host: str = '127.0.0.1'
+    websocket_port: int = 6000
 
 
 @dataclass
@@ -152,6 +163,7 @@ class Config:
         
         # 初始化各个配置组件
         self.database = self._load_database_config()
+        self.backup = self._load_backup_config()
         self.dify = self._load_dify_config()
         self.security = self._load_security_config()
         self.logging = self._load_logging_config()
@@ -175,6 +187,15 @@ class Config:
             users_file=os.getenv('USERS_FILE', str(Path(data_dir) / 'users.json')),
             agents_file=os.getenv('AGENTS_FILE', str(Path(data_dir) / 'agents.json')),
             data_dir=data_dir
+        )
+    
+    def _load_backup_config(self) -> BackupConfig:
+        """加载备份配置"""
+        return BackupConfig(
+            enabled=os.getenv('BACKUP_ENABLED', 'true').lower() == 'true',
+            max_backup_files=int(os.getenv('BACKUP_MAX_FILES', '5')),
+            backup_on_save=os.getenv('BACKUP_ON_SAVE', 'true').lower() == 'true',
+            cleanup_on_startup=os.getenv('BACKUP_CLEANUP_ON_STARTUP', 'false').lower() == 'true'
         )
     
     def _load_dify_config(self) -> DifyConfig:
@@ -247,7 +268,9 @@ class Config:
             max_users_per_room=int(os.getenv('CHATROOM_MAX_USERS_PER_ROOM', '50')),
             message_retention_days=int(os.getenv('CHATROOM_MESSAGE_RETENTION_DAYS', '30')),
             enable_encryption=os.getenv('CHATROOM_ENABLE_ENCRYPTION', 'true').lower() == 'true',
-            encryption_algorithm=os.getenv('CHATROOM_ENCRYPTION_ALGORITHM', 'AES-256-GCM')
+            encryption_algorithm=os.getenv('CHATROOM_ENCRYPTION_ALGORITHM', 'AES-256-GCM'),
+            websocket_host=os.getenv('WEBSOCKET_HOST', '127.0.0.1'),
+            websocket_port=int(os.getenv('WEBSOCKET_PORT', '6000'))
         )
     
     def _load_chatroom_redis_config(self) -> ChatroomRedisConfig:
@@ -364,6 +387,11 @@ def reset_config():
 def get_database_config() -> DatabaseConfig:
     """获取数据库配置"""
     return get_config().database
+
+
+def get_backup_config() -> BackupConfig:
+    """获取备份配置"""
+    return get_config().backup
 
 
 def get_dify_config() -> DifyConfig:
