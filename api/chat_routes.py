@@ -1141,3 +1141,171 @@ def api_streaming_reset_stats():
             message="重置流式统计异常"
         )
 
+
+# ========== 新增端点：单个资源详情 ==========
+
+@require_auth()
+@require_permissions(['access_agents'])
+@auto_refresh_token()
+def api_agent_detail(agent_id):
+    """获取单个智能体详情"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 检查智能体访问权限
+        access_check = check_agent_access(username, agent_id)
+        if not access_check['allowed']:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.ACCESS_DENIED,
+                message=access_check['reason']
+            )
+        
+        # 3. 获取智能体详情
+        use_cache = request.args.get('use_cache', 'true').lower() == 'true'
+        agent_detail = dify_service.get_agent_detail(agent_id, username, use_cache=use_cache)
+        
+        if not agent_detail:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.RESOURCE_NOT_FOUND,
+                message="智能体不存在或无访问权限"
+            )
+        
+        logging.info(f"[GET AGENT DETAIL] user={username}, agent_id={agent_id}")
+        
+        return ResponseBuilder.success(
+            data=agent_detail,
+            message="获取智能体详情成功"
+        )
+        
+    except Exception as e:
+        logging.error(f"[GET AGENT DETAIL ERROR] agent_id={agent_id}, error={e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取智能体详情异常"
+        )
+
+@require_auth()
+@require_permissions(['view_conversations'])
+@auto_refresh_token()
+def api_conversation_detail(conversation_id):
+    """获取单个对话详情"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取对话详情
+        use_cache = request.args.get('use_cache', 'true').lower() == 'true'
+        conversation_detail = dify_service.get_conversation_detail(
+            conversation_id, username, use_cache=use_cache
+        )
+        
+        if not conversation_detail:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.RESOURCE_NOT_FOUND,
+                message="对话不存在或无访问权限"
+            )
+        
+        logging.info(f"[GET CONVERSATION DETAIL] user={username}, conversation_id={conversation_id}")
+        
+        return ResponseBuilder.success(
+            data=conversation_detail,
+            message="获取对话详情成功"
+        )
+        
+    except Exception as e:
+        logging.error(f"[GET CONVERSATION DETAIL ERROR] conversation_id={conversation_id}, error={e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取对话详情异常"
+        )
+
+@require_auth()
+@require_permissions(['view_stats'])
+@auto_refresh_token()
+def api_system_stats():
+    """获取系统统计信息"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 收集系统统计信息
+        from services.dify_service import dify_service
+        from utils.cache_manager import get_cache_manager
+        import time
+        import psutil
+        import os
+        
+        # 基础系统信息
+        uptime = time.time() - getattr(api_system_stats, '_start_time', time.time())
+        if not hasattr(api_system_stats, '_start_time'):
+            api_system_stats._start_time = time.time()
+        
+        # 缓存统计
+        cache_manager = get_cache_manager()
+        cache_stats = {}
+        if cache_manager and cache_manager.enabled:
+            cache_health = cache_manager.health_check()
+            cache_stats = {
+                'enabled': True,
+                'connected': cache_health.get('connected', False),
+                'hit_rate': cache_health.get('hit_rate', 0),
+                'keys_count': cache_health.get('keys_count', 0)
+            }
+        else:
+            cache_stats = {'enabled': False}
+        
+        # 内存使用
+        process = psutil.Process(os.getpid())
+        memory_info = process.memory_info()
+        
+        # 流式连接统计
+        streaming_stats = streaming_processor.get_connection_stats()
+        
+        stats_data = {
+            'uptime': int(uptime),
+            'uptime_formatted': f"{int(uptime//3600)}h {int((uptime%3600)//60)}m {int(uptime%60)}s",
+            'requests_total': getattr(api_system_stats, '_request_count', 1),
+            'active_users': 1,  # 简化实现，当前用户为1
+            'conversations_total': dify_service.get_user_conversation_count(username),
+            'messages_total': dify_service.get_user_message_count(username),
+            'cache': cache_stats,
+            'memory_usage': {
+                'rss': memory_info.rss,
+                'vms': memory_info.vms,
+                'rss_mb': round(memory_info.rss / 1024 / 1024, 2),
+                'vms_mb': round(memory_info.vms / 1024 / 1024, 2)
+            },
+            'streaming': streaming_stats,
+            'last_updated': int(time.time())
+        }
+        
+        # 增加请求计数
+        api_system_stats._request_count = getattr(api_system_stats, '_request_count', 0) + 1
+        
+        logging.info(f"[GET SYSTEM STATS] user={username}")
+        
+        return ResponseBuilder.success(
+            data=stats_data,
+            message="系统统计信息获取成功"
+        )
+        
+    except Exception as e:
+        logging.error(f"[GET SYSTEM STATS ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="获取系统统计异常"
+        )
+

@@ -1,4 +1,4 @@
-# DifyChatBackend - 现代化智能对话后端服务
+# DifyChatBackend - 现代化智能对话后端服务 v2.1.3
 
 > 🚀 **企业级智能对话API服务** - 基于Flask的现代化后端，为DCApp安卓应用提供安全、高性能的Dify API中转服务
 
@@ -11,6 +11,45 @@
 - 🎛️ **功能配置** - 智能体功能开关和配置管理
 - 📊 **监控统计** - 完善的监控和统计系统
 - 🔧 **标准化API** - 统一的响应格式和错误处理
+- 🆕 **分层信息披露** - 基础信息公开，敏感信息需认证
+- 🆕 **单资源详情** - 支持获取单个智能体和对话的详细信息
+- 🆕 **实时系统统计** - 为管理员提供系统运行状态监控
+- 🆕 **智能体欢迎语** - 支持自定义智能体欢迎信息
+- 🔥 **聊天室系统** - 完整的实时聊天室功能 (v2.1.3)
+
+## 🔥 v2.1.3 版本更新 - 聊天室系统
+
+### 🆕 全新聊天室功能
+- **完整CRUD操作**: 创建、查询、更新、删除聊天室
+- **权限管理**: 基于角色的聊天室访问控制
+- **成员管理**: 支持聊天室成员的添加和管理
+- **MariaDB集成**: 聊天室数据持久化存储
+- **双Redis架构**: 主应用DB0，聊天室DB1，完全数据隔离
+- **智能初始化**: 避免重复数据库初始化，优化启动速度
+
+### 🔧 核心技术特性
+- **数据库优化**: 实现表存在性检查，避免重复SQL执行
+- **JWT增强**: 修复聊天室API的JWT密钥验证问题
+- **原生SQL**: 使用原生SQL查询提升性能和兼容性
+- **连接池**: MariaDB连接池管理，支持高并发访问
+- **软删除**: 聊天室使用软删除机制保护数据
+
+### 📡 聊天室API端点
+```
+POST   /api/v1/chatroom/create       - 创建聊天室
+GET    /api/v1/chatroom/list         - 获取聊天室列表  
+GET    /api/v1/chatroom/{id}         - 获取聊天室详情
+PUT    /api/v1/chatroom/{id}         - 更新聊天室信息
+DELETE /api/v1/chatroom/{id}         - 删除聊天室
+GET    /api/v1/chatroom/{id}/members - 获取聊天室成员
+POST   /api/v1/chatroom/{id}/members - 添加聊天室成员
+```
+
+### 🏗️ 系统架构增强
+- **双数据库**: SQLite(主应用) + MariaDB(聊天室)
+- **双缓存**: Redis DB0(主应用) + Redis DB1(聊天室)  
+- **权限统一**: 聊天室权限集成到现有RBAC系统
+- **配置优化**: 环境变量统一管理数据库和缓存配置
 
 ## 🚀 快速开始
 
@@ -59,6 +98,15 @@
 # 应用配置
 FLASK_ENV=development
 FLASK_DEBUG=1
+
+# 聊天室系统配置 (v2.1.3)
+CHATROOM_ENABLED=true
+MARIADB_ENABLED=true
+MARIADB_HOST=192.168.1.10
+MARIADB_PORT=3307
+MARIADB_DATABASE=chatroom_db
+MARIADB_USERNAME=root
+MARIADB_PASSWORD=your_password
 FLASK_HOST=0.0.0.0
 FLASK_PORT=5000
 
@@ -152,6 +200,35 @@ POST /api/v1/auth/login
     }
 }
 ```
+
+## 🆕 新增功能端点
+
+### 单资源详情端点
+```bash
+# 获取单个智能体详情
+GET /api/v1/agents/{id}
+
+# 获取单个对话详情  
+GET /api/v1/conversations/{id}?include_messages=true
+```
+
+### 系统管理端点
+```bash
+# 获取系统统计（需要管理员权限）
+GET /api/v1/stats?time_range=24h&include_details=true
+
+# 获取公开系统信息
+GET /api/v1/info/public
+
+# 获取认证用户系统信息
+GET /api/v1/info
+```
+
+### 端点特性
+- ✅ **权限控制** - 根据用户权限返回相应数据
+- ✅ **缓存优化** - 智能缓存策略，提升性能
+- ✅ **参数灵活** - 支持多种查询参数自定义返回内容
+- ✅ **错误处理** - 完善的错误处理和状态码
 
 ## ⚡ 缓存系统
 
@@ -491,15 +568,90 @@ grep "user123" logs/app.log
 
 ## 🙏 致谢
 
+---
+
+## 🏠 聊天室系统文档 (v2.1.3)
+
+### 📚 相关文档
+- **[聊天室系统测试报告](CHATROOM_SYSTEM_TESTING_REPORT.md)** - 完整的功能测试结果和技术细节
+- **[聊天室快速部署指南](CHATROOM_QUICK_START.md)** - 快速启动和API测试指南  
+- **[聊天室问题排查指南](CHATROOM_TROUBLESHOOTING.md)** - 常见问题解决方案
+
+### 🚀 聊天室快速启动
+```bash
+# 1. 启用聊天室系统
+export CHATROOM_ENABLED=true
+export MARIADB_ENABLED=true
+
+# 2. 配置数据库
+export MARIADB_HOST=192.168.1.10
+export MARIADB_PORT=3307
+export MARIADB_DATABASE=chatroom_db
+
+# 3. 启动服务
+python app.py
+
+# 4. 健康检查
+python health_check.py
+```
+
+### 🔑 管理员账户
+- **用户名**: metalhouse
+- **密码**: Iwhyi3589  
+- **权限**: 聊天室管理员 (自动分配)
+
+### 📡 聊天室API示例
+```bash
+# 登录获取Token
+curl -X POST http://127.0.0.1:5000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"metalhouse","password":"Iwhyi3589"}'
+
+# 创建聊天室
+curl -X POST http://127.0.0.1:5000/api/v1/chatroom/create \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"测试室","description":"测试聊天室","is_public":true}'
+
+# 获取聊天室详情
+curl -X GET http://127.0.0.1:5000/api/v1/chatroom/CHATROOM_ID \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+### 🏗️ 架构特点
+- **双数据库架构**: SQLite(主应用) + MariaDB(聊天室)
+- **双Redis缓存**: DB0(主应用) + DB1(聊天室)  
+- **智能初始化**: 自动检查表存在性，避免重复初始化
+- **权限集成**: 聊天室权限融入现有RBAC系统
+- **软删除机制**: 数据安全保护
+
+---
+
+## 🙏 致谢
+
 感谢以下开源项目：
 - [Flask](https://flask.palletsprojects.com/) - Web框架
 - [Redis](https://redis.io/) - 缓存数据库
 - [PyJWT](https://pyjwt.readthedocs.io/) - JWT实现
 - [Pydantic](https://pydantic-docs.helpmanual.io/) - 数据验证
+- [MariaDB](https://mariadb.org/) - 关系型数据库
+- [SQLAlchemy](https://www.sqlalchemy.org/) - Python SQL工具包
 
 ---
 
 ## 📋 更新日志
+
+### v2.1.3 (2025-07-26) - 聊天室系统
+- 🆕 **完整聊天室功能** - CRUD操作、权限管理、成员管理
+- 🆕 **MariaDB集成** - 聊天室数据持久化存储
+- 🆕 **双Redis架构** - 主应用与聊天室数据完全隔离
+- 🔧 **数据库优化** - 智能初始化，避免重复SQL执行
+- 🔧 **JWT修复** - 修复聊天室API的JWT密钥验证问题
+- 📚 **完整文档** - 测试报告、部署指南、故障排除
+
+### v2.1.2 (2025-07-20) - 智能体欢迎语
+- 🆕 **智能体欢迎语功能** - 支持自定义欢迎信息
+- 🔧 **API响应优化** - 前端友好的数据格式
 
 ### v2.0.0 (2025-07-18) - 全面优化版本
 - ✅ **JWT认证系统** - 现代化无状态认证

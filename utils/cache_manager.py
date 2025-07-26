@@ -80,6 +80,16 @@ class CacheKeyGenerator:
         return f"access:user:{user_id}:agent:{agent_id}"
     
     @staticmethod
+    def agent_detail(agent_id: str) -> str:
+        """智能体详情缓存key"""
+        return f"agent_detail:{agent_id}"
+    
+    @staticmethod
+    def conversation_detail(conversation_id: str) -> str:
+        """对话详情缓存key"""
+        return f"conversation_detail:{conversation_id}"
+    
+    @staticmethod
     def user_session(user_id: str, device_id: str) -> str:
         """用户会话缓存key"""
         return f"session:user:{user_id}:device:{device_id}"

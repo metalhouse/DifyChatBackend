@@ -86,8 +86,31 @@ check_*.py
 quick_*.py
 simple_*.py
 run_*.py
+analyze_*.py
+fix_*.py
+diagnose_*.py
+migrate_*.py
+create_test_*.py
 !tests/
 !test_*.py.example
+!health_check.py
+
+# 特定的临时文件和调试文件
+analyze_permissions.py
+diagnose_redis.py
+fix_api_issues.py
+fix_error_codes.py
+fix_make_response.py
+fix_response_builder.py
+validate_api_standard.py
+clean_duplicates.py
+encrypt_users.py
+cache_preload.py
+
+# 空文件防护
+**/*.py.empty
+**/*.md.empty
+**/*.json.empty
 
 # 临时文档和报告
 task_*_completion_report.md
@@ -96,6 +119,9 @@ TASK_*.md
 *_REPORT.md
 archived_docs/
 !archived_docs/README.md
+
+# 存档文件目录 (临时测试和调试文件)
+archived_files/
 
 # 部署相关
 docker-compose.override.yml
@@ -107,6 +133,8 @@ kubernetes/secrets/
 *.old
 *.orig
 *.tmp
+*.backup.*
+data/*.backup.*
 
 # Node.js (如果使用前端工具)
 node_modules/
@@ -119,3 +147,43 @@ yarn-error.log*
 .Trashes
 ehthumbs.db
 *.swp
+
+# 项目特定的临时文件和缓存
+*.log.*
+*.log.old
+*.log.backup
+temp_*
+tmp_*
+*.temp
+*.tmp.py
+*.local.py
+*.dev.py
+
+# 开发工具生成的文件
+.vscode/settings.json.bak
+.idea/workspace.xml.bak
+*.sublime-workspace
+*.sublime-project
+
+# 测试覆盖率报告
+.coverage.*
+coverage/
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+
+# 性能分析文件
+*.prof
+*.pstats
+profile_*
+
+# 文档构建临时文件
+docs/_build/
+docs/.doctrees/
+*.doctree
+
+# 数据库临时文件
+*.db-journal
+*.db-wal
+*.db-shm

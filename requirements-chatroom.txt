@@ -1,0 +1,17 @@
+# DifyChatBackend 聊天室系统依赖
+# 必需依赖
+flask-socketio>=5.3.0
+sqlalchemy>=2.0.0
+redis>=5.0.0
+pyjwt>=2.8.0
+cryptography>=41.0.0
+python-socketio[client]>=5.10.0
+requests>=2.31.0
+
+# 可选依赖
+python-dotenv>=1.0.0
+flask-cors>=4.0.0
+
+# 测试依赖（开发时使用）
+pytest>=7.0.0
+pytest-cov>=4.0.0

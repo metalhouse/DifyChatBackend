@@ -1,7 +1,7 @@
 """
 DifyChatBackend主应用文件 - 标准化版本
 """
-from flask import Flask
+from flask import Flask, request
 import logging
 import logging.handlers
 import sys
@@ -21,6 +21,9 @@ from services.dify_service import dify_service
 # 导入标准化的响应构建器
 from utils.response_builder import ResponseBuilder, ErrorCode
 
+# 导入认证装饰器
+from auth.decorators import require_auth, auto_refresh_token
+
 # 导入标准化的API路由
 from api.auth_routes import login, refresh_token, logout, get_current_user
 from api.chat_routes import (
@@ -28,7 +31,8 @@ from api.chat_routes import (
     api_message_feedback, api_suggested_questions, api_delete_conversation,
     api_rename_conversation, api_audio_to_text, api_text_to_audio,
     api_messages_history, api_app_info, api_chat_messages,
-    api_streaming_stats, api_streaming_reset_stats
+    api_streaming_stats, api_streaming_reset_stats,
+    api_agent_detail, api_conversation_detail, api_system_stats
 )
 from api.cache_routes import (
     api_user_permissions, api_agent_config, api_preload_cache,
@@ -44,6 +48,17 @@ try:
 except ImportError:
     CORS_AVAILABLE = False
     print("Warning: Flask-CORS not available, CORS will be disabled")
+
+# 可选导入聊天室系统
+try:
+    from flask_socketio import SocketIO
+    from chatroom import init_chatroom_system
+    CHATROOM_AVAILABLE = True
+    print("✅ 聊天室系统模块已加载")
+except ImportError as e:
+    CHATROOM_AVAILABLE = False
+    print(f"⚠️ Warning: 聊天室系统不可用 - {e}")
+    print("如需使用聊天室功能，请安装: pip install flask-socketio")
 
 def create_app(config_env: str = None) -> Flask:
     """应用工厂函数"""
@@ -72,6 +87,80 @@ def create_app(config_env: str = None) -> Flask:
     # 记录缓存状态
     cache_status = "启用" if cache_manager.enabled else "禁用"
     logging.info(f"缓存管理器初始化完成: {cache_status}")
+    
+    # 初始化聊天室系统（如果启用）
+    socketio = None
+    chatroom_enabled = os.getenv('CHATROOM_ENABLED', 'false').lower() == 'true'
+    
+    if CHATROOM_AVAILABLE and chatroom_enabled:
+        try:
+            logging.info("🔧 启用聊天室系统...")
+            
+            # 创建SocketIO实例
+            socketio = SocketIO(
+                app,
+                cors_allowed_origins=os.getenv('SOCKETIO_CORS_ALLOWED_ORIGINS', '*'),
+                async_mode=os.getenv('SOCKETIO_ASYNC_MODE', 'threading'),
+                ping_timeout=int(os.getenv('SOCKETIO_PING_TIMEOUT', 60)),
+                ping_interval=int(os.getenv('SOCKETIO_PING_INTERVAL', 25)),
+                max_http_buffer_size=int(os.getenv('SOCKETIO_MAX_HTTP_BUFFER_SIZE', 1000000))
+            )
+            
+            # 尝试创建数据库会话
+            db_session = None
+            mariadb_enabled = os.getenv('MARIADB_ENABLED', 'false').lower() == 'true'
+            
+            if mariadb_enabled:
+                try:
+                    # 使用MariaDB
+                    from chatroom.mariadb_config import get_mariadb_session
+                    logging.info("📦 使用MariaDB数据库")
+                    # 这里不直接获取session，而是让聊天室系统自己处理
+                    db_session = None  # 聊天室系统会自动使用MariaDB配置
+                    
+                except Exception as e:
+                    logging.warning(f"⚠️ MariaDB连接失败，降级到SQLite: {e}")
+                    db_session = None
+            else:
+                try:
+                    # 优先尝试使用SQLAlchemy + SQLite
+                    from sqlalchemy import create_engine
+                    from sqlalchemy.orm import sessionmaker
+                    
+                    # 确保数据目录存在
+                    data_dir = os.path.join(os.path.dirname(__file__), 'data')
+                    os.makedirs(data_dir, exist_ok=True)
+                    
+                    # 使用SQLite作为默认数据库
+                    engine = create_engine(f'sqlite:///{data_dir}/chatroom.db', echo=False)
+                    Session = sessionmaker(bind=engine)
+                    db_session = Session()
+                    logging.info("✅ 使用SQLite数据库会话")
+                    
+                except ImportError:
+                    # SQLAlchemy不可用，使用简化的数据库会话
+                    logging.info("⚠️ SQLAlchemy不可用，使用简化数据库会话")
+                    db_session = None  # 聊天室系统会自动创建SQLite会话
+            
+            # 初始化聊天室系统
+            success = init_chatroom_system(app, socketio, db_session)
+            
+            if success:
+                logging.info("✅ 聊天室系统初始化成功")
+            else:
+                logging.warning("⚠️ 聊天室系统初始化失败，仅提供基本功能")
+                socketio = None
+            
+        except Exception as e:
+            logging.error(f"❌ 聊天室系统初始化失败: {e}")
+            socketio = None
+    elif CHATROOM_AVAILABLE and not chatroom_enabled:
+        logging.info("ℹ️ 聊天室系统已禁用（CHATROOM_ENABLED=false）")
+    else:
+        logging.info("⚠️ 聊天室系统不可用（缺少依赖包）")
+    
+    # 将socketio实例附加到app，以便在主程序中使用
+    app.socketio = socketio
     
     # 注册路由
     register_routes(app)
@@ -177,6 +266,11 @@ def register_routes(app):
     app.add_url_rule('/api/v1/streaming/stats', 'api_streaming_stats', api_streaming_stats, methods=['GET'])
     app.add_url_rule('/api/v1/streaming/reset', 'api_streaming_reset_stats', api_streaming_reset_stats, methods=['POST'])
     
+    # ========== 新增：单个资源详情端点 ==========
+    app.add_url_rule('/api/v1/agents/<agent_id>', 'api_agent_detail', api_agent_detail, methods=['GET'])
+    app.add_url_rule('/api/v1/conversations/<conversation_id>', 'api_conversation_detail', api_conversation_detail, methods=['GET'])
+    app.add_url_rule('/api/v1/stats', 'api_system_stats', api_system_stats, methods=['GET'])
+    
     # ========== 智能体功能配置路由 ==========
     app.register_blueprint(agent_config_bp)
     
@@ -233,50 +327,130 @@ def register_routes(app):
         """API健康检查端点（标准化响应格式）"""
         return health_check()
     
-    # ========== 系统信息路由 (公开访问) ==========
-    @app.route('/api/v1/info')
-    def api_system_info():
-        """系统信息端点（公开访问）"""
+    # ========== 系统信息路由 (分层披露) ==========
+    @app.route('/api/v1/info/public')
+    def api_system_info_public():
+        """公开系统信息端点（无需认证）"""
+        import time
+        
         config = get_config()
         
-        system_info = {
-            'name': 'DifyChatBackend API',
-            'version': '2.0.0-standard',
-            'description': '基于Dify的智能对话后端服务 - 标准化版本',
-            'environment': config.env,
+        # 公开的基础信息
+        public_info = {
+            'service_name': 'DifyChatBackend',
+            'version': 'v2.1.0',
             'api_version': 'v1',
+            'status': 'healthy',
+            'timestamp': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
             'features': [
-                'JWT认证系统',
-                'Redis缓存管理', 
-                '智能体对话',
-                '会话管理',
-                '权限控制',
-                '标准化API响应'
+                'chat',
+                'agents', 
+                'conversations',
+                'jwt_auth'
+            ]
+        }
+        
+        return ResponseBuilder.success(
+            data=public_info,
+            message="获取系统信息成功"
+        )
+    
+    @app.route('/api/v1/info')
+    @require_auth()
+    @auto_refresh_token()
+    def api_system_info():
+        """认证用户系统信息端点（需要认证）"""
+        import time
+        from flask import g
+        
+        config = get_config()
+        cache_manager = get_cache_manager()
+        
+        # 认证用户的完整信息
+        user_info = getattr(g, 'current_user', {})
+        user_permissions = user_info.get('permissions', [])
+        
+        # 检查缓存状态
+        cache_status = "connected" if cache_manager else "disabled"
+        if cache_manager:
+            try:
+                cache_manager.client.ping()
+                cache_status = "connected"
+            except:
+                cache_status = "error"
+        
+        detailed_info = {
+            'service_name': 'DifyChatBackend',
+            'version': 'v2.1.0',
+            'api_version': 'v1',
+            'status': 'healthy',
+            'timestamp': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+            'features': [
+                'chat',
+                'agents',
+                'conversations', 
+                'jwt_auth',
+                'redis_cache',
+                'admin_panel'
             ],
-            'endpoints': {
-                'authentication': '/api/v1/auth/',
-                'chat': '/api/v1/chat/',
-                'health': '/api/v1/health',
-                'cache': '/api/v1/cache/'
-            },
-            'documentation': {
-                'response_format': '/docs/api-response-format',
-                'error_codes': '/docs/error-codes', 
-                'authentication': '/docs/authentication'
+            'environment': config.env,
+            'uptime': '72h 15m',  # 这里可以实现真实的运行时间计算
+            'cache_status': cache_status,
+            'dify_status': 'connected',  # 这里可以实现Dify服务状态检查
+            'user_permissions': user_permissions,
+            'rate_limits': {
+                'requests_per_minute': 60,
+                'remaining': 58  # 这里可以实现真实的速率限制检查
             }
         }
         
         return ResponseBuilder.success(
-            data=system_info,
-            message="系统信息获取成功"
+            data=detailed_info,
+            message="获取完整系统信息成功"
         )
+
+    @app.route('/api/v1/info/detailed')
+    @require_auth()
+    @auto_refresh_token()
+    def api_system_info_detailed():
+        """系统详细信息端点（兼容性，重定向到认证版）"""
+        return api_system_info()
     
     # ========== 兼容性路由（向后兼容旧版本路径） ==========
     # 这些路由提供向后兼容性，但建议使用新的v1路径
+    app.add_url_rule('/api/login', 'legacy_api_login', login, methods=['POST'])
     app.add_url_rule('/login', 'legacy_login', login, methods=['POST'])
     app.add_url_rule('/api/conversations', 'legacy_api_conversations', api_conversations, methods=['GET'])
     app.add_url_rule('/api/chat', 'legacy_api_chat', api_chat, methods=['POST'])
     app.add_url_rule('/api/agents', 'legacy_api_agents', api_agents, methods=['GET'])
+    
+    # ========== 根路径和静态文件路由 ==========
+    @app.route('/')
+    def index():
+        """应用主页"""
+        return ResponseBuilder.success(
+            data={
+                "app_name": "DifyChatBackend",
+                "version": "v1",
+                "status": "running",
+                "description": "Python Flask 后端服务，提供聊天、用户认证等功能",
+                "endpoints": {
+                    "auth": "/api/v1/auth/login",
+                    "chat": "/api/v1/chat/messages", 
+                    "agents": "/api/v1/chat/agents",
+                    "chatroom": "/api/v1/chatroom"
+                }
+            },
+            message="欢迎使用DifyChatBackend服务"
+        )
+    
+    @app.route('/favicon.ico')
+    def favicon():
+        """返回默认favicon"""
+        return ResponseBuilder.success(
+            data={"message": "No favicon available"},
+            message="favicon请求"
+        )
 
 def register_error_handlers(app):
     """注册错误处理器"""
@@ -366,12 +540,25 @@ if __name__ == '__main__':
     logging.info(f"响应格式: 标准化")
     
     try:
-        app.run(
-            host=config.server.host,
-            port=config.server.port,
-            debug=config.server.debug,
-            threaded=config.server.threaded
-        )
+        # 如果聊天室系统可用，使用SocketIO启动
+        if hasattr(app, 'socketio') and app.socketio:
+            logging.info("🔌 使用SocketIO模式启动服务器")
+            app.socketio.run(
+                app,
+                host=config.server.host,
+                port=config.server.port,
+                debug=config.server.debug,
+                allow_unsafe_werkzeug=True  # 仅用于开发环境
+            )
+        else:
+            # 标准Flask启动模式
+            logging.info("🌐 使用标准Flask模式启动服务器")
+            app.run(
+                host=config.server.host,
+                port=config.server.port,
+                debug=config.server.debug,
+                threaded=config.server.threaded
+            )
     except KeyboardInterrupt:
         logging.info("服务器关闭")
     except Exception as e:

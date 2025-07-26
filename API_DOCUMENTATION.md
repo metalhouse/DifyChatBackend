@@ -1,8 +1,8 @@
-# DifyChatBackend API 文档 v2.0 - 标准化版本
+# DifyChatBackend API 文档 v2.1 - 前端集成优化版
 
 ## 📖 概述
 
-DifyChatBackend API v2.0 是基于Dify平台的智能对话后端服务的标准化版本。本版本完全重构了API响应格式，引入了统一的错误处理机制，并提供了完整的请求验证系统。
+DifyChatBackend API v2.1 是基于Dify平台的智能对话后端服务的标准化版本。本版本在v2.0基础上新增了前端急需的API端点，并实施了分层信息披露的安全机制。
 
 ### 🎯 核心特性
 
@@ -14,6 +14,9 @@ DifyChatBackend API v2.0 是基于Dify平台的智能对话后端服务的标准
 - **权限控制**: 细粒度的用户权限和智能体访问控制
 - **API版本控制**: 使用`/api/v1/`路径支持版本管理
 - **向后兼容**: 保持对旧版本API路径的兼容支持
+- **🆕 分层信息披露**: 基础信息公开，敏感信息需认证
+- **🆕 单资源详情**: 支持获取单个智能体和对话的详细信息
+- **🆕 系统统计**: 提供实时系统运行统计信息
 
 ### 🔧 技术栈
 
@@ -23,6 +26,7 @@ DifyChatBackend API v2.0 是基于Dify平台的智能对话后端服务的标准
 - **验证**: Pydantic v2
 - **日志**: 结构化日志系统
 - **文档**: 完整的API文档和错误码说明
+- **🆕 安全**: 分层权限控制和信息披露
 
 ## 🏗️ API 架构
 
@@ -38,7 +42,7 @@ http://localhost:5000
 
 ### API版本
 
-当前版本: `v1`  
+当前版本: `v2.1`  
 所有API端点使用路径前缀: `/api/v1/`
 
 ### 认证方式
@@ -155,7 +159,7 @@ Authorization: Bearer <access_token>
 
 ### 获取智能体列表
 
-**端点**: `GET /api/v1/agents`
+**端点**: `GET /api/v1/chat/agents` ⭐ **数据格式已修复 v2.1.1**
 
 **需要认证**: ✅  
 **需要权限**: `access_agents`
@@ -167,30 +171,36 @@ Authorization: Bearer <access_token>
 - `category` (string, 可选): 智能体分类
 - `use_cache` (bool, 可选): 是否使用缓存，默认为true
 
-**响应**:
+**响应格式更新**:
 ```json
 {
   "success": true,
   "message": "获取智能体列表成功",
   "data": [
     {
-      "id": "chatgpt-001",
-      "name": "ChatGPT助手",
-      "description": "智能对话助手",
-      "category": "assistant",
-      "is_active": true,
-      "owner_only": false,
-      "created_at": "2024-01-01T00:00:00Z"
+      "id": "agent_1751526225_7744",           // ✅ 字段名已修复 (v2.1.1)
+      "name": "财务助手_A",                      // 智能体名称
+      "welcome_message": "您好！我是您的财务助手，可以高效协助您记录或查询收支信息。\n\n使用方式举例：\n📝 添加记录 → \"不使用预算刷交行卡补交去年个税，费用5800元\"\n🔍 查询记录 → \"请显示2023年所有个税缴纳记录\"\n\n我会自动归类消费类型（如\"税费\"）、支付渠道（如\"交行卡\"）并标注非预算支出。需要其他财务服务也可随时告诉我！\n\n查一下这个月消费情况\n查一下这个月预算使用情况\n请生成本周财务报告，分析支出趋势和预算执行情况。"  // 🆕 欢迎语文本 (v2.1.2)
     }
   ],
   "pagination": {
     "page": 1,
     "page_size": 20,
     "total": 1,
-    "total_pages": 1
-  }
+    "total_pages": 1,
+    "has_next": false,
+    "has_prev": false
+  },
+  "request_id": "req_123456789",
+  "timestamp": 1753314738
 }
 ```
+
+**重要说明**:
+- 🔧 **v2.1.1修复**: 字段名从 `agent_id` 更改为 `id`，符合前端JavaScript标准
+- 🆕 **v2.1.2新增**: 添加 `welcome_message` 字段，提供智能体欢迎语用于前端展示
+- 📋 实际返回的数据基于用户权限和智能体配置
+- 🎯 前端可以直接使用 `agent.id` 访问智能体ID
 
 ### 获取智能体配置
 
@@ -202,6 +212,47 @@ Authorization: Bearer <access_token>
 **查询参数**:
 - `agent_id` (string, 必需): 智能体ID
 - `use_cache` (bool, 可选): 是否使用缓存
+
+### 🆕 获取单个智能体详情
+
+**端点**: `GET /api/v1/agents/{id}`
+
+**需要认证**: ✅  
+**需要权限**: `access_agents`
+
+**路径参数**:
+- `id` (string, 必需): 智能体ID
+
+**查询参数**:
+- `use_cache` (bool, 可选): 是否使用缓存，默认为true
+
+**响应**:
+```json
+{
+  "success": true,
+  "message": "获取智能体详情成功",
+  "data": {
+    "id": "chatgpt-001",
+    "name": "ChatGPT助手",
+    "description": "智能对话助手，具备强大的自然语言理解能力",
+    "category": "assistant",
+    "is_active": true,
+    "owner_only": false,
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-02T12:00:00Z",
+    "settings": {
+      "temperature": 0.7,
+      "max_tokens": 2000,
+      "system_prompt": "你是一个专业的AI助手..."
+    },
+    "stats": {
+      "total_conversations": 150,
+      "total_messages": 1200,
+      "avg_response_time": "1.2s"
+    }
+  }
+}
+```
 
 ## 💬 对话管理
 
@@ -218,6 +269,51 @@ Authorization: Bearer <access_token>
 - `page_size` (int, 可选): 每页数量
 - `search` (string, 可选): 搜索关键词
 - `no_cache` (bool, 可选): 禁用缓存
+
+### 🆕 获取单个对话详情
+
+**端点**: `GET /api/v1/conversations/{id}`
+
+**需要认证**: ✅  
+**需要权限**: `view_conversations`
+
+**路径参数**:
+- `id` (string, 必需): 对话ID
+
+**查询参数**:
+- `use_cache` (bool, 可选): 是否使用缓存，默认为true
+- `include_messages` (bool, 可选): 是否包含消息历史，默认为false
+
+**响应**:
+```json
+{
+  "success": true,
+  "message": "获取对话详情成功",
+  "data": {
+    "id": "conv_12345",
+    "agent_id": "chatgpt-001",
+    "agent_name": "ChatGPT助手",
+    "title": "关于Python编程的讨论",
+    "status": "active",
+    "created_at": "2024-01-01T10:00:00Z",
+    "updated_at": "2024-01-01T11:30:00Z",
+    "message_count": 15,
+    "last_message_at": "2024-01-01T11:30:00Z",
+    "metadata": {
+      "tags": ["programming", "python"],
+      "priority": "normal"
+    },
+    "messages": [
+      {
+        "id": "msg_001",
+        "role": "user",
+        "content": "请介绍Python的基础语法",
+        "created_at": "2024-01-01T10:00:00Z"
+      }
+    ]
+  }
+}
+```
 
 ### 创建新对话
 
@@ -424,6 +520,133 @@ Authorization: Bearer <access_token>
 2. 智能体是否为`owner_only`（仅所有者可访问）
 3. 智能体是否处于活跃状态
 
+## 📊 系统管理
+
+### 🆕 获取系统统计信息
+
+**端点**: `GET /api/v1/stats`
+
+**需要认证**: ✅  
+**需要权限**: `admin`
+
+**查询参数**:
+- `include_details` (bool, 可选): 是否包含详细统计，默认为false
+- `time_range` (string, 可选): 时间范围（'24h', '7d', '30d'），默认为'24h'
+
+**响应**:
+```json
+{
+  "success": true,
+  "message": "获取系统统计成功",
+  "data": {
+    "system": {
+      "uptime": "72h 15m",
+      "version": "v2.1.0",
+      "environment": "production",
+      "cache_hit_rate": 0.85,
+      "avg_response_time": "125ms"
+    },
+    "users": {
+      "total": 1250,
+      "active_today": 89,
+      "new_today": 5
+    },
+    "agents": {
+      "total": 25,
+      "active": 23,
+      "most_used": "chatgpt-001"
+    },
+    "conversations": {
+      "total": 5670,
+      "today": 156,
+      "avg_per_user": 4.5
+    },
+    "messages": {
+      "total": 45230,
+      "today": 890,
+      "avg_per_conversation": 8.0
+    },
+    "performance": {
+      "requests_per_minute": 45.2,
+      "error_rate": 0.02,
+      "cpu_usage": "25%",
+      "memory_usage": "68%"
+    }
+  }
+}
+```
+
+### 🔄 系统信息（分层披露）
+
+#### 公开系统信息
+
+**端点**: `GET /api/v1/info/public`
+
+**需要认证**: ❌
+
+**响应**:
+```json
+{
+  "success": true,
+  "message": "获取系统信息成功",
+  "data": {
+    "service_name": "DifyChatBackend",
+    "version": "v2.1.0",
+    "api_version": "v1",
+    "status": "healthy",
+    "timestamp": "2024-01-01T12:00:00Z",
+    "features": [
+      "chat",
+      "agents",
+      "conversations",
+      "jwt_auth"
+    ]
+  }
+}
+```
+
+#### 认证用户系统信息
+
+**端点**: `GET /api/v1/info`
+
+**需要认证**: ✅
+
+**响应**:
+```json
+{
+  "success": true,
+  "message": "获取完整系统信息成功",
+  "data": {
+    "service_name": "DifyChatBackend",
+    "version": "v2.1.0",
+    "api_version": "v1",
+    "status": "healthy",
+    "timestamp": "2024-01-01T12:00:00Z",
+    "features": [
+      "chat",
+      "agents",
+      "conversations",
+      "jwt_auth",
+      "redis_cache",
+      "admin_panel"
+    ],
+    "environment": "production",
+    "uptime": "72h 15m",
+    "cache_status": "connected",
+    "dify_status": "connected",
+    "user_permissions": [
+      "access_agents",
+      "view_conversations",
+      "create_conversations"
+    ],
+    "rate_limits": {
+      "requests_per_minute": 60,
+      "remaining": 58
+    }
+  }
+}
+```
+
 ## 🚀 自动化功能
 
 ### 令牌自动刷新
@@ -518,6 +741,11 @@ python app_standard.py
 
 ---
 
-**版本**: v2.0.0-standard  
-**更新时间**: 2025年7月18日  
-**维护团队**: 后端开发团队
+**版本**: v2.1.0-frontend-optimized  
+**更新时间**: 2025年1月15日  
+**维护团队**: 后端开发团队  
+**更新内容**: 
+- 🆕 新增单资源详情端点（agents/{id}, conversations/{id}）
+- 🆕 新增系统统计端点（/api/v1/stats）
+- 🔒 实施分层信息披露安全机制
+- 📈 优化前端集成支持

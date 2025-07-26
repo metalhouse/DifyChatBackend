@@ -427,7 +427,11 @@ class DifyService:
             agents = data.get('agents', {})
             
             result = [
-                {"agent_id": aid, "name": agents[aid]["name"]}
+                {
+                    "id": aid, 
+                    "name": agents[aid]["name"],
+                    "welcome_message": agents[aid].get("welcome_message", "")
+                }
                 for aid in agent_ids if aid in agents
             ]
             
@@ -496,6 +500,131 @@ class DifyService:
                 "total_operations": stats.total_operations
             }
         }
+
+    # ========== 新增方法：单个资源详情 ==========
+    
+    @api_monitor
+    def get_agent_detail(self, agent_id: str, username: str, use_cache: bool = True) -> Optional[Dict[str, Any]]:
+        """获取单个智能体详情"""
+        try:
+            # 首先检查用户是否有访问该智能体的权限
+            user_agents = self.get_user_agents(username, use_cache)
+            agent_found = None
+            
+            for agent in user_agents:
+                if agent.get('id') == agent_id:
+                    agent_found = agent
+                    break
+            
+            if not agent_found:
+                return None
+            
+            # 获取智能体的详细配置（如果需要）
+            cache_key = CacheKeyGenerator.agent_detail(agent_id)
+            
+            if use_cache and self._is_cache_enabled():
+                cached_detail = self.cache_manager.get(cache_key)
+                if cached_detail:
+                    logging.debug(f"[CACHE HIT] 智能体详情: {agent_id}")
+                    return cached_detail
+            
+            # 扩展基础智能体信息
+            agent_detail = {
+                **agent_found,
+                'detailed_info': True,
+                'last_accessed': time.time(),
+                'permissions': {
+                    'can_chat': True,
+                    'can_view_history': True,
+                    'can_configure': False  # 根据用户权限设置
+                }
+            }
+            
+            # 缓存结果
+            if use_cache and self._is_cache_enabled():
+                self.cache_manager.setex(cache_key, self.agent_cache_ttl, agent_detail)
+                logging.debug(f"[CACHE SET] 智能体详情: {agent_id}")
+            
+            return agent_detail
+            
+        except Exception as e:
+            logging.error(f"[DIFY SERVICE] 获取智能体详情失败: {agent_id}, 错误: {e}")
+            return None
+    
+    @api_monitor
+    def get_conversation_detail(self, conversation_id: str, username: str, use_cache: bool = True) -> Optional[Dict[str, Any]]:
+        """获取单个对话详情"""
+        try:
+            cache_key = CacheKeyGenerator.conversation_detail(conversation_id)
+            
+            if use_cache and self._is_cache_enabled():
+                cached_detail = self.cache_manager.get(cache_key)
+                if cached_detail:
+                    logging.debug(f"[CACHE HIT] 对话详情: {conversation_id}")
+                    return cached_detail
+            
+            # 从API获取对话详情
+            resp, status = self.make_request('GET', f'/conversations/{conversation_id}')
+            
+            if status != 200 or not resp:
+                return None
+            
+            # 检查对话是否属于当前用户（安全检查）
+            if resp.get('created_by') != username:
+                logging.warning(f"[SECURITY] 用户 {username} 尝试访问不属于自己的对话: {conversation_id}")
+                return None
+            
+            # 扩展对话信息
+            conversation_detail = {
+                **resp,
+                'detailed_info': True,
+                'last_accessed': time.time(),
+                'permissions': {
+                    'can_delete': True,
+                    'can_rename': True,
+                    'can_export': True
+                }
+            }
+            
+            # 缓存结果
+            if use_cache and self._is_cache_enabled():
+                self.cache_manager.setex(cache_key, self.conversation_cache_ttl, conversation_detail)
+                logging.debug(f"[CACHE SET] 对话详情: {conversation_id}")
+            
+            return conversation_detail
+            
+        except Exception as e:
+            logging.error(f"[DIFY SERVICE] 获取对话详情失败: {conversation_id}, 错误: {e}")
+            return None
+    
+    def get_user_conversation_count(self, username: str) -> int:
+        """获取用户对话总数"""
+        try:
+            # 获取用户的所有对话（不分页）
+            params = {'limit': 1}  # 只获取第一条来获取总数
+            resp, status = self.make_request('GET', '/conversations', params=params)
+            
+            if status == 200 and resp:
+                return resp.get('total', 0)
+            
+            return 0
+            
+        except Exception as e:
+            logging.error(f"[DIFY SERVICE] 获取对话总数失败: {username}, 错误: {e}")
+            return 0
+    
+    def get_user_message_count(self, username: str) -> int:
+        """获取用户消息总数（简化实现）"""
+        try:
+            # 这里可以实现更复杂的统计逻辑
+            # 简化版本：基于对话数量估算
+            conversation_count = self.get_user_conversation_count(username)
+            # 假设每个对话平均10条消息
+            return conversation_count * 10
+            
+        except Exception as e:
+            logging.error(f"[DIFY SERVICE] 获取消息总数失败: {username}, 错误: {e}")
+            return 0
 
     def get_agent_api_key(self, agent_id: str) -> Optional[str]:
         """获取智能体的API密钥"""

@@ -601,7 +601,7 @@ class UserService:
                     # 确保包含必要字段
                     migrated_user = {
                         'username': username,
-                        'password_hash': user_data.get('password', ''),  # 兼容旧字段名
+                        'password_hash': user_data.get('password_hash') or user_data.get('password', ''),  # 优先使用password_hash，兼容旧字段名password
                         'email': user_data.get('email'),
                         'full_name': user_data.get('full_name', f"{username}的昵称"),
                         'avatar_url': user_data.get('avatar_url', f"https://api.dicebear.com/7.x/miniavs/svg?seed={username}"),

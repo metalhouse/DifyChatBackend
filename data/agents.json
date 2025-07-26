@@ -2,7 +2,8 @@
   "agents": {
     "agent_1751526225_7744": {
       "name": "财务助手_A",
-      "dify_api_key": "YXBwLWZjd0F3cGVrSTd3blNsdkVMNVYzZ0ZpQg=="
+      "dify_api_key": "YXBwLWZjd0F3cGVrSTd3blNsdkVMNVYzZ0ZpQg==",
+      "welcome_message": "您好！我是您的财务助手，可以高效协助您记录或查询收支信息。\n\n使用方式举例：\n📝 添加记录 → \"不使用预算刷交行卡补交去年个税，费用5800元\"\n🔍 查询记录 → \"请显示2023年所有个税缴纳记录\"\n\n我会自动归类消费类型（如\"税费\"）、支付渠道（如\"交行卡\"）并标注非预算支出。需要其他财务服务也可随时告诉我！\n\n查一下这个月消费情况\n查一下这个月预算使用情况\n请生成本周财务报告，分析支出趋势和预算执行情况。"
     }
   },
   "user_agents": {

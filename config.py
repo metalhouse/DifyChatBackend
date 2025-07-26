@@ -91,6 +91,46 @@ class ServerConfig:
 
 
 @dataclass
+class ChatroomConfig:
+    """聊天室配置"""
+    enabled: bool = False
+    max_rooms: int = 100
+    max_users_per_room: int = 50
+    message_retention_days: int = 30
+    enable_encryption: bool = True
+    encryption_algorithm: str = 'AES-256-GCM'
+
+
+@dataclass
+class ChatroomRedisConfig:
+    """聊天室专用Redis配置"""
+    enabled: bool = False
+    host: str = 'localhost'
+    port: int = 6379
+    db: int = 1  # 聊天室默认使用数据库1
+    password: Optional[str] = None
+    decode_responses: bool = True
+    socket_timeout: int = 5
+    connection_pool_max_connections: int = 10
+
+
+@dataclass
+class MariaDBConfig:
+    """MariaDB配置"""
+    enabled: bool = False
+    host: str = 'localhost'
+    port: int = 3306
+    database: str = 'chatroom_db'
+    username: str = 'chatroom_user'
+    password: str = 'chatroom_password'
+    charset: str = 'utf8mb4'
+    pool_size: int = 5
+    max_overflow: int = 10
+    pool_timeout: int = 30
+    pool_recycle: int = 3600
+
+
+@dataclass
 class RedisConfig:
     """Redis配置（用于缓存和会话管理）"""
     enabled: bool = False
@@ -116,7 +156,14 @@ class Config:
         self.security = self._load_security_config()
         self.logging = self._load_logging_config()
         self.server = self._load_server_config()
+        self.chatroom = self._load_chatroom_config()
+        self.chatroom_redis = self._load_chatroom_redis_config()
+        self.mariadb = self._load_mariadb_config()
         self.redis = self._load_redis_config()
+        
+        # 为了向后兼容，添加一些属性
+        self.CHATROOM_ENABLED = self.chatroom.enabled
+        self.MARIADB_ENABLED = self.mariadb.enabled
         
         # 验证配置
         self._validate_config()
@@ -190,6 +237,51 @@ class Config:
             threaded=os.getenv('FLASK_THREADED', 'true').lower() == 'true',
             cors_enabled=os.getenv('CORS_ENABLED', 'true').lower() == 'true',
             cors_origins=os.getenv('CORS_ORIGINS', '*')
+        )
+    
+    def _load_chatroom_config(self) -> ChatroomConfig:
+        """加载聊天室配置"""
+        return ChatroomConfig(
+            enabled=os.getenv('CHATROOM_ENABLED', 'false').lower() == 'true',
+            max_rooms=int(os.getenv('CHATROOM_MAX_ROOMS', '100')),
+            max_users_per_room=int(os.getenv('CHATROOM_MAX_USERS_PER_ROOM', '50')),
+            message_retention_days=int(os.getenv('CHATROOM_MESSAGE_RETENTION_DAYS', '30')),
+            enable_encryption=os.getenv('CHATROOM_ENABLE_ENCRYPTION', 'true').lower() == 'true',
+            encryption_algorithm=os.getenv('CHATROOM_ENCRYPTION_ALGORITHM', 'AES-256-GCM')
+        )
+    
+    def _load_chatroom_redis_config(self) -> ChatroomRedisConfig:
+        """加载聊天室Redis配置"""
+        # 如果有聊天室专用的Redis配置，使用专用配置
+        # 否则使用主Redis配置，但用不同的数据库编号
+        return ChatroomRedisConfig(
+            enabled=os.getenv('CHATROOM_REDIS_ENABLED', os.getenv('REDIS_ENABLED', 'false')).lower() == 'true',
+            host=os.getenv('CHATROOM_REDIS_HOST', os.getenv('REDIS_HOST', 'localhost')),
+            port=int(os.getenv('CHATROOM_REDIS_PORT', os.getenv('REDIS_PORT', '6379'))),
+            db=int(os.getenv('CHATROOM_REDIS_DB', '1')),  # 聊天室默认使用数据库1
+            password=os.getenv('CHATROOM_REDIS_PASSWORD', os.getenv('REDIS_PASSWORD')),
+            decode_responses=os.getenv('CHATROOM_REDIS_DECODE_RESPONSES', 
+                                     os.getenv('REDIS_DECODE_RESPONSES', 'true')).lower() == 'true',
+            socket_timeout=int(os.getenv('CHATROOM_REDIS_SOCKET_TIMEOUT', 
+                                       os.getenv('REDIS_SOCKET_TIMEOUT', '5'))),
+            connection_pool_max_connections=int(os.getenv('CHATROOM_REDIS_MAX_CONNECTIONS',
+                                                         os.getenv('REDIS_MAX_CONNECTIONS', '10')))
+        )
+    
+    def _load_mariadb_config(self) -> MariaDBConfig:
+        """加载MariaDB配置"""
+        return MariaDBConfig(
+            enabled=os.getenv('MARIADB_ENABLED', 'false').lower() == 'true',
+            host=os.getenv('MARIADB_HOST', 'localhost'),
+            port=int(os.getenv('MARIADB_PORT', '3306')),
+            database=os.getenv('MARIADB_DATABASE', 'chatroom_db'),
+            username=os.getenv('MARIADB_USERNAME', 'chatroom_user'),
+            password=os.getenv('MARIADB_PASSWORD', 'chatroom_password'),
+            charset=os.getenv('MARIADB_CHARSET', 'utf8mb4'),
+            pool_size=int(os.getenv('MARIADB_POOL_SIZE', '5')),
+            max_overflow=int(os.getenv('MARIADB_MAX_OVERFLOW', '10')),
+            pool_timeout=int(os.getenv('MARIADB_POOL_TIMEOUT', '30')),
+            pool_recycle=int(os.getenv('MARIADB_POOL_RECYCLE', '3600'))
         )
     
     def _load_redis_config(self) -> RedisConfig:
@@ -297,3 +389,18 @@ def get_server_config() -> ServerConfig:
 def get_redis_config() -> RedisConfig:
     """获取Redis配置"""
     return get_config().redis
+
+
+def get_chatroom_config() -> ChatroomConfig:
+    """获取聊天室配置"""
+    return get_config().chatroom
+
+
+def get_chatroom_redis_config() -> ChatroomRedisConfig:
+    """获取聊天室Redis配置"""
+    return get_config().chatroom_redis
+
+
+def get_mariadb_config() -> MariaDBConfig:
+    """获取MariaDB配置"""
+    return get_config().mariadb
