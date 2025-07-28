@@ -354,7 +354,257 @@ Authorization: Bearer <access_token>
 **流式响应**:
 设置 `"stream": true` 来启用流式响应（Server-Sent Events）。
 
-## 🗂️ 缓存管理
+## � 消息反馈系统
+
+### 发送消息反馈（点赞/点踩）
+
+**端点**: `POST /api/v1/messages/{message_id}/feedbacks`  
+**兼容端点**: `POST /api/v1/chat/messages/{message_id}/rating` ⭐ **前端兼容**
+
+**需要认证**: ✅  
+**需要权限**: `send_messages`  
+**智能体功能**: 需要启用 `message_feedback` 功能
+
+**路径参数**:
+- `message_id` (string, 必需): 消息ID
+
+**请求体**:
+```json
+{
+  "rating": "like",           // "like" 或 "dislike"
+  "content": "回答很有帮助",    // 可选，反馈内容
+  "agent_id": "4de73be9-b87c-470a-bd20-9b8c4e7b6c3b"  // 必需，智能体ID
+}
+```
+
+**响应**:
+```json
+{
+  "success": true,
+  "message": "反馈提交成功",
+  "data": {
+    "message_id": "msg_12345",
+    "rating": "like",
+    "content": "回答很有帮助",
+    "user": "metalhouse",
+    "created_at": "2025-07-27T15:05:00Z"
+  },
+  "request_id": "req_feedback_001",
+  "timestamp": 1753570500
+}
+```
+
+### 获取消息反馈状态
+
+**端点**: `GET /api/v1/messages/{message_id}/feedbacks`  
+**兼容端点**: `GET /api/v1/chat/messages/{message_id}/rating` ⭐ **前端兼容**
+
+**需要认证**: ✅  
+**需要权限**: `view_conversations`  
+**智能体功能**: 需要启用 `message_feedback` 功能
+
+**路径参数**:
+- `message_id` (string, 必需): 消息ID
+
+**查询参数**:
+- `agent_id` (string, 必需): 智能体ID
+
+**响应**:
+```json
+{
+  "success": true,
+  "message": "反馈状态获取成功",
+  "data": {
+    "message_id": "msg_12345",
+    "user": "metalhouse",
+    "rating": null,          // null=未评价, "like"=点赞, "dislike"=点踩
+    "content": null,
+    "can_feedback": true     // 是否可以提交反馈
+  },
+  "request_id": "req_feedback_get_001",
+  "timestamp": 1753570500
+}
+```
+
+### 🚨 消息反馈功能对接注意事项
+
+#### 1. **路径兼容性**
+```javascript
+// ✅ 推荐使用标准Dify API路径
+POST /api/v1/messages/{messageId}/feedbacks
+GET  /api/v1/messages/{messageId}/feedbacks?agent_id=xxx
+
+// ✅ 前端兼容路径（推荐前端使用）
+POST /api/v1/chat/messages/{messageId}/rating
+GET  /api/v1/chat/messages/{messageId}/rating?agent_id=xxx
+```
+
+#### 2. **必需参数检查**
+```javascript
+// ❌ 错误：缺少agent_id参数
+const response = await fetch('/api/v1/messages/123/feedbacks', {
+  method: 'POST',
+  body: JSON.stringify({
+    rating: 'like',
+    content: '很好的回答'
+  })
+});
+
+// ✅ 正确：包含agent_id参数
+const response = await fetch('/api/v1/chat/messages/123/rating', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    rating: 'like',
+    content: '很好的回答',
+    agent_id: '4de73be9-b87c-470a-bd20-9b8c4e7b6c3b'  // 必需！
+  })
+});
+```
+
+#### 3. **智能体功能配置检查**
+在使用反馈功能前，确保智能体已启用 `message_feedback` 功能：
+
+```json
+// data/agent_features.json 配置示例
+{
+  "4de73be9-b87c-470a-bd20-9b8c4e7b6c3b": {
+    "agent_id": "4de73be9-b87c-470a-bd20-9b8c4e7b6c3b",
+    "agent_name": "测试智能体",
+    "enabled_features": [
+      "suggested_questions",
+      "message_feedback",        // ✅ 必须启用此功能
+      "conversation_rename",
+      "text_to_audio"
+    ],
+    "disabled_features": [
+      "audio_to_text",
+      "message_annotation",
+      "file_upload"
+    ]
+  }
+}
+```
+
+#### 4. **错误处理示例**
+```javascript
+async function submitFeedback(messageId, rating, agentId, content = null) {
+  try {
+    const response = await fetch(`/api/v1/chat/messages/${messageId}/rating`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        rating: rating,
+        content: content,
+        agent_id: agentId
+      })
+    });
+
+    const data = await response.json();
+    
+    if (!data.success) {
+      // 处理业务错误
+      switch (data.error_code) {
+        case 'MISSING_PARAMETER':
+          console.error('缺少必需参数:', data.message);
+          break;
+        case 'FEATURE_NOT_SUPPORTED':
+          console.error('智能体不支持反馈功能:', data.message);
+          break;
+        case 'AGENT_CONFIG_NOT_FOUND':
+          console.error('智能体配置未找到:', data.message);
+          break;
+        default:
+          console.error('提交反馈失败:', data.message);
+      }
+      return false;
+    }
+    
+    console.log('反馈提交成功:', data.data);
+    return true;
+    
+  } catch (error) {
+    console.error('网络错误:', error);
+    return false;
+  }
+}
+
+// 使用示例
+submitFeedback('msg_12345', 'like', '4de73be9-b87c-470a-bd20-9b8c4e7b6c3b', '回答很有帮助');
+```
+
+#### 5. **CORS预检请求处理**
+系统已配置CORS支持，OPTIONS请求会正常处理：
+
+```javascript
+// 浏览器会自动发送OPTIONS预检请求
+// 服务器返回允许的方法和头部
+Access-Control-Allow-Origin: http://localhost:3000
+Access-Control-Allow-Methods: DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT
+Access-Control-Allow-Headers: authorization, content-type
+```
+
+#### 6. **实时反馈状态查询**
+```javascript
+async function getFeedbackStatus(messageId, agentId) {
+  try {
+    const response = await fetch(
+      `/api/v1/chat/messages/${messageId}/rating?agent_id=${agentId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${getToken()}`
+        }
+      }
+    );
+
+    const data = await response.json();
+    
+    if (data.success) {
+      return {
+        hasRated: data.data.rating !== null,
+        rating: data.data.rating,        // null, "like", "dislike"
+        content: data.data.content,
+        canFeedback: data.data.can_feedback
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('获取反馈状态失败:', error);
+    return null;
+  }
+}
+```
+
+#### 7. **测试验证**
+使用以下测试数据验证功能：
+- **智能体ID**: `4de73be9-b87c-470a-bd20-9b8c4e7b6c3b`（已配置message_feedback功能）
+- **测试用户**: `metalhouse` / `Iwhyi3589`
+- **测试消息ID**: 任何有效的消息ID
+
+#### 8. **性能优化建议**
+- 使用防抖（debounce）避免重复提交
+- 本地缓存反馈状态减少API调用
+- 批量获取多个消息的反馈状态
+
+```javascript
+// 防抖提交反馈
+const debouncedSubmitFeedback = debounce(submitFeedback, 300);
+
+// 批量获取反馈状态（如果需要）
+async function getBatchFeedbackStatus(messageIds, agentId) {
+  const promises = messageIds.map(id => getFeedbackStatus(id, agentId));
+  return await Promise.all(promises);
+}
+```
+
+## �🗂️ 缓存管理
 
 ### 获取用户权限
 

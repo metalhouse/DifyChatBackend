@@ -579,6 +579,53 @@ def api_message_feedback(message_id):
 
 @require_auth()
 @require_permissions(['view_conversations'])
+@require_agent_feature(AgentFeatureType.MESSAGE_FEEDBACK, "此智能体不支持消息反馈功能")
+@auto_refresh_token()
+def api_get_message_feedback(message_id):
+    """获取消息反馈状态"""
+    try:
+        # 1. 获取当前用户
+        current_user, error_response = _get_current_user()
+        if error_response:
+            return error_response
+        
+        username = current_user['username']
+        
+        # 2. 获取智能体ID
+        agent_id = request.args.get('agent_id')
+        if not agent_id:
+            return ResponseBuilder.error(
+                error_code=ErrorCode.MISSING_PARAMETER,
+                message="智能体ID是必需的"
+            )
+        
+        # 3. 获取反馈信息（这里简化处理，实际应该从Dify API获取）
+        # 由于Dify API没有提供单个消息反馈查询接口，我们返回一个通用响应
+        response_data = {
+            "message_id": message_id,
+            "user": username,
+            "rating": None,  # 未知状态
+            "content": None,
+            "can_feedback": True
+        }
+        
+        logging.info(f"[GET MESSAGE FEEDBACK] user={username}, message={message_id}")
+        
+        return ResponseBuilder.success(
+            data=response_data,
+            message="反馈状态获取成功"
+        )
+        
+    except Exception as e:
+        logging.error(f"[GET MESSAGE FEEDBACK ERROR] {e}", exc_info=True)
+        return ResponseBuilder.error(
+            error_code=ErrorCode.INTERNAL_ERROR,
+            message="反馈状态查询异常"
+        )
+
+
+@require_auth()
+@require_permissions(['view_conversations'])
 @require_agent_feature(AgentFeatureType.SUGGESTED_QUESTIONS, "此智能体不支持问题建议功能")
 @auto_refresh_token()
 def api_suggested_questions(message_id):

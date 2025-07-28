@@ -1,7 +1,7 @@
 """
 DifyChatBackend主应用文件 - 标准化版本
 """
-from flask import Flask, request
+from flask import Flask, request, make_response
 import logging
 import logging.handlers
 import sys
@@ -34,7 +34,7 @@ from utils.security import setup_security
 from api.auth_routes import login, refresh_token, logout, get_current_user
 from api.chat_routes import (
     api_agents, api_conversations, api_chat, api_create_conversation,
-    api_message_feedback, api_suggested_questions, api_delete_conversation,
+    api_message_feedback, api_get_message_feedback, api_suggested_questions, api_delete_conversation,
     api_rename_conversation, api_audio_to_text, api_text_to_audio,
     api_messages_history, api_app_info, api_chat_messages,
     api_streaming_stats, api_streaming_reset_stats,
@@ -55,16 +55,6 @@ except ImportError:
     CORS_AVAILABLE = False
     print("Warning: Flask-CORS not available, CORS will be disabled")
 
-# 可选导入聊天室系统
-try:
-    from chatroom import init_chatroom_system
-    CHATROOM_AVAILABLE = True
-    print("✅ 聊天室系统模块已加载")
-except ImportError as e:
-    CHATROOM_AVAILABLE = False
-    print(f"⚠️ Warning: 聊天室系统不可用 - {e}")
-    print("如需使用聊天室功能，请安装: pip install flask-socketio")
-
 def create_app(config_env: str = None) -> Flask:
     """应用工厂函数"""
     # 加载配置
@@ -83,6 +73,16 @@ def create_app(config_env: str = None) -> Flask:
     if config.server.cors_enabled and CORS_AVAILABLE:
         CORS(app, origins=config.server.cors_origins)
     
+    # 添加OPTIONS请求处理器（不需要认证）
+    @app.before_request
+    def handle_preflight():
+        if request.method == "OPTIONS":
+            response = make_response()
+            response.headers.add("Access-Control-Allow-Origin", "*")
+            response.headers.add('Access-Control-Allow-Headers', "*")
+            response.headers.add('Access-Control-Allow-Methods', "*")
+            return response
+    
     # 配置日志
     setup_logging(config.logging)
     
@@ -95,77 +95,6 @@ def create_app(config_env: str = None) -> Flask:
     # 记录缓存状态
     cache_status = "启用" if cache_manager.enabled else "禁用"
     logging.info(f"缓存管理器初始化完成: {cache_status}")
-    
-    # 初始化聊天室系统（如果启用）
-    chatroom_enabled = os.getenv('CHATROOM_ENABLED', 'false').lower() == 'true'
-    
-    if CHATROOM_AVAILABLE and chatroom_enabled:
-        try:
-            logging.info("🔧 启用聊天室系统...")
-            
-            # 移除SocketIO初始化，直接使用原生WebSocket
-            # 尝试创建数据库会话
-            db_session = None
-            mariadb_enabled = os.getenv('MARIADB_ENABLED', 'false').lower() == 'true'
-            
-            if mariadb_enabled:
-                try:
-                    # 使用MariaDB
-                    from chatroom.mariadb_config import get_mariadb_session
-                    logging.info("📦 使用MariaDB数据库")
-                    # 这里不直接获取session，而是让聊天室系统自己处理
-                    db_session = None  # 聊天室系统会自动使用MariaDB配置
-                    
-                except Exception as e:
-                    logging.warning(f"⚠️ MariaDB连接失败，降级到SQLite: {e}")
-                    db_session = None
-            else:
-                # 使用SQLite作为默认数据库
-                try:
-                    from sqlalchemy import create_engine
-                    from sqlalchemy.orm import sessionmaker
-                    
-                    # 确保数据目录存在
-                    data_dir = os.path.join(os.path.dirname(__file__), 'data')
-                    os.makedirs(data_dir, exist_ok=True)
-                    
-                    # 创建SQLite引擎和会话
-                    engine = create_engine(f'sqlite:///{data_dir}/chatroom.db', echo=False)
-                    Session = sessionmaker(bind=engine)
-                    db_session = Session()
-                    logging.info("✅ 使用SQLite数据库会话")
-                    
-                except ImportError:
-                    # SQLAlchemy不可用，使用简化的数据库会话
-                    logging.info("⚠️ SQLAlchemy不可用，使用简化数据库会话")
-                    db_session = None  # 聊天室系统会自动创建SQLite会话
-            
-            # 初始化聊天室系统（移除SocketIO依赖）
-            success = init_chatroom_system(app, None, db_session)
-            
-            if success:
-                logging.info("✅ 聊天室系统初始化成功")
-                
-                # 初始化原生WebSocket支持（兼容前端需求）
-                try:
-                    from chatroom.websocket.native_websocket import setup_native_websocket
-                    websocket_server = setup_native_websocket(app, db_session)
-                    app.native_websocket_server = websocket_server
-                    logging.info("✅ 原生WebSocket服务器初始化成功")
-                except Exception as e:
-                    logging.warning(f"⚠️ 原生WebSocket初始化失败: {e}")
-            else:
-                logging.warning("⚠️ 聊天室系统初始化失败，仅提供基本功能")
-            
-        except Exception as e:
-            logging.error(f"❌ 聊天室系统初始化失败: {e}")
-    elif CHATROOM_AVAILABLE and not chatroom_enabled:
-        logging.info("ℹ️ 聊天室系统已禁用（CHATROOM_ENABLED=false）")
-    else:
-        logging.info("⚠️ 聊天室系统不可用（缺少依赖包）")
-    
-    # 移除socketio依赖 - 不再需要
-    # app.socketio = None
     
     # 注册路由
     register_routes(app)
@@ -250,6 +179,16 @@ def register_routes(app):
     
     # ========== 新增Dify功能路由 ==========
     app.add_url_rule('/api/v1/messages/<message_id>/feedbacks', 'api_message_feedback', api_message_feedback, methods=['POST'])
+    app.add_url_rule('/api/v1/messages/<message_id>/feedbacks', 'api_get_message_feedback', api_get_message_feedback, methods=['GET'])
+    
+    # ========== 兼容前端的路由（chat路径和rating端点） ==========
+    app.add_url_rule('/api/v1/chat/messages/<message_id>/rating', 'api_message_feedback_compat_post', api_message_feedback, methods=['POST', 'OPTIONS'])
+    app.add_url_rule('/api/v1/chat/messages/<message_id>/rating', 'api_get_message_feedback_compat_get', api_get_message_feedback, methods=['GET', 'OPTIONS'])
+    
+    # ========== 额外的兼容路由（无chat前缀的rating端点） ==========
+    app.add_url_rule('/api/v1/messages/<message_id>/rating', 'api_message_feedback_rating_post', api_message_feedback, methods=['POST', 'OPTIONS'])
+    app.add_url_rule('/api/v1/messages/<message_id>/rating', 'api_get_message_feedback_rating_get', api_get_message_feedback, methods=['GET', 'OPTIONS'])
+    
     app.add_url_rule('/api/v1/messages/<message_id>/suggested', 'api_suggested_questions', api_suggested_questions, methods=['GET'])
     app.add_url_rule('/api/v1/conversations/<conversation_id>', 'api_delete_conversation', api_delete_conversation, methods=['DELETE'])
     app.add_url_rule('/api/v1/conversations/<conversation_id>/name', 'api_rename_conversation', api_rename_conversation, methods=['POST'])
@@ -585,8 +524,7 @@ def register_routes(app):
                 "endpoints": {
                     "auth": "/api/v1/auth/login",
                     "chat": "/api/v1/chat/messages", 
-                    "agents": "/api/v1/chat/agents",
-                    "chatroom": "/api/v1/chatroom"
+                    "agents": "/api/v1/chat/agents"
                 }
             },
             message="欢迎使用DifyChatBackend服务"
@@ -690,33 +628,6 @@ if __name__ == '__main__':
     try:
         # 原生WebSocket模式启动
         logging.info("🌐 使用标准Flask模式启动服务器")
-        
-        # 如果有原生WebSocket服务器，在后台启动
-        if hasattr(app, 'native_websocket_server') and app.native_websocket_server:
-            import threading
-            import os
-            
-            # 检测是否为Flask开发模式重启
-            is_restarting = os.environ.get('WERKZEUG_RUN_MAIN') == 'true'
-            
-            def start_native_websocket():
-                import asyncio
-                try:
-                    # 使用WebSocket专用配置，而不是Flask服务器配置
-                    app.native_websocket_server.start(
-                        host=config.chatroom.websocket_host,
-                        port=config.chatroom.websocket_port
-                    )
-                except Exception as e:
-                    logging.error(f"原生WebSocket服务器启动失败: {e}")
-            
-            if not is_restarting:
-                # 只在主进程启动WebSocket服务器
-                websocket_thread = threading.Thread(target=start_native_websocket, daemon=True)
-                websocket_thread.start()
-                logging.info("🚀 原生WebSocket服务器已在后台启动")
-            else:
-                logging.info("ℹ️ Flask重启进程，跳过WebSocket服务器启动")
         
         # 启动Flask HTTP服务器
         app.run(
