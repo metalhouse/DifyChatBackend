@@ -391,24 +391,41 @@ class StreamingProcessor:
                             
                             if should_flush:
                                 # 批量发送
-                                for event_data in buffer:
-                                    yield event_data
-                                
-                                # 更新统计
-                                self.stats['total_chunks_sent'] += len(buffer)
-                                self.stats['total_bytes_sent'] += buffer_size
-                                
-                                # 清空缓冲区
-                                buffer.clear()
-                                buffer_size = 0
-                                last_flush = now
+                                try:
+                                    for event_data in buffer:
+                                        yield event_data
+                                    
+                                    # 更新统计
+                                    self.stats['total_chunks_sent'] += len(buffer)
+                                    self.stats['total_bytes_sent'] += buffer_size
+                                    
+                                    # 清空缓冲区
+                                    buffer.clear()
+                                    buffer_size = 0
+                                    last_flush = now
+                                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as conn_error:
+                                    logging.warning(f"[STREAM CONNECTION LOST] {connection_id} chunk {chunk_count}: {conn_error}")
+                                    self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                                    self.error_stats['client_disconnects'] += 1
+                                    return
+                        
+                        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as conn_error:
+                            logging.warning(f"[STREAM CONNECTION ERROR] {connection_id} chunk {chunk_count}: {conn_error}")
+                            self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                            self.error_stats['client_disconnects'] += 1
+                            return
                         
                         except Exception as e:
                             logging.error(f"[STREAM CHUNK ERROR] {connection_id} chunk {chunk_count}: {e}")
                             connection.error_count += 1
                             
-                            error_event = self._create_error_event(f"处理第{chunk_count}个数据块时出错: {str(e)}")
-                            yield error_event.to_sse_format()
+                            try:
+                                error_event = self._create_error_event(f"处理第{chunk_count}个数据块时出错: {str(e)}")
+                                yield error_event.to_sse_format()
+                            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                                logging.warning(f"[STREAM ERROR SEND FAILED] {connection_id} - client disconnected while sending error")
+                                self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                                return
                             
                             if connection.error_count >= self.config.max_retry_count:
                                 logging.error(f"[STREAM TOO MANY ERRORS] {connection_id} - closing connection after {connection.error_count} errors")
@@ -421,37 +438,61 @@ class StreamingProcessor:
                     self.close_connection(connection_id, StreamStatus.DISCONNECTED)
                     return
                     
+                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as conn_error:
+                    logging.warning(f"[STREAM CONNECTION LOST] {connection_id}: {conn_error}")
+                    self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                    self.error_stats['client_disconnects'] += 1
+                    return
+                    
                 except Exception as gen_error:
                     logging.error(f"[STREAM GENERATOR ERROR] {connection_id}: {gen_error}")
-                    error_event = self._create_error_event(f"数据生成器错误: {str(gen_error)}")
-                    yield error_event.to_sse_format()
+                    try:
+                        error_event = self._create_error_event(f"数据生成器错误: {str(gen_error)}")
+                        yield error_event.to_sse_format()
+                    except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                        logging.warning(f"[STREAM ERROR FINAL SEND FAILED] {connection_id} - client disconnected while sending final error")
                     self.close_connection(connection_id, StreamStatus.ERROR)
                     return
                 
                 # 发送剩余缓冲区数据
                 if buffer:
-                    for event_data in buffer:
-                        yield event_data
-                    self.stats['total_chunks_sent'] += len(buffer)
-                    self.stats['total_bytes_sent'] += buffer_size
+                    try:
+                        for event_data in buffer:
+                            yield event_data
+                        self.stats['total_chunks_sent'] += len(buffer)
+                        self.stats['total_bytes_sent'] += buffer_size
+                    except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                        logging.warning(f"[STREAM FINAL BUFFER SEND FAILED] {connection_id} - client disconnected while sending final buffer")
+                        self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                        return
                 
                 # 发送完成事件
-                completion_event = SSEEvent(
-                    event_type=SSEEventType.COMPLETION,
-                    data={
-                        "status": "completed",
-                        "total_chunks": connection.total_chunks,
-                        "total_bytes": connection.total_bytes,
-                        "duration": (datetime.now() - connection.started_at).total_seconds()
-                    }
-                )
-                yield completion_event.to_sse_format()
-                
-                # 关闭连接
-                self.close_connection(connection_id, StreamStatus.COMPLETED)
+                try:
+                    completion_event = SSEEvent(
+                        event_type=SSEEventType.COMPLETION,
+                        data={
+                            "status": "completed",
+                            "total_chunks": connection.total_chunks,
+                            "total_bytes": connection.total_bytes,
+                            "duration": (datetime.now() - connection.started_at).total_seconds()
+                        }
+                    )
+                    yield completion_event.to_sse_format()
+                    
+                    # 关闭连接
+                    self.close_connection(connection_id, StreamStatus.COMPLETED)
+                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                    logging.warning(f"[STREAM COMPLETION SEND FAILED] {connection_id} - client disconnected while sending completion")
+                    self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                    return
                 
             except ClientDisconnected:
                 logging.info(f"[STREAM CLIENT DISCONNECT] {connection_id}")
+                self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                self.error_stats['client_disconnects'] += 1
+                
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as conn_error:
+                logging.warning(f"[STREAM CONNECTION LOST FINAL] {connection_id}: {conn_error}")
                 self.close_connection(connection_id, StreamStatus.DISCONNECTED)
                 self.error_stats['client_disconnects'] += 1
                 
@@ -460,8 +501,11 @@ class StreamingProcessor:
                 self.close_connection(connection_id, StreamStatus.ERROR)
                 self.error_stats['network_errors'] += 1
                 
-                error_event = self._create_error_event(f"Stream error: {str(e)}")
-                yield error_event.to_sse_format()
+                try:
+                    error_event = self._create_error_event(f"Stream error: {str(e)}")
+                    yield error_event.to_sse_format()
+                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                    logging.warning(f"[STREAM FINAL ERROR SEND FAILED] {connection_id} - client disconnected while sending final error")
         
         # 创建SSE响应
         response = Response(

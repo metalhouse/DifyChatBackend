@@ -19252,3 +19252,7 @@ websockets.exceptions.InvalidMessage: did not receive a valid HTTP request
 2025-07-29 21:59:48,199 - werkzeug - INFO - 192.168.1.68 - - [29/Jul/2025 21:59:48] "GET /health HTTP/1.1" 200 -
 2025-07-29 22:00:48,187 - werkzeug - INFO - 192.168.1.68 - - [29/Jul/2025 22:00:48] "GET /health HTTP/1.1" 200 -
 2025-07-29 22:01:48,180 - werkzeug - INFO - 192.168.1.68 - - [29/Jul/2025 22:01:48] "GET /health HTTP/1.1" 200 -
+2025-07-29 22:02:48,182 - werkzeug - INFO - 192.168.1.68 - - [29/Jul/2025 22:02:48] "GET /health HTTP/1.1" 200 -
+2025-07-29 22:03:48,191 - werkzeug - INFO - 192.168.1.68 - - [29/Jul/2025 22:03:48] "GET /health HTTP/1.1" 200 -
+2025-07-29 22:04:48,186 - werkzeug - INFO - 192.168.1.68 - - [29/Jul/2025 22:04:48] "GET /health HTTP/1.1" 200 -
+2025-07-29 22:05:30,939 - root - INFO - [DIFY SERVICE] 资源清理完成
