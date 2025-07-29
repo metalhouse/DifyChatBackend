@@ -393,6 +393,33 @@ class StreamingProcessor:
                             self.error_stats['client_disconnects'] += 1
                             break
                         
+                        # 在关键区域进行预防性检查
+                        if chunk_count in [50, 51, 52, 53, 54, 55]:
+                            logging.info(f"[STREAM CRITICAL CHUNK] {connection_id} - processing critical chunk {chunk_count}")
+                            
+                            # 额外的连接健康检查
+                            if not self.is_connection_healthy(connection_id):
+                                logging.warning(f"[STREAM CRITICAL UNHEALTHY] {connection_id} - abandoning at critical chunk {chunk_count}")
+                                self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                                return
+                            
+                            # 强制刷新任何待发送的缓冲区
+                            if buffer:
+                                logging.info(f"[STREAM CRITICAL FLUSH] {connection_id} - pre-critical flush before chunk {chunk_count}")
+                                try:
+                                    for event_data in buffer:
+                                        yield event_data
+                                    
+                                    self.stats['total_chunks_sent'] += len(buffer)
+                                    self.stats['total_bytes_sent'] += buffer_size
+                                    buffer.clear()
+                                    buffer_size = 0
+                                    last_flush = time.time()
+                                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as conn_error:
+                                    logging.error(f"[STREAM CRITICAL FLUSH FAILED] {connection_id} at chunk {chunk_count}: {conn_error}")
+                                    self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                                    return
+                        
                         try:
                             # 处理数据块
                             if process_chunk:
@@ -414,13 +441,53 @@ class StreamingProcessor:
                             if chunk_count % 10 == 0:
                                 logging.debug(f"[STREAM PROGRESS] {connection_id} - processed {chunk_count} chunks, {connection.total_bytes} bytes")
                             
+                            # 特别关注高风险区域（第50-60块）
+                            if 50 <= chunk_count <= 60:
+                                logging.info(f"[STREAM HIGH RISK ZONE] {connection_id} - chunk {chunk_count}, performing enhanced checks")
+                                
+                                # 在高风险区域进行额外的连接检查
+                                if not self.is_connection_healthy(connection_id):
+                                    logging.warning(f"[STREAM HIGH RISK UNHEALTHY] {connection_id} - connection unhealthy at critical chunk {chunk_count}")
+                                    self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                                    return
+                                
+                                # 强制小缓冲区刷新以减少数据丢失风险
+                                if len(buffer) >= 3:  # 降低刷新阈值
+                                    logging.info(f"[STREAM HIGH RISK FLUSH] {connection_id} - early flush at chunk {chunk_count}")
+                                    try:
+                                        for event_data in buffer:
+                                            yield event_data
+                                        
+                                        self.stats['total_chunks_sent'] += len(buffer)
+                                        self.stats['total_bytes_sent'] += buffer_size
+                                        buffer.clear()
+                                        buffer_size = 0
+                                        last_flush = time.time()
+                                    except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as conn_error:
+                                        logging.error(f"[STREAM HIGH RISK FLUSH FAILED] {connection_id} chunk {chunk_count}: {conn_error}")
+                                        self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                                        self.error_stats['client_disconnects'] += 1
+                                        return
+                                
+                                # 添加微小延迟以缓解网络压力
+                                time.sleep(0.005)  # 5ms延迟
+                            
                             # 检查是否需要刷新缓冲区
                             now = time.time()
-                            should_flush = (
-                                buffer_size >= self.config.max_buffer_size or
-                                len(buffer) >= self.config.max_chunk_count or
-                                (now - last_flush) >= self.config.flush_interval
-                            )
+                            
+                            # 在高风险区域使用更激进的刷新策略
+                            if 50 <= chunk_count <= 60:
+                                should_flush = (
+                                    buffer_size >= self.config.max_buffer_size // 2 or  # 50%缓冲区大小
+                                    len(buffer) >= max(3, self.config.max_chunk_count // 2) or  # 更小的块数量
+                                    (now - last_flush) >= self.config.flush_interval / 2  # 更频繁的刷新
+                                )
+                            else:
+                                should_flush = (
+                                    buffer_size >= self.config.max_buffer_size or
+                                    len(buffer) >= self.config.max_chunk_count or
+                                    (now - last_flush) >= self.config.flush_interval
+                                )
                             
                             if should_flush:
                                 # 在发送前进行健康检查

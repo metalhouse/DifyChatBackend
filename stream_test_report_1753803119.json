@@ -1,0 +1,129 @@
+{
+  "test_summary": {
+    "total_tests": 7,
+    "successful_tests": 0,
+    "failed_tests": 7,
+    "test_timestamp": "2025-07-29T23:31:59.809886"
+  },
+  "test_results": [
+    {
+      "test_id": 0,
+      "start_time": "2025-07-29T23:31:54.487788",
+      "success": false,
+      "chunk_count": 0,
+      "total_bytes": 0,
+      "duration": 0.04415583610534668,
+      "error_details": {
+        "type": "Exception",
+        "message": "HTTP错误: 401",
+        "chunk_count": 0,
+        "bytes_received": 0,
+        "duration": 0.04376816749572754
+      },
+      "chunks_received": [],
+      "failure_point": 0
+    },
+    {
+      "test_id": 2,
+      "start_time": "2025-07-29T23:31:56.536941",
+      "success": false,
+      "chunk_count": 0,
+      "total_bytes": 0,
+      "duration": 0.011893749237060547,
+      "error_details": {
+        "type": "Exception",
+        "message": "HTTP错误: 401",
+        "chunk_count": 0,
+        "bytes_received": 0,
+        "duration": 0.011615276336669922
+      },
+      "chunks_received": [],
+      "failure_point": 0
+    },
+    {
+      "test_id": 3,
+      "start_time": "2025-07-29T23:31:56.538094",
+      "success": false,
+      "chunk_count": 0,
+      "total_bytes": 0,
+      "duration": 0.0339055061340332,
+      "error_details": {
+        "type": "Exception",
+        "message": "HTTP错误: 401",
+        "chunk_count": 0,
+        "bytes_received": 0,
+        "duration": 0.032682180404663086
+      },
+      "chunks_received": [],
+      "failure_point": 0
+    },
+    {
+      "test_id": 1,
+      "start_time": "2025-07-29T23:31:56.535203",
+      "success": false,
+      "chunk_count": 0,
+      "total_bytes": 0,
+      "duration": 0.037297964096069336,
+      "error_details": {
+        "type": "Exception",
+        "message": "HTTP错误: 401",
+        "chunk_count": 0,
+        "bytes_received": 0,
+        "duration": 0.03615403175354004
+      },
+      "chunks_received": [],
+      "failure_point": 0
+    },
+    {
+      "test_id": "CONN_正常连接",
+      "start_time": "2025-07-29T23:31:59.540999",
+      "success": false,
+      "chunk_count": 0,
+      "total_bytes": 0,
+      "duration": 0.03368568420410156,
+      "error_details": {
+        "type": "Exception",
+        "message": "HTTP错误: 401",
+        "chunk_count": 0,
+        "bytes_received": 0,
+        "duration": 0.03330683708190918
+      },
+      "chunks_received": [],
+      "failure_point": 0
+    },
+    {
+      "test_id": "CONN_慢速连接",
+      "start_time": "2025-07-29T23:31:59.575768",
+      "success": false,
+      "chunk_count": 0,
+      "total_bytes": 0,
+      "duration": 0.037954092025756836,
+      "error_details": {
+        "type": "Exception",
+        "message": "HTTP错误: 401",
+        "chunk_count": 0,
+        "bytes_received": 0,
+        "duration": 0.03565621376037598
+      },
+      "chunks_received": [],
+      "failure_point": 0
+    },
+    {
+      "test_id": "CONN_不稳定连接",
+      "start_time": "2025-07-29T23:31:59.720686",
+      "success": false,
+      "chunk_count": 0,
+      "total_bytes": 0,
+      "duration": 0.01551365852355957,
+      "error_details": {
+        "type": "Exception",
+        "message": "HTTP错误: 401",
+        "chunk_count": 0,
+        "bytes_received": 0,
+        "duration": 0.015192270278930664
+      },
+      "chunks_received": [],
+      "failure_point": 0
+    }
+  ]
+}
