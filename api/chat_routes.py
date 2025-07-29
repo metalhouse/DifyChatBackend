@@ -64,7 +64,9 @@ def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payl
         
         def dify_data_generator():
             """Dify数据生成器"""
+            resp = None
             try:
+                logging.info(f"[STREAM START] {connection_id}: 开始流式请求")
                 resp, status = dify_service.make_request(
                     'POST', '/chat-messages', json_data=payload, 
                     stream=True, agent_id=chat_request.agent_id
@@ -76,13 +78,28 @@ def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payl
                         error_msg = resp.get('message', error_msg)
                     raise Exception(error_msg)
                 
+                # 检查响应对象是否有iter_lines方法
+                if not hasattr(resp, 'iter_lines'):
+                    raise Exception(f"Invalid stream response object: {type(resp)}")
+                
                 # 处理流式响应
+                chunk_count = 0
                 for line in resp.iter_lines():
                     if line:
+                        chunk_count += 1
+                        logging.debug(f"[STREAM CHUNK] {connection_id}: chunk {chunk_count}")
                         yield line
+                        
+                logging.info(f"[STREAM COMPLETE] {connection_id}: 处理了 {chunk_count} 个数据块")
                         
             except Exception as e:
                 logging.error(f"[STREAM DIFY ERROR] {connection_id}: {e}")
+                # 尝试关闭响应连接
+                if resp and hasattr(resp, 'close'):
+                    try:
+                        resp.close()
+                    except:
+                        pass
                 raise
             finally:
                 # 清除用户对话缓存
@@ -91,6 +108,14 @@ def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payl
                     logging.info(f"[CHAT STREAM] user={username}, agent={chat_request.agent_id} - 缓存已清除")
                 except Exception as cache_error:
                     logging.error(f"[STREAM CACHE ERROR] {connection_id}: {cache_error}")
+                
+                # 确保响应连接被关闭
+                if resp and hasattr(resp, 'close'):
+                    try:
+                        resp.close()
+                        logging.debug(f"[STREAM CLEANUP] {connection_id}: 响应连接已关闭")
+                    except Exception as cleanup_error:
+                        logging.error(f"[STREAM CLEANUP ERROR] {connection_id}: {cleanup_error}")
         
         def dify_chunk_processor(chunk: bytes) -> SSEEvent:
             """Dify数据块处理器"""
@@ -102,7 +127,15 @@ def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payl
                     )
                 
                 # 解码数据
-                chunk_str = chunk.decode('utf-8').strip()
+                try:
+                    chunk_str = chunk.decode('utf-8').strip()
+                except UnicodeDecodeError as e:
+                    logging.error(f"[STREAM DECODE ERROR] {connection_id}: {e}")
+                    return SSEEvent(
+                        event_type=SSEEventType.ERROR,
+                        data={"error": "数据解码失败", "details": str(e)}
+                    )
+                
                 if not chunk_str:
                     return SSEEvent(
                         event_type=SSEEventType.HEARTBEAT,
@@ -148,18 +181,19 @@ def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payl
                             data=data
                         )
                         
-                except json.JSONDecodeError:
+                except json.JSONDecodeError as e:
                     # 不是JSON，作为文本处理
+                    logging.debug(f"[STREAM RAW TEXT] {connection_id}: {chunk_str[:100]}...")
                     return SSEEvent(
                         event_type=SSEEventType.CHUNK,
                         data={"text": chunk_str, "raw": True}
                     )
                     
             except Exception as e:
-                logging.error(f"Error processing Dify chunk: {e}")
+                logging.error(f"[STREAM PROCESSOR ERROR] {connection_id}: {e}")
                 return SSEEvent(
                     event_type=SSEEventType.ERROR,
-                    data={"error": f"Chunk processing error: {str(e)}"}
+                    data={"error": f"数据处理错误: {str(e)}"}
                 )
         
         # 创建SSE响应

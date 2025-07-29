@@ -48,6 +48,43 @@ config/local_settings.py
 # Redis dumps
 dump.rdb
 
+# 测试和开发文件 - 防止意外恢复
+test_*.py
+*_test.py
+*_test_*.py
+test*.html
+*test*.html
+simple_*.html
+websocket*.html
+websocket*.py
+websocket*.ps1
+chatroom*.html
+chatroom*.sql
+chatroom*.py
+admin*.py
+*_diagnostic.html
+*_debug*.html
+official_echo_*.py
+standalone_*.py
+start_*.py
+restart_*.py
+install_*.py
+health_check.py
+cleanup_*.py
+jwt_config_*.py
+
+# 目录 - 已删除的功能模块
+admin/
+chatroom/
+tests/
+websocket/
+
+# 服务文件备份版本
+services/dify_service_*.py
+services/*_original.py
+services/*_simple.py
+services/*_backup.py
+
 # 日志文件
 *.log
 login.log

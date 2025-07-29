@@ -351,64 +351,82 @@ class StreamingProcessor:
                 buffer = []
                 buffer_size = 0
                 last_flush = time.time()
+                chunk_count = 0
                 
-                for chunk in data_generator:
-                    # 检查客户端连接状态
-                    if not self.is_client_connected(connection_id):
-                        logging.info(f"[STREAM DISCONNECT] {connection_id} - client disconnected")
-                        self.close_connection(connection_id, StreamStatus.DISCONNECTED)
-                        self.error_stats['client_disconnects'] += 1
-                        break
-                    
-                    try:
-                        # 处理数据块
-                        if process_chunk:
-                            event = process_chunk(chunk)
-                        else:
-                            event = self._default_chunk_processor(chunk)
+                try:
+                    for chunk in data_generator:
+                        chunk_count += 1
                         
-                        # 添加到缓冲区
-                        event_data = event.to_sse_format()
-                        buffer.append(event_data)
-                        buffer_size += len(event_data.encode('utf-8'))
-                        
-                        # 更新连接统计
-                        connection.total_chunks += 1
-                        connection.total_bytes += len(event_data.encode('utf-8'))
-                        connection.last_activity = datetime.now()
-                        
-                        # 检查是否需要刷新缓冲区
-                        now = time.time()
-                        should_flush = (
-                            buffer_size >= self.config.max_buffer_size or
-                            len(buffer) >= self.config.max_chunk_count or
-                            (now - last_flush) >= self.config.flush_interval
-                        )
-                        
-                        if should_flush:
-                            # 批量发送
-                            for event_data in buffer:
-                                yield event_data
-                            
-                            # 更新统计
-                            self.stats['total_chunks_sent'] += len(buffer)
-                            self.stats['total_bytes_sent'] += buffer_size
-                            
-                            # 清空缓冲区
-                            buffer.clear()
-                            buffer_size = 0
-                            last_flush = now
-                    
-                    except Exception as e:
-                        logging.error(f"[STREAM CHUNK ERROR] {connection_id}: {e}")
-                        connection.error_count += 1
-                        
-                        error_event = self._create_error_event(str(e))
-                        yield error_event.to_sse_format()
-                        
-                        if connection.error_count >= self.config.max_retry_count:
-                            logging.error(f"[STREAM TOO MANY ERRORS] {connection_id} - closing connection")
+                        # 检查客户端连接状态
+                        if not self.is_client_connected(connection_id):
+                            logging.info(f"[STREAM DISCONNECT] {connection_id} - client disconnected after {chunk_count} chunks")
+                            self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                            self.error_stats['client_disconnects'] += 1
                             break
+                        
+                        try:
+                            # 处理数据块
+                            if process_chunk:
+                                event = process_chunk(chunk)
+                            else:
+                                event = self._default_chunk_processor(chunk)
+                            
+                            # 添加到缓冲区
+                            event_data = event.to_sse_format()
+                            buffer.append(event_data)
+                            buffer_size += len(event_data.encode('utf-8'))
+                            
+                            # 更新连接统计
+                            connection.total_chunks += 1
+                            connection.total_bytes += len(event_data.encode('utf-8'))
+                            connection.last_activity = datetime.now()
+                            
+                            # 检查是否需要刷新缓冲区
+                            now = time.time()
+                            should_flush = (
+                                buffer_size >= self.config.max_buffer_size or
+                                len(buffer) >= self.config.max_chunk_count or
+                                (now - last_flush) >= self.config.flush_interval
+                            )
+                            
+                            if should_flush:
+                                # 批量发送
+                                for event_data in buffer:
+                                    yield event_data
+                                
+                                # 更新统计
+                                self.stats['total_chunks_sent'] += len(buffer)
+                                self.stats['total_bytes_sent'] += buffer_size
+                                
+                                # 清空缓冲区
+                                buffer.clear()
+                                buffer_size = 0
+                                last_flush = now
+                        
+                        except Exception as e:
+                            logging.error(f"[STREAM CHUNK ERROR] {connection_id} chunk {chunk_count}: {e}")
+                            connection.error_count += 1
+                            
+                            error_event = self._create_error_event(f"处理第{chunk_count}个数据块时出错: {str(e)}")
+                            yield error_event.to_sse_format()
+                            
+                            if connection.error_count >= self.config.max_retry_count:
+                                logging.error(f"[STREAM TOO MANY ERRORS] {connection_id} - closing connection after {connection.error_count} errors")
+                                break
+                    
+                    logging.info(f"[STREAM DATA END] {connection_id} - processed {chunk_count} chunks")
+                    
+                except GeneratorExit:
+                    logging.info(f"[STREAM GENERATOR EXIT] {connection_id} - generator closed by client")
+                    self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                    return
+                    
+                except Exception as gen_error:
+                    logging.error(f"[STREAM GENERATOR ERROR] {connection_id}: {gen_error}")
+                    error_event = self._create_error_event(f"数据生成器错误: {str(gen_error)}")
+                    yield error_event.to_sse_format()
+                    self.close_connection(connection_id, StreamStatus.ERROR)
+                    return
                 
                 # 发送剩余缓冲区数据
                 if buffer:

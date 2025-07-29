@@ -209,17 +209,32 @@ class DifyService:
     )
     def _make_request_with_retry(self, method: str, url: str, **kwargs):
         """支持重试的HTTP请求"""
+        stream = kwargs.get('stream', False)
+        
         try:
             response = requests.request(method, url, timeout=self.timeout, **kwargs)
             
-            # 检查是否需要重试
+            # 对于流式请求，不进行重试机制，直接返回
+            if stream:
+                if response.status_code != 200:
+                    # 流式请求失败，记录错误并抛出异常
+                    error_text = response.text if hasattr(response, 'text') else str(response)
+                    logging.error(f"[DIFY STREAM ERROR] {method} {url}: {response.status_code} - {error_text}")
+                    raise NonRetryableError(f"流式请求失败: HTTP {response.status_code}", response.status_code)
+                return response
+            
+            # 非流式请求检查是否需要重试
             if self._should_retry(response.status_code):
                 raise RetryableError(f"HTTP {response.status_code}", response.status_code)
             
             return response
             
         except (requests.ConnectionError, requests.Timeout) as e:
-            # 网络错误，触发重试
+            # 对于流式请求，网络错误不重试
+            if stream:
+                logging.error(f"[DIFY STREAM NETWORK ERROR] {method} {url}: {e}")
+                raise NonRetryableError(f"流式请求网络错误: {e}", 500)
+            # 非流式请求，网络错误触发重试
             raise RetryableError(f"网络错误: {e}", 500)
     
     # Task 5.1 新增：异步HTTP请求方法
@@ -680,6 +695,11 @@ class DifyService:
             )
             
             if stream:
+                # 检查流式响应的状态码
+                if resp.status_code != 200:
+                    # 流式请求失败，抛出异常让上层处理
+                    error_text = resp.text if hasattr(resp, 'text') else str(resp)
+                    raise Exception(f"流式请求失败: HTTP {resp.status_code} - {error_text}")
                 return resp, 200
                 
             # 解析响应数据
