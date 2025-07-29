@@ -19256,3 +19256,22 @@ websockets.exceptions.InvalidMessage: did not receive a valid HTTP request
 2025-07-29 22:03:48,191 - werkzeug - INFO - 192.168.1.68 - - [29/Jul/2025 22:03:48] "GET /health HTTP/1.1" 200 -
 2025-07-29 22:04:48,186 - werkzeug - INFO - 192.168.1.68 - - [29/Jul/2025 22:04:48] "GET /health HTTP/1.1" 200 -
 2025-07-29 22:05:30,939 - root - INFO - [DIFY SERVICE] 资源清理完成
+2025-07-29 23:17:15,703 - root - INFO - 日志系统初始化完成
+2025-07-29 23:17:15,718 - utils.cache_manager - INFO - Redis缓存管理器初始化成功: 192.168.1.195:6379
+2025-07-29 23:17:15,719 - root - INFO - 缓存管理器初始化完成: 启用
+2025-07-29 23:17:15,746 - root - INFO - [DIFY SERVICE] 资源清理完成
+2025-07-29 23:17:24,216 - root - INFO - 日志系统初始化完成
+2025-07-29 23:17:24,229 - utils.cache_manager - INFO - Redis缓存管理器初始化成功: 192.168.1.195:6379
+2025-07-29 23:17:24,230 - root - INFO - 缓存管理器初始化完成: 启用
+2025-07-29 23:17:24,264 - root - INFO - 启动DifyChatBackend服务 - 标准化版本
+2025-07-29 23:17:24,264 - root - INFO - 环境: development
+2025-07-29 23:17:24,267 - root - INFO - 服务器配置: 0.0.0.0:5000
+2025-07-29 23:17:24,267 - root - INFO - API版本: v1
+2025-07-29 23:17:24,267 - root - INFO - 响应格式: 标准化
+2025-07-29 23:17:24,268 - root - INFO - 🌐 使用标准Flask模式启动服务器
+2025-07-29 23:17:25,788 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.19.0.1:5000
+2025-07-29 23:17:25,789 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-29 23:17:31,379 - root - INFO - [DIFY SERVICE] 资源清理完成
