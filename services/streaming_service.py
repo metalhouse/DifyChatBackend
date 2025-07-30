@@ -320,10 +320,10 @@ class StreamingProcessor:
                 logging.warning(f"[STREAM HIGH ERROR RATE] {connection_id} - error rate: {error_rate:.2%}")
                 return False
         
-        # 检查连接活跃度
+        # 检查连接活跃度 - 增加容忍度，因为Dify可能有长时间处理
         now = datetime.now()
         idle_time = (now - connection.last_activity).total_seconds()
-        if idle_time > 60:  # 超过1分钟无活动
+        if idle_time > 120:  # 增加到2分钟无活动才认为超时
             logging.warning(f"[STREAM IDLE TOO LONG] {connection_id} - idle for {idle_time:.1f}s")
             return False
             
@@ -381,6 +381,8 @@ class StreamingProcessor:
                 buffer_size = 0
                 last_flush = time.time()
                 chunk_count = 0
+                last_data_time = time.time()  # 记录最后收到有效数据的时间
+                dify_timeout_threshold = 30.0  # Dify响应超时阈值（30秒）
                 
                 try:
                     for chunk in data_generator:
@@ -427,10 +429,37 @@ class StreamingProcessor:
                             else:
                                 event = self._default_chunk_processor(chunk)
                             
+                            # 检查事件类型，如果是COMPLETION事件，表示流正常结束
+                            if event and event.event_type == SSEEventType.COMPLETION:
+                                logging.info(f"[STREAM DIFY COMPLETION] {connection_id} - received completion event at chunk {chunk_count}")
+                                
+                                # 添加完成事件到缓冲区
+                                event_data = event.to_sse_format()
+                                buffer.append(event_data)
+                                buffer_size += len(event_data.encode('utf-8'))
+                                
+                                # 立即发送所有缓冲区数据
+                                try:
+                                    for buffered_event in buffer:
+                                        yield buffered_event
+                                    
+                                    logging.info(f"[STREAM DIFY COMPLETION SENT] {connection_id} - completion event sent, closing connection")
+                                    self.close_connection(connection_id, StreamStatus.COMPLETED)
+                                    return
+                                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as conn_error:
+                                    logging.error(f"[STREAM DIFY COMPLETION SEND FAILED] {connection_id}: {conn_error}")
+                                    self.close_connection(connection_id, StreamStatus.DISCONNECTED)
+                                    return
+                            
                             # 添加到缓冲区
                             event_data = event.to_sse_format()
                             buffer.append(event_data)
                             buffer_size += len(event_data.encode('utf-8'))
+                            
+                            # 更新有效数据接收时间
+                            chunk_str = chunk.decode('utf-8') if isinstance(chunk, bytes) else str(chunk)
+                            if not ("event: ping" in chunk_str):  # 非ping事件才更新数据时间
+                                last_data_time = time.time()
                             
                             # 更新连接统计
                             connection.total_chunks += 1
@@ -712,6 +741,137 @@ class StreamingProcessor:
                 "timestamp": datetime.now().isoformat()
             }
         )
+    
+    def create_dify_chunk_processor(self, connection_id: str) -> Callable[[Any], SSEEvent]:
+        """
+        创建专门处理Dify API响应的数据块处理器
+        
+        根据Dify API文档，正确处理以下事件类型：
+        - message: 消息内容（包含answer字段）
+        - message_end: 消息结束事件
+        - workflow_finished: 工作流完成
+        - error: 错误事件  
+        - ping: 心跳保活事件
+        
+        Args:
+            connection_id: 连接ID
+            
+        Returns:
+            处理Dify数据块的函数
+        """
+        def process_dify_chunk(chunk: Any) -> SSEEvent:
+            try:
+                # 解码数据块
+                if isinstance(chunk, bytes):
+                    chunk_str = chunk.decode('utf-8').strip()
+                else:
+                    chunk_str = str(chunk).strip()
+                
+                if not chunk_str:
+                    return SSEEvent(
+                        event_type=SSEEventType.HEARTBEAT,
+                        data={"status": "keepalive"}
+                    )
+                
+                # 解析SSE格式的Dify响应
+                lines = chunk_str.split('\n')
+                event_type = None
+                event_data = None
+                
+                for line in lines:
+                    if line.startswith('event: '):
+                        event_type = line[7:].strip()
+                    elif line.startswith('data: '):
+                        data_str = line[6:].strip()
+                        if data_str:
+                            try:
+                                event_data = json.loads(data_str)
+                            except json.JSONDecodeError:
+                                event_data = {"raw": data_str}
+                
+                # 处理不同类型的Dify事件
+                if event_type == 'ping':
+                    # ping事件用于保活，正常处理
+                    logging.debug(f"[DIFY PING] {connection_id} - keepalive ping received")
+                    return SSEEvent(
+                        event_type=SSEEventType.HEARTBEAT,
+                        data={"status": "ping", "timestamp": datetime.now().isoformat()}
+                    )
+                
+                elif event_type == 'message':
+                    # 正常消息内容
+                    if event_data and 'answer' in event_data:
+                        return SSEEvent(
+                            event_type=SSEEventType.MESSAGE,
+                            data={
+                                "content": event_data['answer'],
+                                "message_id": event_data.get('message_id'),
+                                "conversation_id": event_data.get('conversation_id'),
+                                "timestamp": datetime.now().isoformat()
+                            }
+                        )
+                    else:
+                        return SSEEvent(
+                            event_type=SSEEventType.MESSAGE,
+                            data=event_data or {}
+                        )
+                
+                elif event_type == 'message_end':
+                    # 消息结束事件 - 这是正常的流结束信号
+                    logging.info(f"[DIFY MESSAGE END] {connection_id} - message completed normally")
+                    return SSEEvent(
+                        event_type=SSEEventType.COMPLETION,
+                        data={
+                            "status": "completed",
+                            "message_id": event_data.get('message_id') if event_data else None,
+                            "metadata": event_data.get('metadata', {}) if event_data else {},
+                            "timestamp": datetime.now().isoformat()
+                        }
+                    )
+                
+                elif event_type == 'workflow_finished':
+                    # 工作流完成事件
+                    logging.info(f"[DIFY WORKFLOW END] {connection_id} - workflow completed")
+                    return SSEEvent(
+                        event_type=SSEEventType.COMPLETION,
+                        data={
+                            "status": "workflow_finished",
+                            "data": event_data or {},
+                            "timestamp": datetime.now().isoformat()
+                        }
+                    )
+                
+                elif event_type == 'error':
+                    # 错误事件
+                    error_msg = event_data.get('message', 'Unknown error') if event_data else 'Stream error'
+                    logging.error(f"[DIFY ERROR] {connection_id} - {error_msg}")
+                    return SSEEvent(
+                        event_type=SSEEventType.ERROR,
+                        data={
+                            "error": error_msg,
+                            "error_code": event_data.get('code') if event_data else None,
+                            "timestamp": datetime.now().isoformat()
+                        }
+                    )
+                
+                else:
+                    # 未知事件类型或原始数据
+                    if event_data:
+                        return SSEEvent(
+                            event_type=SSEEventType.MESSAGE,
+                            data=event_data
+                        )
+                    else:
+                        return SSEEvent(
+                            event_type=SSEEventType.CHUNK,
+                            data={"raw": chunk_str}
+                        )
+            
+            except Exception as e:
+                logging.error(f"[DIFY CHUNK ERROR] {connection_id} - processing failed: {str(e)}")
+                return self._create_error_event(f"Dify chunk processing error: {str(e)}")
+        
+        return process_dify_chunk
     
     # ========== Task 5.3 新增：心跳和连接保活 ==========
     

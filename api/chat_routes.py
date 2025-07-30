@@ -117,90 +117,12 @@ def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payl
                     except Exception as cleanup_error:
                         logging.error(f"[STREAM CLEANUP ERROR] {connection_id}: {cleanup_error}")
         
-        def dify_chunk_processor(chunk: bytes) -> SSEEvent:
-            """Dify数据块处理器"""
-            try:
-                if not chunk:
-                    return SSEEvent(
-                        event_type=SSEEventType.HEARTBEAT,
-                        data={"status": "keepalive"}
-                    )
-                
-                # 解码数据
-                try:
-                    chunk_str = chunk.decode('utf-8').strip()
-                except UnicodeDecodeError as e:
-                    logging.error(f"[STREAM DECODE ERROR] {connection_id}: {e}")
-                    return SSEEvent(
-                        event_type=SSEEventType.ERROR,
-                        data={"error": "数据解码失败", "details": str(e)}
-                    )
-                
-                if not chunk_str:
-                    return SSEEvent(
-                        event_type=SSEEventType.HEARTBEAT,
-                        data={"status": "keepalive"}
-                    )
-                
-                # 解析Dify的SSE格式
-                if chunk_str.startswith('data: '):
-                    chunk_str = chunk_str[6:]  # 移除 'data: ' 前缀
-                
-                # 处理特殊的SSE事件
-                if chunk_str == '[DONE]':
-                    return SSEEvent(
-                        event_type=SSEEventType.COMPLETION,
-                        data={"status": "completed", "message": "Stream finished"}
-                    )
-                
-                # 解析JSON数据
-                try:
-                    data = json.loads(chunk_str)
-                    
-                    # 根据Dify的事件类型创建对应的SSE事件
-                    event_type = data.get('event', 'message')
-                    
-                    if event_type == 'message':
-                        return SSEEvent(
-                            event_type=SSEEventType.MESSAGE,
-                            data=data
-                        )
-                    elif event_type == 'message_end':
-                        return SSEEvent(
-                            event_type=SSEEventType.COMPLETION,
-                            data=data
-                        )
-                    elif event_type in ['agent_message', 'message_file']:
-                        return SSEEvent(
-                            event_type=SSEEventType.MESSAGE,
-                            data=data
-                        )
-                    else:
-                        return SSEEvent(
-                            event_type=SSEEventType.METADATA,
-                            data=data
-                        )
-                        
-                except json.JSONDecodeError as e:
-                    # 不是JSON，作为文本处理
-                    logging.debug(f"[STREAM RAW TEXT] {connection_id}: {chunk_str[:100]}...")
-                    return SSEEvent(
-                        event_type=SSEEventType.CHUNK,
-                        data={"text": chunk_str, "raw": True}
-                    )
-                    
-            except Exception as e:
-                logging.error(f"[STREAM PROCESSOR ERROR] {connection_id}: {e}")
-                return SSEEvent(
-                    event_type=SSEEventType.ERROR,
-                    data={"error": f"数据处理错误: {str(e)}"}
-                )
-        
-        # 创建SSE响应
+        # 创建SSE响应 - 使用专门的Dify事件处理器
+        dify_processor = streaming_processor.create_dify_chunk_processor(connection_id)
         return streaming_processor.create_sse_response(
             connection_id=connection_id,
             data_generator=dify_data_generator(),
-            process_chunk=dify_chunk_processor
+            process_chunk=dify_processor
         )
         
     except Exception as e:
