@@ -1,10 +1,14 @@
 """
 聊天相关的API路由 (标准化版本) - Task 5.3 流式响应优化增强版
 """
-from flask import request, jsonify, g, Response
+from flask import request, jsonify, g, Response, stream_with_context
 import logging
 import json
+import time
+import uuid
+import requests
 from datetime import datetime
+from typing import Dict, Any
 
 from utils.response_builder import ResponseBuilder, ErrorCode, PaginationInfo
 from utils.request_validator import (
@@ -39,7 +43,13 @@ def _get_current_user():
 
 def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payload: dict) -> Response:
     """
-    处理流式聊天请求 - Task 5.3 现代化版本
+    处理流式聊天请求 - 优化版本，减少中断点，确保流式传输完整性
+    
+    主要优化：
+    1. 简化流式处理逻辑，减少不必要的检查
+    2. 直接转发Dify的SSE事件，最小化中间处理
+    3. 增强错误恢复机制
+    4. 优化超时和缓冲设置
     
     Args:
         username: 用户名
@@ -49,87 +59,139 @@ def _handle_streaming_chat(username: str, chat_request: ChatMessageRequest, payl
     Returns:
         Flask Response 对象
     """
-    try:
-        # 创建流式连接
-        connection_id = streaming_processor.create_connection(
-            user_id=username,
-            agent_id=chat_request.agent_id,
-            conversation_id=chat_request.conversation_id,
-            metadata={
-                'message_length': len(chat_request.message),
-                'has_files': bool(chat_request.files),
-                'auto_generate_name': chat_request.auto_generate_name
-            }
-        )
+    
+    def generate_stream():
+        """优化的流式数据生成器"""
+        stream_id = f"stream_{uuid.uuid4().hex[:12]}"
+        chunk_count = 0
+        total_bytes = 0
+        last_activity = time.time()
+        resp = None
         
-        def dify_data_generator():
-            """Dify数据生成器"""
-            resp = None
-            try:
-                logging.info(f"[STREAM START] {connection_id}: 开始流式请求")
-                resp, status = dify_service.make_request(
-                    'POST', '/chat-messages', json_data=payload, 
-                    stream=True, agent_id=chat_request.agent_id
-                )
+        try:
+            logging.info(f"[STREAM START] {stream_id} - user={username}, agent={chat_request.agent_id}")
+            
+            # 1. 调用Dify API - 使用优化的超时设置
+            resp, status = dify_service.make_request(
+                'POST', '/chat-messages', 
+                json_data=payload, 
+                stream=True, 
+                agent_id=chat_request.agent_id,
+                timeout=(30, None)  # 连接超时30秒，读取无超时
+            )
+            
+            if status != 200:
+                error_msg = f"Dify API error: status={status}"
+                if hasattr(resp, 'get') and isinstance(resp, dict):
+                    error_msg = resp.get('message', error_msg)
                 
-                if status != 200:
-                    error_msg = f"Dify API error: status={status}"
-                    if hasattr(resp, 'get'):
-                        error_msg = resp.get('message', error_msg)
-                    raise Exception(error_msg)
-                
-                # 检查响应对象是否有iter_lines方法
-                if not hasattr(resp, 'iter_lines'):
-                    raise Exception(f"Invalid stream response object: {type(resp)}")
-                
-                # 处理流式响应
-                chunk_count = 0
-                for line in resp.iter_lines():
-                    if line:
-                        chunk_count += 1
-                        logging.debug(f"[STREAM CHUNK] {connection_id}: chunk {chunk_count}")
-                        yield line
-                        
-                logging.info(f"[STREAM COMPLETE] {connection_id}: 处理了 {chunk_count} 个数据块")
-                        
-            except Exception as e:
-                logging.error(f"[STREAM DIFY ERROR] {connection_id}: {e}")
-                # 尝试关闭响应连接
-                if resp and hasattr(resp, 'close'):
+                # 发送符合Dify API的错误事件
+                error_event = f'event: error\ndata: {{"status": {status}, "message": "{error_msg}", "code": "dify_api_error"}}\n\n'
+                yield error_event
+                return
+            
+            # 检查响应对象
+            if not hasattr(resp, 'iter_lines'):
+                error_event = f'event: error\ndata: {{"message": "Invalid stream response", "code": "invalid_response"}}\n\n'
+                yield error_event
+                return
+            
+            logging.info(f"[STREAM CONNECTED] {stream_id} - Dify API连接成功")
+            
+            # 2. 处理流式响应 - 直接转发，最小化处理
+            for line in resp.iter_lines(decode_unicode=True):
+                if line:
+                    chunk_count += 1
+                    total_bytes += len(line.encode('utf-8'))
+                    last_activity = time.time()
+                    
+                    # 减少日志频率，避免影响性能
+                    if chunk_count % 25 == 0:  # 每25个chunk记录一次
+                        logging.debug(f"[STREAM PROGRESS] {stream_id} - {chunk_count} chunks, {total_bytes} bytes")
+                    
+                    # 直接转发整行数据，保持Dify的原始SSE格式
+                    yield f"{line}\n"
+                    
+                    # 简单的事件识别（仅用于日志，不影响转发）
                     try:
-                        resp.close()
+                        if 'event: message_end' in line:
+                            logging.info(f"[STREAM MESSAGE END] {stream_id}")
+                        elif 'event: error' in line:
+                            logging.warning(f"[STREAM ERROR EVENT] {stream_id}")
+                        elif 'event: ping' in line:
+                            logging.debug(f"[STREAM PING] {stream_id}")
                     except:
-                        pass
-                raise
-            finally:
-                # 清除用户对话缓存
-                try:
-                    dify_service.invalidate_user_cache(username, chat_request.agent_id)
-                    logging.info(f"[CHAT STREAM] user={username}, agent={chat_request.agent_id} - 缓存已清除")
-                except Exception as cache_error:
-                    logging.error(f"[STREAM CACHE ERROR] {connection_id}: {cache_error}")
+                        pass  # 忽略事件解析错误
                 
-                # 确保响应连接被关闭
-                if resp and hasattr(resp, 'close'):
+                # 只在长时间无数据时才检查连接（避免频繁检查导致中断）
+                current_time = time.time()
+                if current_time - last_activity > 90:  # 90秒无数据才检查
+                    logging.debug(f"[STREAM LONG IDLE] {stream_id} - {current_time - last_activity:.1f}s idle")
+                    # 简单检查，不中断流
                     try:
-                        resp.close()
-                        logging.debug(f"[STREAM CLEANUP] {connection_id}: 响应连接已关闭")
-                    except Exception as cleanup_error:
-                        logging.error(f"[STREAM CLEANUP ERROR] {connection_id}: {cleanup_error}")
-        
-        # 创建SSE响应 - 使用专门的Dify事件处理器
-        dify_processor = streaming_processor.create_dify_chunk_processor(connection_id)
-        return streaming_processor.create_sse_response(
-            connection_id=connection_id,
-            data_generator=dify_data_generator(),
-            process_chunk=dify_processor
+                        if hasattr(request, 'stream') and request.stream and hasattr(request.stream, 'closed'):
+                            if request.stream.closed:
+                                logging.info(f"[STREAM CLIENT DISCONNECT] {stream_id}")
+                                break
+                    except:
+                        pass  # 忽略检查错误，继续流式传输
+                    
+                    last_activity = current_time
+            
+            # 3. 流结束处理
+            logging.info(f"[STREAM COMPLETE] {stream_id} - total: {chunk_count} chunks, {total_bytes} bytes")
+            
+        except requests.exceptions.ChunkedEncodingError as e:
+            # Dify API中断，发送标准错误事件
+            logging.warning(f"[STREAM CHUNKED ERROR] {stream_id}: {str(e)}")
+            error_event = f'event: error\ndata: {{"message": "Stream interrupted", "code": "chunked_encoding_error"}}\n\n'
+            yield error_event
+            
+        except requests.exceptions.Timeout as e:
+            logging.error(f"[STREAM TIMEOUT] {stream_id}: {str(e)}")
+            error_event = f'event: error\ndata: {{"message": "Request timeout", "code": "timeout_error"}}\n\n'
+            yield error_event
+            
+        except Exception as e:
+            logging.error(f"[STREAM ERROR] {stream_id}: {type(e).__name__}: {str(e)}")
+            error_event = f'event: error\ndata: {{"message": "{str(e)}", "code": "stream_error"}}\n\n'
+            yield error_event
+            
+        finally:
+            # 4. 清理资源（在finally中确保执行）
+            try:
+                if resp and hasattr(resp, 'close'):
+                    resp.close()
+                    logging.debug(f"[STREAM CLEANUP] {stream_id} - response closed")
+            except:
+                pass
+            
+            # 清除缓存（非关键操作，异常不影响流）
+            try:
+                dify_service.invalidate_user_cache(username, chat_request.agent_id)
+                logging.debug(f"[STREAM CACHE CLEAR] {stream_id} - cache cleared")
+            except:
+                pass
+    
+    # 5. 创建优化的SSE响应
+    try:
+        response = Response(
+            stream_with_context(generate_stream()),
+            mimetype='text/event-stream'
         )
+        
+        # 设置优化的响应头
+        response.headers['Cache-Control'] = 'no-cache'
+        response.headers['Connection'] = 'keep-alive'
+        response.headers['X-Accel-Buffering'] = 'no'  # 禁用nginx缓冲
+        
+        return response
         
     except Exception as e:
-        logging.error(f"[STREAM CHAT ERROR] user={username}, agent={chat_request.agent_id}: {e}")
+        logging.error(f"[STREAM RESPONSE ERROR] user={username}, agent={chat_request.agent_id}: {e}")
         return ResponseBuilder.error(
             error_code=ErrorCode.INTERNAL_ERROR,
-            message=f"流式聊天处理异常: {str(e)}"
+            message=f"创建流式响应失败: {str(e)}"
         )
 
 @require_auth()
@@ -984,7 +1046,18 @@ def api_app_info():
 @require_permissions(['send_messages', 'create_conversations'])
 @auto_refresh_token()
 def api_chat_messages():
-    """标准Dify聊天消息API - 创建对话消息"""
+    """
+    标准Dify聊天消息API - 按照Dify API文档规范
+    
+    支持的参数（严格按照Dify API文档）：
+    - query (string, 必需): 用户输入/提问内容
+    - user (string, 必需): 用户标识
+    - inputs (object, 可选): App定义的变量值，默认{}
+    - response_mode (string, 可选): streaming 或 blocking，默认streaming
+    - conversation_id (string, 可选): 会话ID
+    - files (array, 可选): 文件列表
+    - auto_generate_name (bool, 可选): 自动生成标题，默认true
+    """
     try:
         # 1. 获取当前用户
         current_user, error_response = _get_current_user()
@@ -993,7 +1066,7 @@ def api_chat_messages():
         
         username = current_user['username']
         
-        # 2. 解析请求数据
+        # 2. 解析请求数据（严格按照Dify API文档）
         try:
             request_data = request.get_json()
             if not request_data:
@@ -1002,7 +1075,7 @@ def api_chat_messages():
                     message="请求体不能为空"
                 )
             
-            # 验证必需参数
+            # 验证必需参数（按Dify API文档）
             query = request_data.get('query')
             if not query:
                 return ResponseBuilder.error(
@@ -1012,82 +1085,191 @@ def api_chat_messages():
                 
             user = request_data.get('user')
             if not user:
-                return ResponseBuilder.error(
-                    error_code=ErrorCode.VALIDATION_ERROR,
-                    message="user参数是必需的"
-                )
+                # 如果没有提供user参数，使用当前用户名
+                user = username
                 
-            # 可选参数
-            inputs = request_data.get('inputs', {})
-            response_mode = request_data.get('response_mode', 'blocking')
-            conversation_id = request_data.get('conversation_id', '')
-            files = request_data.get('files', [])
-            auto_generate_name = request_data.get('auto_generate_name', True)
+            # 构建符合Dify API的请求载荷
+            payload = {
+                'query': query,
+                'user': user,
+                'inputs': request_data.get('inputs', {}),
+                'response_mode': request_data.get('response_mode', 'streaming'),
+                'conversation_id': request_data.get('conversation_id', ''),
+                'files': request_data.get('files', []),
+                'auto_generate_name': request_data.get('auto_generate_name', True)
+            }
             
+            # 移除空值（优化请求）
+            payload = {k: v for k, v in payload.items() if v is not None and v != ''}
+                
         except Exception as e:
             return ResponseBuilder.error(
                 error_code=ErrorCode.VALIDATION_ERROR,
                 message=f"请求数据解析失败: {str(e)}"
             )
         
-        # 3. 调用Dify API
-        try:
-            resp, status = dify_service.make_request(
-                'POST', '/chat-messages', 
-                json_data={
-                    'query': query,
-                    'user': user,
-                    'inputs': inputs,
-                    'response_mode': response_mode,
-                    'conversation_id': conversation_id,
-                    'files': files,
-                    'auto_generate_name': auto_generate_name
-                }, 
-                agent_id=None  # 使用默认代理
-            )
-            
-            logging.info(f"[CHAT MESSAGE] Dify response: status={status}, type(resp)={type(resp)}")
-            
-            if status == 200:
-                logging.info(f"[CHAT MESSAGE] user={username}, conversation_id={resp.get('conversation_id', 'new')}")
-                
-                # 返回标准格式的响应
-                response_data = {
-                    'event': resp.get('event', 'message'),
-                    'task_id': resp.get('task_id', ''),
-                    'id': resp.get('id', ''),
-                    'message_id': resp.get('message_id', resp.get('id', '')),
-                    'conversation_id': resp.get('conversation_id', ''),
-                    'mode': resp.get('mode', 'chat'),
-                    'answer': resp.get('answer', ''),
-                    'metadata': resp.get('metadata', {}),
-                    'created_at': resp.get('created_at', 0)
-                }
-                
-                return jsonify(response_data)
-            else:
-                # 处理错误响应
-                error_message = "发送消息失败"
-                if isinstance(resp, dict):
-                    error_message = resp.get('message', error_message)
-                
-                return ResponseBuilder.error(
-                    error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
-                    message=error_message
-                )
-                
-        except Exception as e:
-            logging.error(f"[CHAT MESSAGE ERROR] {e}", exc_info=True)
-            return ResponseBuilder.error(
-                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
-                message=f"调用Dify API失败: {str(e)}"
-            )
+        # 3. 根据响应模式处理
+        response_mode = payload.get('response_mode', 'streaming')
+        
+        if response_mode == 'streaming':
+            # 流式响应处理
+            return handle_dify_streaming(payload, username)
+        else:
+            # 阻塞式响应处理
+            return handle_dify_blocking(payload, username)
         
     except Exception as e:
         logging.error(f"[CHAT MESSAGE ERROR] {e}", exc_info=True)
         return ResponseBuilder.error(
             error_code=ErrorCode.INTERNAL_ERROR,
             message="发送消息异常"
+        )
+
+def handle_dify_streaming(payload: Dict[str, Any], username: str) -> Response:
+    """
+    处理Dify流式响应 - 优化版本
+    """
+    def generate_dify_stream():
+        stream_id = f"dify_stream_{uuid.uuid4().hex[:8]}"
+        chunk_count = 0
+        total_bytes = 0
+        resp = None
+        
+        try:
+            logging.info(f"[DIFY STREAM START] {stream_id} - user={username}")
+            
+            # 调用Dify API
+            resp, status = dify_service.make_request(
+                'POST', '/chat-messages', 
+                json_data=payload, 
+                stream=True,
+                agent_id=None,  # 使用默认agent
+                timeout=(30, None)  # 连接30秒超时，读取无超时
+            )
+            
+            if status != 200:
+                error_msg = "Dify API调用失败"
+                if isinstance(resp, dict):
+                    error_msg = resp.get('message', error_msg)
+                
+                # 发送符合Dify规范的错误事件
+                error_event = f'event: error\ndata: {{"status": {status}, "message": "{error_msg}", "code": "dify_api_error"}}\n\n'
+                yield error_event
+                return
+            
+            if not hasattr(resp, 'iter_lines'):
+                error_event = f'event: error\ndata: {{"message": "无效的流式响应", "code": "invalid_stream_response"}}\n\n'
+                yield error_event
+                return
+            
+            logging.info(f"[DIFY STREAM CONNECTED] {stream_id}")
+            
+            # 处理流式数据 - 直接转发Dify的SSE格式
+            for line in resp.iter_lines(decode_unicode=True):
+                if line:
+                    chunk_count += 1
+                    total_bytes += len(line.encode('utf-8'))
+                    
+                    # 减少日志记录频率
+                    if chunk_count % 30 == 0:
+                        logging.debug(f"[DIFY STREAM] {stream_id} - {chunk_count} chunks, {total_bytes} bytes")
+                    
+                    # 直接转发整行，保持Dify的原始SSE格式
+                    yield f"{line}\n"
+                    
+                    # 检测重要事件（仅用于日志）
+                    try:
+                        if 'event: message_end' in line:
+                            logging.info(f"[DIFY STREAM END] {stream_id}")
+                        elif 'event: error' in line:
+                            logging.warning(f"[DIFY STREAM ERROR] {stream_id}")
+                    except:
+                        pass
+            
+            logging.info(f"[DIFY STREAM COMPLETE] {stream_id} - {chunk_count} chunks, {total_bytes} bytes")
+            
+        except requests.exceptions.Timeout as e:
+            logging.error(f"[DIFY STREAM TIMEOUT] {stream_id}: {e}")
+            yield f'event: error\ndata: {{"message": "请求超时", "code": "timeout_error"}}\n\n'
+            
+        except requests.exceptions.ConnectionError as e:
+            logging.error(f"[DIFY STREAM CONNECTION ERROR] {stream_id}: {e}")
+            yield f'event: error\ndata: {{"message": "连接错误", "code": "connection_error"}}\n\n'
+            
+        except Exception as e:
+            logging.error(f"[DIFY STREAM ERROR] {stream_id}: {e}")
+            yield f'event: error\ndata: {{"message": "流式处理错误: {str(e)}", "code": "stream_error"}}\n\n'
+            
+        finally:
+            # 清理资源
+            if resp and hasattr(resp, 'close'):
+                try:
+                    resp.close()
+                    logging.debug(f"[DIFY STREAM CLEANUP] {stream_id}")
+                except:
+                    pass
+    
+    # 创建SSE响应
+    response = Response(
+        stream_with_context(generate_dify_stream()),
+        mimetype='text/event-stream'
+    )
+    
+    # 设置SSE响应头
+    response.headers.update({
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no'
+    })
+    
+    return response
+
+def handle_dify_blocking(payload: Dict[str, Any], username: str) -> Response:
+    """
+    处理Dify阻塞式响应
+    """
+    try:
+        # 调用Dify API
+        resp, status = dify_service.make_request(
+            'POST', '/chat-messages', 
+            json_data=payload, 
+            agent_id=None  # 使用默认agent
+        )
+        
+        logging.info(f"[DIFY BLOCKING] user={username}, status={status}")
+        
+        if status == 200:
+            # 返回标准格式的响应（符合Dify API文档）
+            response_data = {
+                'event': resp.get('event', 'message'),
+                'task_id': resp.get('task_id', ''),
+                'id': resp.get('id', ''),
+                'message_id': resp.get('message_id', resp.get('id', '')),
+                'conversation_id': resp.get('conversation_id', ''),
+                'mode': resp.get('mode', 'chat'),
+                'answer': resp.get('answer', ''),
+                'metadata': resp.get('metadata', {}),
+                'usage': resp.get('usage', {}),
+                'created_at': resp.get('created_at', 0)
+            }
+            
+            return jsonify(response_data)
+        else:
+            # 处理错误响应
+            error_message = "发送消息失败"
+            if isinstance(resp, dict):
+                error_message = resp.get('message', error_message)
+            
+            return ResponseBuilder.error(
+                error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+                message=error_message
+            )
+            
+    except Exception as e:
+        logging.error(f"[DIFY BLOCKING ERROR] user={username}: {e}")
+        return ResponseBuilder.error(
+            error_code=ErrorCode.EXTERNAL_SERVICE_ERROR,
+            message=f"调用Dify API失败: {str(e)}"
         )
 
 # ========== Task 5.3 新增：流式监控API ==========
@@ -1248,8 +1430,14 @@ def api_system_stats():
         from services.dify_service import dify_service
         from utils.cache_manager import get_cache_manager
         import time
-        import psutil
         import os
+        
+        # 尝试导入psutil，如果失败则使用基础统计
+        try:
+            import psutil
+            has_psutil = True
+        except ImportError:
+            has_psutil = False
         
         # 基础系统信息
         uptime = time.time() - getattr(api_system_stats, '_start_time', time.time())
@@ -1270,9 +1458,22 @@ def api_system_stats():
         else:
             cache_stats = {'enabled': False}
         
-        # 内存使用
-        process = psutil.Process(os.getpid())
-        memory_info = process.memory_info()
+        # 内存使用统计
+        if has_psutil:
+            try:
+                process = psutil.Process(os.getpid())
+                memory_info = process.memory_info()
+                memory_stats = {
+                    'rss': memory_info.rss,
+                    'vms': memory_info.vms,
+                    'rss_mb': round(memory_info.rss / 1024 / 1024, 2),
+                    'vms_mb': round(memory_info.vms / 1024 / 1024, 2)
+                }
+            except:
+                memory_stats = {'rss': 0, 'vms': 0, 'rss_mb': 0, 'vms_mb': 0}
+        else:
+            # 基础内存统计，不依赖psutil
+            memory_stats = {'rss': 0, 'vms': 0, 'rss_mb': 0, 'vms_mb': 0}
         
         # 流式连接统计
         streaming_stats = streaming_processor.get_connection_stats()
@@ -1285,12 +1486,7 @@ def api_system_stats():
             'conversations_total': dify_service.get_user_conversation_count(username),
             'messages_total': dify_service.get_user_message_count(username),
             'cache': cache_stats,
-            'memory_usage': {
-                'rss': memory_info.rss,
-                'vms': memory_info.vms,
-                'rss_mb': round(memory_info.rss / 1024 / 1024, 2),
-                'vms_mb': round(memory_info.vms / 1024 / 1024, 2)
-            },
+            'memory_usage': memory_stats,
             'streaming': streaming_stats,
             'last_updated': int(time.time())
         }
